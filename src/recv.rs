@@ -2,7 +2,7 @@ use std::io::Read;
 use std::net::TcpStream;
 use owo_colors::OwoColorize;
 use serde_json::Value;
-use stblib::colors::{YELLOW};
+use stblib::colors::{YELLOW, BOLD};
 
 use crate::config::{Config, ServerValues};
 use crate::formatter::MessageFormatter;
@@ -89,7 +89,7 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues,
             }
             None => unreachable!(),
             m => println!(
-                "{} {YELLOW}{} ({})",
+                "{} {YELLOW}{BOLD}{} ({})",
                 "[UImp] ".red().bold(),
                 string_loader.str("UnimplementedPacket"),
                 m.unwrap(),
