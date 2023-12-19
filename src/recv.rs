@@ -84,7 +84,7 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues,
                     }
                 };
 
-                println!("{:?}", fmt);
+                println!("{}", fmt);
             }
             None => unreachable!(),
             m => println!(
