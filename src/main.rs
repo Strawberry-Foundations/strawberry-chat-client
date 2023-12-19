@@ -1,7 +1,6 @@
 use std::io::{self};
 use std::net::TcpStream;
 use std::thread;
-use clap::Parser;
 
 mod recv;
 mod send;
