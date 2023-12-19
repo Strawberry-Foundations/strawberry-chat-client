@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 eyre = "0.6.11"
-stblib = { path = "C:\\Users\\Julian\\Desktop\\stblib-rust" }
+stblib = "0.2.4"
 rustyline = "13.0.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9.27"
