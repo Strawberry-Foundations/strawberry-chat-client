@@ -56,8 +56,8 @@ fn user_server_list(string_loader: &Strings, _config: &Config) -> i8 {
     };
 
     if server_selection == (server_data_length + 1) as u8 {
-        let host = line_reader.readline(string_loader.str("Ipaddr").as_str()).expect(aborted.as_str());
-        let port: String = line_reader.readline(string_loader.str("Port").as_str()).expect(aborted.as_str());
+        /* let host = line_reader.readline(string_loader.str("Ipaddr").as_str()).expect(aborted.as_str());
+        let port: String = line_reader.readline(string_loader.str("Port").as_str()).expect(aborted.as_str()); */
 
         -1
     }
