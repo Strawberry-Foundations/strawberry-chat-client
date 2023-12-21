@@ -16,13 +16,7 @@ mod config;
 mod formatter;
 mod constants;
 
-fn type_of<T>(_: T) -> &'static str {
-    type_name::<T>()
-}
-
 fn user_server_list(string_loader: &Strings, _config: &Config) -> i8 {
-    let mut enable_auto_login = false;
-
     println!("{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---", constants::VERSION);
     println!("{GREEN}{}{C_RESET}\n", string_loader.str("Welcome"));
     println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", string_loader.str("YourChatServers"));
