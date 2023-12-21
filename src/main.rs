@@ -73,10 +73,10 @@ fn user_server_list(string_loader: &Strings, _config: &Config) -> i8 {
 }
 
 fn main() -> io::Result<()> {
-    let config = config::Config::new();
-    let string_loader = stblib::strings::Strings::new(config.language.as_str(), "C:\\Users\\Julian\\Desktop\\stbchat-rust\\target\\debug\\lang.yml");
+    let config = Config::new();
+    let string_loader = Strings::new(config.language.as_str(), "C:\\Users\\Julian\\Desktop\\stbchat-rust\\target\\debug\\lang.yml");
 
-    let mut server_id: usize = 0;
+    let server_id;
 
     if config.autoserver.enabled {
         server_id = config.autoserver.server_id as usize;
@@ -90,10 +90,10 @@ fn main() -> io::Result<()> {
     }
 
 
-    let server_config = config::Config::server_id(server_id);
+    let server_config = Config::server_id(server_id);
 
-    let send_config = config::Config::new();
-    let send_server_config = config::Config::server_id(server_id);
+    let send_config = Config::new();
+    let send_server_config = Config::server_id(server_id);
 
     let host = format!("{}:{}", server_config.address, server_config.port);
 
