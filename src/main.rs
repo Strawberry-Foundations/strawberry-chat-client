@@ -1,11 +1,13 @@
 use std::io::{self,};
 use std::net::TcpStream;
 use std::thread;
+use std::env;
+use std::path::PathBuf;
 use serde_yaml::{from_str, Value};
 
 use stblib::colors::*;
 use stblib::strings::Strings;
-use crate::config::{Config, config_open};
+use crate::config::{Config, get_config, config_open};
 
 mod recv;
 mod send;
@@ -14,12 +16,12 @@ mod config;
 mod formatter;
 mod constants;
 
-fn user_server_list(string_loader: &Strings, _config: &Config) -> i8 {
+fn user_server_list(string_loader: &Strings, _config: &Config, config_path: &str) -> i8 {
     println!("{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---", constants::VERSION);
     println!("{GREEN}{}{C_RESET}\n", string_loader.str("Welcome"));
     println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", string_loader.str("YourChatServers"));
 
-    let config_yml = config_open();
+    let config_yml = config_open(&config_path);
     let data: Value = from_str(&config_yml).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
 
@@ -73,8 +75,14 @@ fn user_server_list(string_loader: &Strings, _config: &Config) -> i8 {
 }
 
 fn main() -> io::Result<()> {
-    let config = Config::new();
-    let string_loader = Strings::new(config.language.as_str(), "C:\\Users\\Julian\\Desktop\\stbchat-rust\\target\\debug\\lang.yml");
+    let exe_path = env::current_exe().expect("Error when determining the path to the executable file.");
+    let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+    let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
+
+    let config_path = format!("{}\\config.yml", exe_dir_str);
+
+    let config = Config::new(&config_path);
+    let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
 
     let server_id;
 
@@ -82,7 +90,7 @@ fn main() -> io::Result<()> {
         server_id = config.autoserver.server_id as usize;
     }
     else {
-        server_id = user_server_list(&string_loader, &config) as usize;
+        server_id = user_server_list(&string_loader, &config, &config_path) as usize;
     }
 
     if server_id as i8 == -1 {
@@ -90,10 +98,10 @@ fn main() -> io::Result<()> {
     }
 
 
-    let server_config = Config::server_id(server_id);
+    let server_config = Config::server_id(server_id, &config_path);
 
-    let send_config = Config::new();
-    let send_server_config = Config::server_id(server_id);
+    let send_config = Config::new(&config_path);
+    let send_server_config = Config::server_id(server_id, &config_path);
 
     let host = format!("{}:{}", server_config.address, server_config.port);
 
