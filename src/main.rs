@@ -79,7 +79,7 @@ fn main() -> io::Result<()> {
     let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
     let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
-    let config_path = format!("{}\\config.yml", exe_dir_str);
+    let config_path = format!("{}/config.yml", exe_dir_str);
 
     let config = Config::new(&config_path);
     let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
