@@ -1,4 +1,3 @@
-use std::any::{type_name};
 use std::io::{self,};
 use std::net::TcpStream;
 use std::thread;
@@ -7,7 +6,6 @@ use serde_yaml::{from_str, Value};
 use stblib::colors::*;
 use stblib::strings::Strings;
 use crate::config::{Config, config_open};
-
 
 mod recv;
 mod send;
