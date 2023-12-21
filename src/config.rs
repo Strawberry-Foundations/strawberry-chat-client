@@ -47,23 +47,26 @@ pub struct ServerValues {
     pub credentials: ServerValuesCredentials,
 }
 
-pub(crate) fn config_open() -> String {
+pub(crate) fn config_open(config_path: &str) -> String {
     let config_yml =
-        fs::read_to_string("C:\\Users\\Julian\\Desktop\\stbchat-rust\\target\\debug\\config.yml")
-            .expect("Could not read config");
+        fs::read_to_string(config_path).expect("Could not read config");
     config_yml
 }
 
+pub fn get_config() -> String {
+    include_str!("./lang.yml").to_string()
+}
+
 impl Config {
-    pub fn new() -> Config {
-        let config_yml = config_open();
+    pub fn new(config_path: &str) -> Config {
+        let config_yml = config_open(&config_path);
         let config: Config = from_str(&config_yml).unwrap();
 
         config
     }
 
-    pub fn server_id(server_id: usize) -> ServerValues {
-        let config_yml = config_open();
+    pub fn server_id(server_id: usize, config_path: &str) -> ServerValues {
+        let config_yml = config_open(&config_path);
         let config: Value = from_str(&config_yml).unwrap();
 
 
