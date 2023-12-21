@@ -83,7 +83,7 @@ impl Config {
         let s_autologin = config["server"][server_id]["autologin"].as_bool().unwrap();
         let s_compatibility_mode = config["server"][server_id]["compatibility_mode"]
             .as_bool()
-            .unwrap();
+            .unwrap_or(false);
 
         let s_credentials_username = config["server"][server_id]["credentials"]["username"]
             .as_str()
