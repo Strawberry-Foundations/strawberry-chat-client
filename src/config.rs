@@ -47,7 +47,7 @@ pub struct ServerValues {
     pub credentials: ServerValuesCredentials,
 }
 
-fn config_open() -> String {
+pub(crate) fn config_open() -> String {
     let config_yml =
         fs::read_to_string("C:\\Users\\Julian\\Desktop\\stbchat-rust\\target\\debug\\config.yml")
             .expect("Could not read config");
@@ -65,6 +65,7 @@ impl Config {
     pub fn server_id(server_id: usize) -> ServerValues {
         let config_yml = config_open();
         let config: Value = from_str(&config_yml).unwrap();
+
 
         let s_name = config["server"][server_id]["name"]
             .as_str()
