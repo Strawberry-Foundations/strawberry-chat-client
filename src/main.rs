@@ -109,7 +109,7 @@ fn main() -> io::Result<()> {
 
     let send_stream = stream.try_clone().unwrap();
 
-    let handler = thread::spawn(|| recv::recv(stream, config, server_config, string_loader));
+    let handler = thread::spawn(|| recv::recv(stream, config, server_config));
     thread::spawn(|| send::send(send_stream, send_config, send_server_config));
 
     handler.join().unwrap();
