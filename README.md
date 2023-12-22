@@ -1,1 +1,0 @@
-# Strawberry Chat Rust Client
