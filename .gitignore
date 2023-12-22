@@ -1,0 +1,9 @@
+/target
+Cargo.lock
+connect_spam.rs
+register_spam.rs
+.idea/discord.xml
+.idea/modules.xml
+.idea/stbchat-rust.iml
+.idea/vcs.xml
+.idea/workspace.xml
