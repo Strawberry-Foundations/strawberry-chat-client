@@ -14,7 +14,11 @@ pub(crate) fn send(mut stream: TcpStream, _config: Config, server_config: Server
     }
 
     loop {
-        let input = line_reader.readline("").unwrap();
+        let input: String = match line_reader.readline("") {
+            Ok(inp) => inp,
+            Err(_) => std::process::exit(1), 
+        };
+
         line_reader.add_history_entry(&input).unwrap();
         stream.write(input.as_bytes()).expect("Error writing stream");
     }
