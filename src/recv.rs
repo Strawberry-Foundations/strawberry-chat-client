@@ -3,11 +3,14 @@ use std::net::TcpStream;
 use owo_colors::OwoColorize;
 use serde_json::Value;
 use stblib::colors::{YELLOW, BOLD};
+use stblib::strings::Strings;
 
-use crate::config::{Config, ServerValues};
+use crate::config::{Config, get_config, ServerValues};
 use crate::formatter::MessageFormatter;
 
-pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues, string_loader: stblib::strings::Strings) {
+pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues) {
+    let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
+
     loop {
         let mut buffer = [0u8; 1];
         let mut str_buf = String::new();
