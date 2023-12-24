@@ -40,7 +40,7 @@ pub struct ServerValuesCredentials {
 pub struct ServerValues {
     pub name: String,
     pub address: String,
-    pub port: u64,
+    pub port: u16,
     pub server_type: String,
     pub autologin: bool,
     pub compatibility_mode: bool,
@@ -78,7 +78,7 @@ impl Config {
             .as_str()
             .unwrap()
             .to_string();
-        let s_port = config["server"][server_id]["port"].as_u64().unwrap();
+        let s_port = config["server"][server_id]["port"].as_u64().unwrap() as u16;
         let s_type = config["server"][server_id]["type"]
             .as_str()
             .unwrap()
