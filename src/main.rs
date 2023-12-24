@@ -45,7 +45,7 @@ fn main() -> io::Result<()> {
     let send_config = Config::new(&config_path);
     let send_server_config = Config::server_id(server_id, &config_path);
 
-    let host = format!("{}:{}", server_config.address, server_config.port);
+    let host = (server_config.address.clone(), server_config.port);
 
     let stream = TcpStream::connect(host).expect(format!("{BOLD}{RED}{}{C_RESET}", string_loader.str("ErrNotReachable")).as_str());
 
