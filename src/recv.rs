@@ -89,11 +89,7 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
             }
 
             Some("stbchat_backend") => {
-                client_meta.username = msg["user_meta"]["username"]
-                    .as_str()
-                    .unwrap()
-                    .trim()
-                    .to_string();
+                client_meta.username = msg["user_meta"]["username"].as_str().unwrap().trim().to_string();
             }
 
             None => unreachable!(),
