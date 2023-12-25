@@ -6,7 +6,7 @@ use serde_yaml::{from_str, Value};
 
 use stblib::colors::*;
 
-use crate::config::{config_open};
+use crate::config::config_open;
 use crate::{constants, STRING_LOADER};
 
 pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
