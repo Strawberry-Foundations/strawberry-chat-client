@@ -11,7 +11,7 @@ use crate::{constants, STRING_LOADER};
 
 pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
     println!("{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---", constants::VERSION);
-    println!("{GREEN}{}{C_RESET}\n", STRING_LOADER.str("Welcome"));
+    println!("{BOLD}{GREEN}{}{C_RESET}\n", STRING_LOADER.str("Welcome"));
     println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", STRING_LOADER.str("YourChatServers"));
 
     let config_yml = config_open(config_path);
