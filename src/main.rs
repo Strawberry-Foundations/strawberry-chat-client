@@ -1,4 +1,5 @@
 #![warn(clippy::all, clippy::nursery)]
+#![allow(clippy::missing_const_for_fn)]
 
 use std::env;
 use std::io::{self};
@@ -54,19 +55,19 @@ fn main() -> io::Result<()> {
 
     let host = (server_config.address.clone(), server_config.port);
 
-    let stream = TcpStream::connect(host).unwrap_or_else(|_| panic!(
+    let stream = TcpStream::connect(host).unwrap_or_else(|_| {
+        panic!(
             "{BOLD}{RED}{}{C_RESET}",
             string_loader.str("ErrNotReachable")
-        ),
-    );
+        )
+    });
 
     let send_stream = stream.try_clone().unwrap();
 
-    if config.networking.keep_alive == true {
+    if config.networking.keep_alive {
         let keep_alive_stream = stream.try_clone().unwrap();
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
-
 
     let handler = thread::spawn(|| recv::recv(stream, config, server_config));
     thread::spawn(|| send::send(send_stream, send_config, send_server_config));

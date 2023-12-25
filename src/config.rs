@@ -47,9 +47,8 @@ pub struct ServerValues {
     pub credentials: ServerValuesCredentials,
 }
 
-pub(crate) fn config_open(config_path: &str) -> String {
-    let config_yml = fs::read_to_string(config_path).expect("Could not read config");
-    config_yml
+pub fn config_open(config_path: &str) -> String {
+    fs::read_to_string(config_path).expect("Could not read config")
 }
 
 pub fn get_config() -> String {
@@ -57,16 +56,14 @@ pub fn get_config() -> String {
 }
 
 impl Config {
-    pub fn new(config_path: &str) -> Config {
-        let config_yml = config_open(&config_path);
-        let config: Config = from_str(&config_yml).unwrap();
-
-        config
+    pub fn new(config_path: &str) -> Self {
+        let config_yml = config_open(config_path);
+        from_str(&config_yml).unwrap()
     }
 
     pub fn server_id(server_id: i8, config_path: &str) -> ServerValues {
         let server_id = server_id as usize;
-        let config_yml = config_open(&config_path);
+        let config_yml = config_open(config_path);
         let config: Value = from_str(&config_yml).unwrap();
 
         let s_name = config["server"][server_id]["name"]

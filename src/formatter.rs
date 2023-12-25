@@ -10,7 +10,7 @@ impl MessageFormatter {
         badge: &str,
         message: &str,
     ) -> String {
-        let fmt = match nickname {
+        match nickname {
             _ if username == nickname => format!(
                 "{C_RESET}[{}] {}{}{}:{} {}{}",
                 stblib::utilities::current_time("%H:%M"),
@@ -32,9 +32,7 @@ impl MessageFormatter {
                 message,
                 constants::C_RESET
             ),
-        };
-
-        fmt
+        }
     }
 
     pub fn default_system(message: &str) -> String {
@@ -47,7 +45,7 @@ impl MessageFormatter {
 }
 
 pub fn badge_handler(badge: &str) -> String {
-    if badge != "" {
+    if badge.is_empty() {
         format!(" [{}]", badge)
     } else {
         "".to_string()
