@@ -9,8 +9,7 @@ use lazy_static::lazy_static;
 
 use crate::config::{get_lang_cfg, Config, ServerValues};
 use stblib::strings::Strings;
-use stblib::colors::{RED, BOLD};
-use crate::constants::C_RESET;
+use stblib::colors::{RED, BOLD, C_RESET};
 
 mod recv;
 mod send;
