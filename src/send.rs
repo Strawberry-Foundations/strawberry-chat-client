@@ -6,10 +6,9 @@ use std::time::Duration;
 
 use eyre::{bail, Context};
 use rustyline::error::ReadlineError;
-use stblib::colors::{BOLD, GREEN};
+use stblib::colors::*;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
-use crate::constants::C_RESET;
 use crate::utilities::delete_last_line;
 
 pub fn send(mut stream: TcpStream) -> eyre::Result<()> {
@@ -36,6 +35,7 @@ pub fn send(mut stream: TcpStream) -> eyre::Result<()> {
                 sleep(Duration::from_millis(300));
                 exit(0);
             }
+            Err(ReadlineError::Eof) => exit(0),
             Err(e) => bail!(e),
         };
 

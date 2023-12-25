@@ -1,5 +1,4 @@
 use std::net::TcpStream;
-use std::process::exit;
 
 use owo_colors::OwoColorize;
 use serde_json::{Deserializer, Value};

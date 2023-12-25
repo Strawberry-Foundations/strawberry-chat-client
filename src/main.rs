@@ -2,17 +2,16 @@
 #![allow(clippy::missing_const_for_fn)]
 
 use std::env;
-use std::fs::File;
 use std::net::TcpStream;
 use std::path::{Path, PathBuf};
 use std::thread;
-use eyre::eyre;
+
 use lazy_static::lazy_static;
 use owo_colors::OwoColorize;
-
-use crate::config::{get_lang_cfg, Config, ServerValues};
+use stblib::colors::*;
 use stblib::strings::Strings;
-use stblib::colors::{RED, BOLD, C_RESET, GREEN, YELLOW};
+
+use crate::config::{Config, get_lang_cfg, ServerValues};
 
 mod recv;
 mod send;
