@@ -13,7 +13,7 @@ pub struct Networking {
 #[derive(Debug, Deserialize)]
 pub struct Autoserver {
     pub enabled: bool,
-    pub server_id: u8,
+    pub server_id: i8,
 }
 
 #[derive(Debug, Deserialize)]
@@ -48,8 +48,7 @@ pub struct ServerValues {
 }
 
 pub(crate) fn config_open(config_path: &str) -> String {
-    let config_yml =
-        fs::read_to_string(config_path).expect("Could not read config");
+    let config_yml = fs::read_to_string(config_path).expect("Could not read config");
     config_yml
 }
 
@@ -65,10 +64,10 @@ impl Config {
         config
     }
 
-    pub fn server_id(server_id: usize, config_path: &str) -> ServerValues {
+    pub fn server_id(server_id: i8, config_path: &str) -> ServerValues {
+        let server_id = server_id as usize;
         let config_yml = config_open(&config_path);
         let config: Value = from_str(&config_yml).unwrap();
-
 
         let s_name = config["server"][server_id]["name"]
             .as_str()

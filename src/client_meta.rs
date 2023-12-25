@@ -3,8 +3,8 @@ pub struct ClientMeta {
 }
 
 impl ClientMeta {
-    pub fn new() -> ClientMeta {
-        ClientMeta {
+    pub fn new() -> Self {
+        Self {
             username: String::new(),
         }
     }

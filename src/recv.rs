@@ -1,12 +1,12 @@
-use std::io::Read;
-use std::net::TcpStream;
+use crate::client_meta::ClientMeta;
 use owo_colors::OwoColorize;
 use serde_json::Value;
-use stblib::colors::{YELLOW, BOLD};
+use stblib::colors::*;
 use stblib::strings::Strings;
-use crate::client_meta::ClientMeta;
+use std::io::Read;
+use std::net::TcpStream;
 
-use crate::config::{Config, get_config, ServerValues};
+use crate::config::{get_config, Config, ServerValues};
 use crate::formatter::MessageFormatter;
 
 pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues) {
@@ -19,7 +19,9 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
         let mut wraps = 0;
 
         loop {
-            let stream_reader = stream.read(&mut buffer).expect("Error while reading from stream");
+            let stream_reader = stream
+                .read(&mut buffer)
+                .expect("Error while reading from stream");
 
             if stream_reader == 0 {
                 println!("Server connection closed");
@@ -35,11 +37,11 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
                     wraps -= 1;
                     str_buf.push('}');
                 }
-                c => str_buf.push(c)
+                c => str_buf.push(c),
             }
 
             if wraps == 0 {
-                break
+                break;
             }
         }
 
@@ -54,47 +56,43 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
         match msg["message_type"].as_str() {
             Some("system_message") => {
                 let fmt = match config.message_format.as_str() {
-                    "default" => {
-                        MessageFormatter::default_system(
-                            msg["message"]["content"].as_str().unwrap()
-                        )
-                    }
-                    _ => {
-                        MessageFormatter::default_system(
-                            msg["message"]["content"].as_str().unwrap()
-                        )
-                    }
+                    "default" => MessageFormatter::default_system(
+                        msg["message"]["content"].as_str().unwrap(),
+                    ),
+                    _ => MessageFormatter::default_system(
+                        msg["message"]["content"].as_str().unwrap(),
+                    ),
                 };
 
                 println!("{}", fmt);
             }
             Some("user_message") => {
                 let fmt = match config.message_format.as_str() {
-                    "default" => {
-                        MessageFormatter::default_user(
-                            msg["username"].as_str().unwrap(),
-                            msg["nickname"].as_str().unwrap(),
-                            msg["role_color"].as_str().unwrap(),
-                            crate::formatter::badge_handler(msg["badge"].as_str().unwrap()).as_str(),
-                            msg["message"]["content"].as_str().unwrap()
-                        )
-                    }
-                    _ => {
-                        MessageFormatter::default_user(
-                            msg["username"].as_str().unwrap(),
-                            msg["nickname"].as_str().unwrap(),
-                            msg["role_color"].as_str().unwrap(),
-                            msg["badge"].as_str().unwrap(),
-                            msg["message"]["content"].as_str().unwrap()
-                        )
-                    }
+                    "default" => MessageFormatter::default_user(
+                        msg["username"].as_str().unwrap(),
+                        msg["nickname"].as_str().unwrap(),
+                        msg["role_color"].as_str().unwrap(),
+                        crate::formatter::badge_handler(msg["badge"].as_str().unwrap()).as_str(),
+                        msg["message"]["content"].as_str().unwrap(),
+                    ),
+                    _ => MessageFormatter::default_user(
+                        msg["username"].as_str().unwrap(),
+                        msg["nickname"].as_str().unwrap(),
+                        msg["role_color"].as_str().unwrap(),
+                        msg["badge"].as_str().unwrap(),
+                        msg["message"]["content"].as_str().unwrap(),
+                    ),
                 };
 
                 println!("{}", fmt);
             }
 
             Some("stbchat_backend") => {
-                client_meta.username = msg["user_meta"]["username"].as_str().unwrap().trim().to_string();
+                client_meta.username = msg["user_meta"]["username"]
+                    .as_str()
+                    .unwrap()
+                    .trim()
+                    .to_string();
             }
 
             None => unreachable!(),
@@ -105,6 +103,5 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
                 m.unwrap(),
             ),
         }
-
     }
 }

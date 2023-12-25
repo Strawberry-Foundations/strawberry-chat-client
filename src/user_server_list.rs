@@ -1,15 +1,21 @@
 use serde_yaml::{from_str, Value};
 
-use stblib::strings::Strings;
 use stblib::colors::*;
+use stblib::strings::Strings;
 
-use crate::config::{Config, config_open};
+use crate::config::{config_open, Config};
 use crate::constants;
 
 pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: &str) -> i8 {
-    println!("{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---", constants::VERSION);
+    println!(
+        "{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---",
+        constants::VERSION
+    );
     println!("{GREEN}{}{C_RESET}\n", string_loader.str("Welcome"));
-    println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", string_loader.str("YourChatServers"));
+    println!(
+        "{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}",
+        string_loader.str("YourChatServers")
+    );
 
     let config_yml = config_open(&config_path);
     let data: Value = from_str(&config_yml).unwrap();
@@ -23,7 +29,11 @@ pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: 
         );
     }
 
-    println!("{BOLD}{BLUE}[{}]{C_RESET}{BOLD} {}{C_RESET}\n", server_data_length + 1, string_loader.str("Custom"));
+    println!(
+        "{BOLD}{BLUE}[{}]{C_RESET}{BOLD} {}{C_RESET}\n",
+        server_data_length + 1,
+        string_loader.str("Custom")
+    );
 
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
@@ -52,14 +62,13 @@ pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: 
         let port: String = line_reader.readline(string_loader.str("Port").as_str()).expect(aborted.as_str()); */
 
         -1
-    }
-
-    else if server_selection > (server_data_length + 1) as u8 {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("InvalidServerSelection"));
+    } else if server_selection > (server_data_length + 1) as u8 {
+        eprintln!(
+            "{BOLD}{RED}{}{C_RESET}",
+            string_loader.str("InvalidServerSelection")
+        );
         std::process::exit(1);
-    }
-
-    else {
+    } else {
         (server_selection - 1) as i8
     }
 }
