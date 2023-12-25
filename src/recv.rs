@@ -15,7 +15,6 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
     let json_iter = Deserializer::from_reader(stream).into_iter::<Value>();
 
     for json in json_iter {
-        dbg!(&json);
         let msg = match json {
             Ok(j) => j,
             Err(e) => {
