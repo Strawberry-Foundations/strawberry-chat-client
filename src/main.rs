@@ -17,6 +17,7 @@ mod constants;
 mod user_server_list;
 mod keep_alive;
 mod client_meta;
+mod utilities;
 
 fn main() -> io::Result<()> {
     let exe_path = env::current_exe().expect("Error when determining the path to the executable file.");
