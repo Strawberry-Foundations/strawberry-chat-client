@@ -33,6 +33,7 @@ de_DE:
   ExtremeDebugModeActivated: "Warnung: Der extreme Debug Modus ist aktiviert. Dieser ist nicht zur produktiven Verwendung geeignet und sollte daher\nnur für das Debuggen des Clients verwendet werden!"
   UnimplementedPacket: "Ein nicht implementiertes Paket wurde empfangen!"
   StreamWriteError: "Fehler beim senden von Daten zum Server"
+  ConfigParseError: "Fehler beim einlesen der Konfigurationsdatei"
 
 # Language Strings for en_US (English)
 en_US:
@@ -69,3 +70,4 @@ en_US:
   ExtremeDebugModeActivated: "Warning: The extreme debug mode is activated. This is not suitable for productive use and should therefore\nonly be used for debugging the client!"
   UnimplementedPacket: "An unimplemented package has been received!"
   StreamWriteError: "Error while sending data to the server"
+  ConfigParseError: "Error while reading the configuration file"
