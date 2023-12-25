@@ -70,6 +70,6 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
             ),
         }
     }
-    eprintln!("{}", STRING_LOADER.str("CloseApplication").as_str());
+    eprintln!("{}", STRING_LOADER.str("CloseApplication"));
     exit(1);
 }
