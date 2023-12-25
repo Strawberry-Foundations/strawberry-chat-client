@@ -2,6 +2,7 @@
 Cargo.lock
 connect_spam.rs
 register_spam.rs
+config.yml
 .idea/discord.xml
 .idea/modules.xml
 .idea/stbchat-rust.iml
