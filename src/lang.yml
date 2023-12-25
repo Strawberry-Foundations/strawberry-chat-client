@@ -35,6 +35,8 @@ de_DE:
   StreamWriteError: "Fehler beim senden von Daten zum Server"
   ConfigParseError: "Fehler beim einlesen der Konfigurationsdatei"
   Cause: "Verursacht von"
+  ErrorRecvThread: "Ein Fehler beim starten des Empfangs-Thread ist aufgetreten."
+  ErrorSendThread: "Ein Fehler beim starten des Send-Thread ist aufgetreten."
 
 # Language Strings for en_US (English)
 en_US:
@@ -73,3 +75,5 @@ en_US:
   StreamWriteError: "Error while sending data to the server"
   ConfigParseError: "Error while reading the configuration file"
   Cause: "Caused by"
+  ErrorRecvThread: "An error occurred when starting the receive thread."
+  ErrorSendThread: "An error occurred when starting the send thread."
