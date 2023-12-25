@@ -70,7 +70,7 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
             ),
         }
     }
-    println!("{}", STRING_LOADER.str("CloseApplication"));
+    println!("{YELLOW}{}{C_RESET}", STRING_LOADER.str("CloseApplication"));
     stblib::utilities::ms_sleep(300);
     exit(0);
 }
