@@ -5,7 +5,6 @@ use std::env;
 use std::net::TcpStream;
 use std::path::{Path, PathBuf};
 use std::thread;
-use eyre::Context;
 use lazy_static::lazy_static;
 
 use crate::config::{get_lang_cfg, Config, ServerValues};
@@ -27,8 +26,15 @@ mod error_handler;
 
 lazy_static! {
     pub static ref CONFIG: Config = {
-        let exe_path = env::current_exe().expect("Failed to get current exe");
-        let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+        let exe_path = env::current_exe().expect(
+            format!("{RED}Error: Could not get your Strawberry Chat Client Executable.{C_RESET}")
+            .as_str()
+        );
+
+        let exe_dir = exe_path.parent().expect(
+            format!("{RED}Error determining the directory of the executable file.{C_RESET}")
+            .as_str()
+        );
 
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
@@ -65,7 +71,11 @@ fn main() -> eyre::Result<()> {
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
-    let stream = TcpStream::connect(host).context(STRING_LOADER.str("ErrNotReachable"))?;
+    let stream = TcpStream::connect(host).unwrap_or_else(|_| {
+        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("Aborted"));
+        std::process::exit(1);
+    });
+
     let send_stream = stream.try_clone()?;
 
     if CONFIG.networking.keep_alive {
@@ -73,10 +83,18 @@ fn main() -> eyre::Result<()> {
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
 
-    let recv_h = thread::spawn(|| recv::recv(stream).expect("Error in receiver thread"));
-    let send_h = thread::spawn(|| send::send(send_stream).expect("Error in sender thread"));
-    recv_h.join().unwrap();
-    send_h.join().unwrap();
+    let recv_handler = thread::spawn(|| recv::recv(stream).unwrap_or_else(|_| {
+        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrorRecvThread"));
+        std::process::exit(1);
+    }));
+
+    let send_handler = thread::spawn(|| send::send(send_stream).unwrap_or_else(|_| {
+        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrorSendThread"));
+        std::process::exit(1);
+    }));
+
+    recv_handler.join().unwrap();
+    send_handler.join().unwrap();
 
     Ok(())
 }
