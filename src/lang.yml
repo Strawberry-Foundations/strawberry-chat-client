@@ -37,6 +37,7 @@ de_DE:
   Cause: "Verursacht von"
   ErrorRecvThread: "Ein Fehler beim starten des Empfangs-Thread ist aufgetreten."
   ErrorSendThread: "Ein Fehler beim starten des Send-Thread ist aufgetreten."
+  PressCtrlDToExit: "Drücke Strg-D um zu verlassen..."
 
 # Language Strings for en_US (English)
 en_US:
@@ -77,3 +78,4 @@ en_US:
   Cause: "Caused by"
   ErrorRecvThread: "An error occurred when starting the receive thread."
   ErrorSendThread: "An error occurred when starting the send thread."
+  PressCtrlDToExit: "Press Ctrl-D to exit..."

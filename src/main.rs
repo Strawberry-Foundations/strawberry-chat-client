@@ -2,10 +2,13 @@
 #![allow(clippy::missing_const_for_fn)]
 
 use std::env;
+use std::fs::File;
 use std::net::TcpStream;
 use std::path::{Path, PathBuf};
 use std::thread;
+use eyre::eyre;
 use lazy_static::lazy_static;
+use owo_colors::OwoColorize;
 
 use crate::config::{get_lang_cfg, Config, ServerValues};
 use stblib::strings::Strings;
@@ -25,15 +28,9 @@ mod error_handler;
 
 lazy_static! {
     pub static ref CONFIG: Config = {
-        let exe_path = env::current_exe().expect(
-            format!("{RED}Error: Could not get your Strawberry Chat Client Executable.{C_RESET}")
-            .as_str()
-        );
+        let exe_path = env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
 
-        let exe_dir = exe_path.parent().expect(
-            format!("{RED}Error determining the directory of the executable file.{C_RESET}")
-            .as_str()
-        );
+        let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
 
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
@@ -52,7 +49,7 @@ lazy_static! {
         let server_id = match CONFIG.autoserver.enabled {
             true => CONFIG.autoserver.server_id,
             false => user_server_list::user_server_list(&CONFIG.path).unwrap_or_else(|_| {
-                eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("Aborted"));
+                eprintln!("{}", STRING_LOADER.str("Aborted").red().bold());
                 std::process::exit(1);
             }),
         };
@@ -67,13 +64,14 @@ lazy_static! {
 }
 
 fn main() -> eyre::Result<()> {
+    better_panic::install();
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
-    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.str("TryConnection"));
+    println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
     let stream = TcpStream::connect(host).unwrap_or_else(|_| {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrNotReachable"));
+        eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
 
@@ -85,16 +83,16 @@ fn main() -> eyre::Result<()> {
     }
 
     let recv_handler = thread::spawn(|| recv::recv(stream).unwrap_or_else(|_| {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrorRecvThread"));
+        eprintln!("{}", STRING_LOADER.str("ErrorRecvThread").red().bold());
         std::process::exit(1);
     }));
 
     let send_handler = thread::spawn(|| send::send(send_stream).unwrap_or_else(|_| {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrorSendThread"));
+        eprintln!("{}", STRING_LOADER.str("ErrorSendThread").red().bold());
         std::process::exit(1);
     }));
 
-    println!("{GREEN}{BOLD}{}{C_RESET}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()));
+    println!("{BOLD}{}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
 
     recv_handler.join().unwrap();
     send_handler.join().unwrap();
