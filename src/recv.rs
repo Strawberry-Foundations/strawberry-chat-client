@@ -18,7 +18,7 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
         let msg = match json {
             Ok(j) => j,
             Err(e) => {
-                eprintln!("Failed to desrialize json: {e}");
+                eprintln!("Failed to deserialize json: {e}");
                 continue
             },
         };
@@ -35,10 +35,6 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
                 };
 
                 println!("{}", fmt);
-
-                if msg["message"]["content"].as_str().unwrap().contains("You left the chat!") {
-                    exit(0);
-                };
             }
             Some("user_message") => {
                 let fmt = match CONFIG.message_format.as_str() {
@@ -74,6 +70,6 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
             ),
         }
     }
-
-    Ok(())
+    eprintln!("Server closed connection");
+    exit(1);
 }
