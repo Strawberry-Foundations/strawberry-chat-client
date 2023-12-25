@@ -1,4 +1,5 @@
 #![warn(clippy::all, clippy::nursery)]
+#![allow(clippy::missing_const_for_fn)]
 
 use std::env;
 use std::io::{self};
@@ -59,7 +60,7 @@ fn main() -> io::Result<()> {
 
     let send_stream = stream.try_clone().unwrap();
 
-    if config.networking.keep_alive == true {
+    if config.networking.keep_alive {
         let keep_alive_stream = stream.try_clone().unwrap();
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
