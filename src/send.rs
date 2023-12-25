@@ -13,11 +13,11 @@ pub fn send(mut stream: TcpStream, config: Config, server_config: ServerValues) 
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
     if server_config.autologin {
-        stream.write_all(server_config.credentials.username.as_bytes()).expect("Error writing stream");
+        stream.write_all(server_config.credentials.username.as_bytes()).expect(format!("{RED}{BOLD}{}{C_RESET}", string_loader.str("StreamWriteError")).as_str());
 
         stblib::utilities::ms_sleep(500);
 
-        stream.write_all(server_config.credentials.password.as_bytes()).expect("Error writing stream");
+        stream.write_all(server_config.credentials.password.as_bytes()).expect(format!("{RED}{BOLD}{}{C_RESET}", string_loader.str("StreamWriteError")).as_str());
     }
 
     loop {
@@ -27,7 +27,7 @@ pub fn send(mut stream: TcpStream, config: Config, server_config: ServerValues) 
             }, |inp| inp);
 
         line_reader.add_history_entry(&input).unwrap();
-        stream.write_all(input.as_bytes()).expect("Error writing stream");
+        stream.write_all(input.as_bytes()).expect(format!("{RED}{BOLD}{}{C_RESET}", string_loader.str("StreamWriteError")).as_str());
 
         delete_last_line();
     }
