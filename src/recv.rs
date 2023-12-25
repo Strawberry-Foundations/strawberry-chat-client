@@ -1,4 +1,5 @@
 use std::net::TcpStream;
+use std::process::exit;
 
 use owo_colors::OwoColorize;
 use serde_json::{Deserializer, Value};
@@ -14,6 +15,7 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
     let json_iter = Deserializer::from_reader(stream).into_iter::<Value>();
 
     for json in json_iter {
+        dbg!(&json);
         let msg = match json {
             Ok(j) => j,
             Err(e) => {
@@ -34,6 +36,10 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
                 };
 
                 println!("{}", fmt);
+
+                if msg["message"]["content"].as_str().unwrap().contains("You left the chat!") {
+                    exit(0);
+                };
             }
             Some("user_message") => {
                 let fmt = match CONFIG.message_format.as_str() {

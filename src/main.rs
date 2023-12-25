@@ -41,7 +41,7 @@ lazy_static! {
     pub static ref SERVER_CONFIG: ServerValues = {
         let server_id = match CONFIG.autoserver.enabled {
             true => CONFIG.autoserver.server_id,
-            false => user_server_list::user_server_list(&CONFIG.path),
+            false => user_server_list::user_server_list(&CONFIG.path).unwrap(),
         };
 
         if server_id == -1 {

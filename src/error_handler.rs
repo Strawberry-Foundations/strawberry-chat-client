@@ -21,7 +21,7 @@ impl EyreHandler for Handler {
 
         let mut errors = iter::successors(Some(error), |error| (*error).source());
 
-        writeln!(f, "{}", errors.next().unwrap().red())?;
+        writeln!(f, "{}", errors.next().unwrap().bright_red().bold())?;
 
         writeln!(f, "{}:", STRING_LOADER.str("Cause"))?;
 
