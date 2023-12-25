@@ -3,14 +3,9 @@ use stblib::colors::*;
 pub struct MessageFormatter;
 
 impl MessageFormatter {
-    pub fn default_user(
-        username: &str,
-        nickname: &str,
-        role_color: &str,
-        badge: &str,
-        message: &str,
-    ) -> String {
-        match nickname {
+    pub fn default_user(username: &str, nickname: &str, role_color: &str, badge: &str, message: &str) -> String {
+
+        let fmt = match nickname {
             _ if username == nickname => format!(
                 "{C_RESET}[{}] {}{}{}:{} {}{}",
                 stblib::utilities::current_time("%H:%M"),
@@ -32,7 +27,9 @@ impl MessageFormatter {
                 message,
                 constants::C_RESET
             ),
-        }
+        };
+
+        fmt
     }
 
     pub fn default_system(message: &str) -> String {
@@ -45,7 +42,7 @@ impl MessageFormatter {
 }
 
 pub fn badge_handler(badge: &str) -> String {
-    if badge.is_empty() {
+    if badge != "" {
         format!(" [{}]", badge)
     } else {
         "".to_string()

@@ -70,16 +70,21 @@ impl Config {
             .as_str()
             .unwrap()
             .to_string();
+
         let s_host = config["server"][server_id]["address"]
             .as_str()
             .unwrap()
             .to_string();
+
         let s_port = config["server"][server_id]["port"].as_u64().unwrap() as u16;
+
         let s_type = config["server"][server_id]["type"]
             .as_str()
             .unwrap()
             .to_string();
+
         let s_autologin = config["server"][server_id]["autologin"].as_bool().unwrap();
+
         let s_compatibility_mode = config["server"][server_id]["compatibility_mode"]
             .as_bool()
             .unwrap_or(false);
@@ -88,6 +93,7 @@ impl Config {
             .as_str()
             .unwrap_or("none")
             .to_string();
+
         let s_credentials_password = config["server"][server_id]["credentials"]["password"]
             .as_str()
             .unwrap_or("none")

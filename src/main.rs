@@ -1,5 +1,4 @@
 #![warn(clippy::all, clippy::nursery)]
-#![allow(clippy::missing_const_for_fn)]
 
 use std::env;
 use std::io::{self};
@@ -23,11 +22,9 @@ mod user_server_list;
 mod utilities;
 
 fn main() -> io::Result<()> {
-    let exe_path =
-        env::current_exe().expect("Error when determining the path to the executable file.");
-    let exe_dir = exe_path
-        .parent()
-        .expect("Error determining the directory of the executable file.");
+    let exe_path = env::current_exe().expect("Error when determining the path to the executable file.");
+    let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+
     let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
     let mut config_path = format!("{exe_dir_str}/config.yml");
@@ -56,15 +53,13 @@ fn main() -> io::Result<()> {
     let host = (server_config.address.clone(), server_config.port);
 
     let stream = TcpStream::connect(host).unwrap_or_else(|_| {
-        panic!(
-            "{BOLD}{RED}{}{C_RESET}",
-            string_loader.str("ErrNotReachable")
-        )
+        eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("ErrNotReachable"));
+        std::process::exit(1);
     });
 
     let send_stream = stream.try_clone().unwrap();
 
-    if config.networking.keep_alive {
+    if config.networking.keep_alive == true {
         let keep_alive_stream = stream.try_clone().unwrap();
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
