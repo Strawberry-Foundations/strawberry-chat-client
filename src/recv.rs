@@ -25,7 +25,7 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
             });
 
             if stream_reader == 0 {
-                println!("Server connection closed");
+                println!("{YELLOW}{}{C_RESET}", string_loader.str("CloseApplication"));
                 std::process::exit(0)
             }
 
