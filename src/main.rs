@@ -63,7 +63,6 @@ lazy_static! {
 }
 
 fn main() -> eyre::Result<()> {
-    better_panic::install();
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
