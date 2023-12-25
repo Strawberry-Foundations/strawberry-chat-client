@@ -3,13 +3,8 @@ use stblib::colors::*;
 pub struct MessageFormatter;
 
 impl MessageFormatter {
-    pub fn default_user(
-        username: &str,
-        nickname: &str,
-        role_color: &str,
-        badge: &str,
-        message: &str,
-    ) -> String {
+    pub fn default_user(username: &str, nickname: &str, role_color: &str, badge: &str, message: &str) -> String {
+
         let fmt = match nickname {
             _ if username == nickname => format!(
                 "{C_RESET}[{}] {}{}{}:{} {}{}",
