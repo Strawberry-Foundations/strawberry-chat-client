@@ -19,9 +19,10 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
         let mut wraps = 0;
 
         loop {
-            let stream_reader = stream
-                .read(&mut buffer)
-                .expect("Error while reading from stream");
+            let stream_reader = stream.read(&mut buffer).unwrap_or_else(|_| {
+                eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("ConnectionInterrupt"));
+                std::process::exit(1);
+            });
 
             if stream_reader == 0 {
                 println!("Server connection closed");
