@@ -70,6 +70,6 @@ pub fn recv(stream: TcpStream) -> eyre::Result<()> {
             ),
         }
     }
-    eprintln!("Server closed connection");
+    eprintln!("{}", STRING_LOADER.str("CloseApplication").as_str());
     exit(1);
 }
