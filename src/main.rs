@@ -17,6 +17,7 @@ mod constants;
 mod user_server_list;
 mod keep_alive;
 mod client_meta;
+mod utilities;
 
 fn main() -> io::Result<()> {
     let exe_path = env::current_exe().expect("Error when determining the path to the executable file.");
@@ -52,11 +53,15 @@ fn main() -> io::Result<()> {
     let stream = TcpStream::connect(host).expect(format!("{BOLD}{RED}{}{C_RESET}", string_loader.str("ErrNotReachable")).as_str());
 
     let send_stream = stream.try_clone().unwrap();
-    let keep_alive_stream = stream.try_clone().unwrap();
+
+    if config.networking.keep_alive == true {
+        let keep_alive_stream = stream.try_clone().unwrap();
+        thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
+    }
+
 
     let handler = thread::spawn(|| recv::recv(stream, config, server_config));
     thread::spawn(|| send::send(send_stream, send_config, send_server_config));
-    thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
 
     handler.join().unwrap();
 
