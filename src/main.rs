@@ -9,7 +9,7 @@ use lazy_static::lazy_static;
 
 use crate::config::{get_lang_cfg, Config, ServerValues};
 use stblib::strings::Strings;
-use stblib::colors::{RED, BOLD, C_RESET};
+use stblib::colors::{RED, BOLD, C_RESET, GREEN, YELLOW};
 
 mod recv;
 mod send;
@@ -70,8 +70,10 @@ fn main() -> eyre::Result<()> {
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
+
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.str("TryConnection"));
     let stream = TcpStream::connect(host).unwrap_or_else(|_| {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("Aborted"));
+        eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrNotReachable"));
         std::process::exit(1);
     });
 
@@ -91,6 +93,8 @@ fn main() -> eyre::Result<()> {
         eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("ErrorSendThread"));
         std::process::exit(1);
     }));
+
+    println!("{GREEN}{BOLD}{}{C_RESET}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()));
 
     recv_handler.join().unwrap();
     send_handler.join().unwrap();
