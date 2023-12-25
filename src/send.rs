@@ -6,19 +6,26 @@ use std::time::Duration;
 
 use eyre::{bail, Context};
 use rustyline::error::ReadlineError;
+use stblib::colors::{BOLD, GREEN};
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
+use crate::constants::C_RESET;
 use crate::utilities::delete_last_line;
 
 pub fn send(mut stream: TcpStream) -> eyre::Result<()> {
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
     if SERVER_CONFIG.autologin {
+        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.str("AutologinActive"));
+
         stream.write_all(SERVER_CONFIG.credentials.username.as_bytes()).context(STRING_LOADER.str("StreamWriteError"))?;
 
         stblib::utilities::ms_sleep(500);
 
         stream.write_all(SERVER_CONFIG.credentials.password.as_bytes()).context(STRING_LOADER.str("StreamWriteError"))?;
+    }
+    else {
+        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.str("AutologinNotActive"));
     }
 
     loop {
