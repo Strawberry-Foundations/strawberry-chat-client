@@ -30,13 +30,17 @@ pub struct Config {
     pub config_ver: u8,
     pub networking: Networking,
     pub autoserver: Autoserver,
+    #[serde(skip)]
+    pub path: String,
 }
 
+#[derive(Clone)]
 pub struct ServerValuesCredentials {
     pub username: String,
     pub password: String,
 }
 
+#[derive(Clone)]
 pub struct ServerValues {
     pub name: String,
     pub address: String,
@@ -51,14 +55,16 @@ pub fn config_open(config_path: &str) -> String {
     fs::read_to_string(config_path).expect("Could not read config")
 }
 
-pub fn get_config() -> String {
+pub fn get_lang_cfg() -> String {
     include_str!("./lang.yml").to_string()
 }
 
 impl Config {
-    pub fn new(config_path: &str) -> Self {
-        let config_yml = config_open(config_path);
-        from_str(&config_yml).unwrap()
+    pub fn new(config_path: String) -> Self {
+        let config_yml = config_open(&config_path);
+        let mut cfg: Self = from_str(&config_yml).unwrap();
+        cfg.path = config_path;
+        cfg
     }
 
     pub fn server_id(server_id: i8, config_path: &str) -> ServerValues {
@@ -83,7 +89,7 @@ impl Config {
             .unwrap()
             .to_string();
 
-        let s_autologin = config["server"][server_id]["autologin"].as_bool().unwrap();
+        let s_autologin = config["server"][server_id]["autologin"].as_bool().unwrap_or_default();
 
         let s_compatibility_mode = config["server"][server_id]["compatibility_mode"]
             .as_bool()

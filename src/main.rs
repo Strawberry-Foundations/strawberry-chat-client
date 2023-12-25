@@ -2,13 +2,13 @@
 #![allow(clippy::missing_const_for_fn)]
 
 use std::env;
-use std::io::{self};
 use std::net::TcpStream;
 use std::path::{Path, PathBuf};
 use std::thread;
+use eyre::Context;
+use lazy_static::lazy_static;
 
-use crate::config::{get_config, Config};
-use stblib::colors::*;
+use crate::config::{get_lang_cfg, Config, ServerValues};
 use stblib::strings::Strings;
 
 mod recv;
@@ -21,54 +21,54 @@ mod formatter;
 mod keep_alive;
 mod user_server_list;
 mod utilities;
+mod error_handler;
 
-fn main() -> io::Result<()> {
-    let exe_path = env::current_exe().expect("Error when determining the path to the executable file.");
-    let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+lazy_static! {
+    pub static ref CONFIG: Config = {
+        let exe_path = env::current_exe().expect("Failed to get current exe");
+        let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
 
-    let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
+        let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
-    let mut config_path = format!("{exe_dir_str}/config.yml");
+        let mut config_path = format!("{exe_dir_str}/config.yml");
 
-    if !Path::new(&config_path).exists() {
-        config_path = String::from("./config.yml")
-    }
+        if !Path::new(&config_path).exists() {
+            config_path = String::from("./config.yml")
+        }
 
-    let config = Config::new(&config_path);
-    let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
-
-    let server_id = match config.autoserver.enabled {
-        true => config.autoserver.server_id,
-        false => user_server_list::user_server_list(&string_loader, &config, &config_path),
+        Config::new(config_path)
     };
+    pub static ref SERVER_CONFIG: ServerValues = {
+        let server_id = match CONFIG.autoserver.enabled {
+            true => CONFIG.autoserver.server_id,
+            false => user_server_list::user_server_list(&CONFIG.path),
+        };
 
-    if server_id == -1 {
-        std::process::exit(0);
-    }
+        if server_id == -1 {
+            std::process::exit(0);
+        }
 
-    let server_config = Config::server_id(server_id, &config_path);
+        Config::server_id(server_id, &CONFIG.path)
+    };
+    pub static ref STRING_LOADER: Strings = Strings::new(CONFIG.language.as_str(), &get_lang_cfg());
+}
 
-    let send_config = Config::new(&config_path);
-    let send_server_config = Config::server_id(server_id, &config_path);
+fn main() -> eyre::Result<()> {
+    error_handler::install().unwrap();
 
-    let host = (server_config.address.clone(), server_config.port);
+    let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
+    let stream = TcpStream::connect(host).context(STRING_LOADER.str("ErrNotReachable"))?;
+    let send_stream = stream.try_clone()?;
 
-    let stream = TcpStream::connect(host).unwrap_or_else(|_| {
-        eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("ErrNotReachable"));
-        std::process::exit(1);
-    });
-
-    let send_stream = stream.try_clone().unwrap();
-
-    if config.networking.keep_alive {
+    if CONFIG.networking.keep_alive {
         let keep_alive_stream = stream.try_clone().unwrap();
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
 
-    let handler = thread::spawn(|| recv::recv(stream, config, server_config));
-    thread::spawn(|| send::send(send_stream, send_config, send_server_config));
-
-    handler.join().unwrap();
+    let recv_h = thread::spawn(|| recv::recv(stream).expect("Error in receiver thread"));
+    let send_h = thread::spawn(|| send::send(send_stream).expect("Error in sender thread"));
+    recv_h.join().unwrap();
+    send_h.join().unwrap();
 
     Ok(())
 }

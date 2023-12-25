@@ -34,6 +34,7 @@ de_DE:
   UnimplementedPacket: "Ein nicht implementiertes Paket wurde empfangen!"
   StreamWriteError: "Fehler beim senden von Daten zum Server"
   ConfigParseError: "Fehler beim einlesen der Konfigurationsdatei"
+  Cause: "Verursacht von"
 
 # Language Strings for en_US (English)
 en_US:
@@ -71,3 +72,4 @@ en_US:
   UnimplementedPacket: "An unimplemented package has been received!"
   StreamWriteError: "Error while sending data to the server"
   ConfigParseError: "Error while reading the configuration file"
+  Cause: "Caused by"

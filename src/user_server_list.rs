@@ -3,20 +3,18 @@ use std::ops::Add;
 use serde_yaml::{from_str, Value};
 
 use stblib::colors::*;
-use stblib::strings::Strings;
 
-use crate::config::{config_open, Config};
-use crate::constants;
+use crate::config::{config_open};
+use crate::{constants, STRING_LOADER};
 
-pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: &str) -> i8 {
+pub fn user_server_list(config_path: &str) -> i8 {
     println!("{BOLD}--- {CYAN}Strawberry Chat ({}){C_RESET} ---", constants::VERSION);
-    println!("{GREEN}{}{C_RESET}\n", string_loader.str("Welcome"));
-    println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", string_loader.str("YourChatServers"));
+    println!("{GREEN}{}{C_RESET}\n", STRING_LOADER.str("Welcome"));
+    println!("{BOLD}{CYAN}{UNDERLINE}{}{C_RESET}", STRING_LOADER.str("YourChatServers"));
 
     let config_yml = config_open(config_path);
     let data: Value = from_str(&config_yml).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
-
     for i in 0..server_data_length {
         println!(
             "{BOLD}{BLUE}[{}]{C_RESET}{BOLD} {}{C_RESET}",
@@ -25,12 +23,12 @@ pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: 
         );
     }
 
-    println!("{BOLD}{BLUE}[{}]{C_RESET}{BOLD} {}{C_RESET}\n", server_data_length + 1, string_loader.str("Custom"));
+    println!("{BOLD}{BLUE}[{}]{C_RESET}{BOLD} {}{C_RESET}\n", server_data_length + 1, STRING_LOADER.str("Custom"));
 
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
-    let prompt = string_loader.str("SelChatServer");
-    let aborted = format!("{BOLD}{YELLOW}{}{C_RESET}", string_loader.str("Aborted"));
+    let prompt = STRING_LOADER.str("SelChatServer");
+    let aborted = format!("{BOLD}{YELLOW}{}{C_RESET}", STRING_LOADER.str("Aborted"));
 
     let server_selection: u8 = line_reader.readline(&prompt).map_or_else(
         |_| {
@@ -40,7 +38,7 @@ pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: 
         |line| {
             line.trim().parse().map_or_else(
                 |_| {
-                    eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("InvalidInput"));
+                    eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
                     std::process::exit(1);
                 },
                 |value| value,
@@ -58,7 +56,7 @@ pub fn user_server_list(string_loader: &Strings, _config: &Config, config_path: 
             -1
         }
         Ordering::Greater => {
-            eprintln!("{BOLD}{RED}{}{C_RESET}", string_loader.str("InvalidServerSelection"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("InvalidServerSelection"));
             std::process::exit(1);
         }
         Ordering::Less => {
