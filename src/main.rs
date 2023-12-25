@@ -10,6 +10,8 @@ use lazy_static::lazy_static;
 
 use crate::config::{get_lang_cfg, Config, ServerValues};
 use stblib::strings::Strings;
+use stblib::colors::{RED, BOLD};
+use crate::constants::C_RESET;
 
 mod recv;
 mod send;
@@ -38,10 +40,16 @@ lazy_static! {
 
         Config::new(config_path)
     };
+
+    pub static ref STRING_LOADER: Strings = Strings::new(CONFIG.language.as_str(), &get_lang_cfg());
+
     pub static ref SERVER_CONFIG: ServerValues = {
         let server_id = match CONFIG.autoserver.enabled {
             true => CONFIG.autoserver.server_id,
-            false => user_server_list::user_server_list(&CONFIG.path).unwrap(),
+            false => user_server_list::user_server_list(&CONFIG.path).unwrap_or_else(|_| {
+                eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.str("Aborted"));
+                std::process::exit(1);
+            }),
         };
 
         if server_id == -1 {
@@ -50,7 +58,7 @@ lazy_static! {
 
         Config::server_id(server_id, &CONFIG.path)
     };
-    pub static ref STRING_LOADER: Strings = Strings::new(CONFIG.language.as_str(), &get_lang_cfg());
+
 }
 
 fn main() -> eyre::Result<()> {
