@@ -5,6 +5,7 @@ use stblib::colors::*;
 use stblib::strings::Strings;
 
 use crate::config::{Config, get_config, ServerValues};
+use crate::utilities::delete_last_line;
 
 pub(crate) fn send(mut stream: TcpStream, config: Config, server_config: ServerValues) -> ! {
     let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
@@ -33,5 +34,7 @@ pub(crate) fn send(mut stream: TcpStream, config: Config, server_config: ServerV
 
         line_reader.add_history_entry(&input).unwrap();
         stream.write(input.as_bytes()).expect("Error writing stream");
+
+        delete_last_line();
     }
 }
