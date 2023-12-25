@@ -4,12 +4,14 @@ use owo_colors::OwoColorize;
 use serde_json::Value;
 use stblib::colors::{YELLOW, BOLD};
 use stblib::strings::Strings;
+use crate::client_meta::ClientMeta;
 
 use crate::config::{Config, get_config, ServerValues};
 use crate::formatter::MessageFormatter;
 
 pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues) {
     let string_loader = Strings::new(config.language.as_str(), get_config().as_str());
+    let mut client_meta = ClientMeta::new();
 
     loop {
         let mut buffer = [0u8; 1];
@@ -90,6 +92,11 @@ pub fn recv(mut stream: TcpStream, config: Config, _server_config: ServerValues)
 
                 println!("{}", fmt);
             }
+
+            Some("stbchat_backend") => {
+                client_meta.username = msg["user_meta"]["username"].as_str().unwrap().trim().to_string();
+            }
+
             None => unreachable!(),
             m => println!(
                 "{} {YELLOW}{BOLD}{} ({})",
