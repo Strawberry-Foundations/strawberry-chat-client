@@ -10,6 +10,7 @@ use lazy_static::lazy_static;
 use owo_colors::OwoColorize;
 use stblib::colors::*;
 use stblib::strings::Strings;
+use std::sync::mpsc::channel;
 
 use crate::config::{Config, get_lang_cfg, ServerValues};
 
@@ -63,12 +64,13 @@ lazy_static! {
 }
 
 fn main() -> eyre::Result<()> {
+    let (tx, rx) = channel::<()>();
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
     println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
-    let stream = TcpStream::connect(host).unwrap_or_else(|_| {
+    let mut stream = TcpStream::connect(host).unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
@@ -80,12 +82,12 @@ fn main() -> eyre::Result<()> {
         thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
     }
 
-    let recv_handler = thread::spawn(|| recv::recv(stream).unwrap_or_else(|_| {
+    let recv_handler = thread::spawn(move || recv::recv(&mut stream, tx).unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrorRecvThread").red().bold());
         std::process::exit(1);
     }));
 
-    let send_handler = thread::spawn(|| send::send(send_stream).unwrap_or_else(|_| {
+    let send_handler = thread::spawn(|| send::send(send_stream, rx).unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrorSendThread").red().bold());
         std::process::exit(1);
     }));
