@@ -3,14 +3,15 @@ use std::net::TcpStream;
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
+use std::sync::mpsc::Receiver;
 
 use eyre::{bail, Context};
 use rustyline::error::ReadlineError;
 use stblib::colors::*;
-use std::sync::mpsc::Receiver;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
 use crate::utilities::delete_last_line;
+
 
 pub fn send(mut stream: TcpStream, rx: Receiver<()>) -> eyre::Result<()> {
     let _ = rx.recv().unwrap();
