@@ -6,6 +6,7 @@ use std::thread;
 
 use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
+use crate::cli::error_handler;
 use crate::communication::keep_alive;
 
 use crate::global::{CONFIG, SERVER_CONFIG, STRING_LOADER};
@@ -17,13 +18,19 @@ mod communication {
     pub mod keep_alive;
 }
 
-mod client_meta;
+mod cli {
+    pub mod user_server_list;
+    pub mod formatter;
+    pub mod error_handler;
+}
+
+mod object {
+    pub mod client_meta;
+}
+
 mod config;
 mod constants;
-mod formatter;
-mod user_server_list;
 mod utilities;
-mod error_handler;
 mod global;
 
 fn main() -> eyre::Result<()> {
