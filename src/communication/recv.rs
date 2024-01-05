@@ -1,21 +1,17 @@
-use std::io::{Write};
 use std::net::TcpStream;
-use std::process::exit;
-use std::thread::sleep;
-use std::time::Duration;
 use std::sync::mpsc::Sender;
 
 use serde_json::{Deserializer, Value};
 
-use eyre::bail;
 use owo_colors::OwoColorize;
-use rustyline::error::ReadlineError;
 
 use stblib::colors::*;
 
 use crate::{CONFIG, STRING_LOADER};
 use crate::cli::formatter::MessageFormatter;
+use crate::communication::login::login;
 use crate::object::client_meta::ClientMeta;
+use crate::object::login_packet::ServerLoginCredentialsPacketClient;
 
 
 pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
@@ -74,31 +70,11 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
             Some("stbchat_event") => {
                 match msg["event_type"].as_str() {
                     Some("event.login") => {
-                        let mut line_reader = rustyline::DefaultEditor::new().unwrap();
+                        let (username, password) = login(stream);
 
-                        let username: String = match line_reader.readline("Username: ") {
-                            Ok(i) => i,
-                            Err(ReadlineError::Interrupted) => {
-                                stream.write_all(b"exit")?;
-                                sleep(Duration::from_millis(300));
-                                exit(0);
-                            }
-                            Err(ReadlineError::Eof) => exit(0),
-                            Err(e) => bail!(e),
-                        };
+                        let mut login_packet = ServerLoginCredentialsPacketClient::new(username, password);
+                        login_packet.write(stream);
 
-                        let _password: String = match line_reader.readline("Password: ") {
-                            Ok(i) => i,
-                            Err(ReadlineError::Interrupted) => {
-                                stream.write_all(b"exit")?;
-                                sleep(Duration::from_millis(300));
-                                exit(0);
-                            }
-                            Err(ReadlineError::Eof) => exit(0),
-                            Err(e) => bail!(e),
-                        };
-
-                        stream.write_all(username.as_bytes()).unwrap();
                         tx.send(()).unwrap();
                     },
                     None => unreachable!(),
