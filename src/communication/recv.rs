@@ -77,8 +77,7 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
 
                         tx.send(()).unwrap();
                     },
-                    None => unreachable!(),
-                    Some(&_) => unreachable!()
+                    _ => unreachable!()
                 }
             }
 
