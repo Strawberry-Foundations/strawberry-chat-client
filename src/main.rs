@@ -16,6 +16,7 @@ mod communication {
     pub mod legacy_recv;
     pub mod send;
     pub mod keep_alive;
+    pub mod login;
 }
 
 mod cli {
@@ -26,12 +27,14 @@ mod cli {
 
 mod object {
     pub mod client_meta;
+    pub mod login_packet;
 }
 
 mod config;
 mod constants;
 mod utilities;
 mod global;
+mod types;
 
 fn main() -> eyre::Result<()> {
     let (tx, rx) = channel::<()>();
