@@ -7,7 +7,7 @@ use owo_colors::OwoColorize;
 use stblib::strings::Strings;
 
 use crate::config::{Config, get_lang_cfg, ServerValues};
-use crate::user_server_list;
+use crate::cli::user_server_list;
 
 lazy_static! {
     pub static ref CONFIG: Config = {
