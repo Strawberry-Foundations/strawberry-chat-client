@@ -8,7 +8,6 @@ use std::thread;
 
 use lazy_static::lazy_static;
 use owo_colors::OwoColorize;
-use stblib::colors::*;
 use stblib::strings::Strings;
 use std::sync::mpsc::channel;
 
@@ -92,7 +91,7 @@ fn main() -> eyre::Result<()> {
         std::process::exit(1);
     }));
 
-    println!("{BOLD}{}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
+    println!("{}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
 
     recv_handler.join().unwrap();
     send_handler.join().unwrap();

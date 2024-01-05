@@ -7,34 +7,21 @@ impl MessageFormatter {
 
         match nickname {
             _ if username == nickname => format!(
-                "{C_RESET}[{}] {}{}{}:{} {}{}",
+                "{C_RESET}[{}] {role_color}{username}{badge}:{C_RESET} {message}{C_RESET}",
                 stblib::utilities::current_time("%H:%M"),
-                role_color,
-                username,
-                badge,
-                constants::C_RESET,
-                message,
-                constants::C_RESET
             ),
             _ => format!(
-                "{C_RESET}[{}] {}{} (@{}){}:{} {}{}",
+                "{C_RESET}[{}] {role_color}{nickname} (@{}){badge}:{C_RESET} {message}{C_RESET}",
                 stblib::utilities::current_time("%H:%M"),
-                role_color,
-                nickname,
                 username.to_lowercase(),
-                badge,
-                constants::C_RESET,
-                message,
-                constants::C_RESET
             ),
         }
     }
 
     pub fn default_system(message: &str) -> String {
         format!(
-            "{C_RESET}[{}] {}",
+            "{C_RESET}[{}] {message}",
             stblib::utilities::current_time("%H:%M"),
-            message
         )
     }
 }
