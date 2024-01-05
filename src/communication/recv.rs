@@ -3,17 +3,20 @@ use std::net::TcpStream;
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
-use eyre::bail;
-
-use owo_colors::OwoColorize;
-use rustyline::error::ReadlineError;
-use serde_json::{Deserializer, Value};
-use stblib::colors::*;
 use std::sync::mpsc::Sender;
 
+use serde_json::{Deserializer, Value};
+
+use eyre::bail;
+use owo_colors::OwoColorize;
+use rustyline::error::ReadlineError;
+
+use stblib::colors::*;
+
 use crate::{CONFIG, STRING_LOADER};
-use crate::client_meta::ClientMeta;
-use crate::formatter::MessageFormatter;
+use crate::cli::formatter::MessageFormatter;
+use crate::object::client_meta::ClientMeta;
+
 
 pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
     let mut client_meta = ClientMeta::new();
@@ -49,7 +52,7 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
                         msg["username"].as_str().unwrap(),
                         msg["nickname"].as_str().unwrap(),
                         msg["role_color"].as_str().unwrap(),
-                        crate::formatter::badge_handler(msg["badge"].as_str().unwrap()).as_str(),
+                        crate::cli::formatter::badge_handler(msg["badge"].as_str().unwrap()).as_str(),
                         msg["message"]["content"].as_str().unwrap(),
                     ),
                     _ => MessageFormatter::default_user(
