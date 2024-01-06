@@ -3,16 +3,35 @@ use std::net::TcpStream;
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
+use owo_colors::OwoColorize;
 
 use rustyline::error::ReadlineError;
+use stblib::colors::{BOLD, C_RESET, GREEN, RED};
+use crate::global::STRING_LOADER;
 
-pub fn login(mut stream: &TcpStream) -> (String, String) {
-    let mut line_reader = rustyline::DefaultEditor::new().unwrap();
+pub fn login() -> (String, String) {
+    // let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
-    let username: String = match line_reader.readline("Username: ") {
+    let stdin = std::io::stdin();
+    let stdout = std::io::stdout();
+
+    let username: String = rprompt::prompt_reply_from_bufread(
+        &mut stdin.lock(), &mut stdout.lock(), format!("{GREEN}{BOLD}Username: {C_RESET}")
+    ).unwrap().parse().unwrap_or_else(|_| {
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        exit(1);
+    });
+
+    let password: String = rprompt::prompt_reply_from_bufread(
+        &mut stdin.lock(), &mut stdout.lock(), format!("{GREEN}{BOLD}Password: {C_RESET}")
+    ).unwrap().parse().unwrap_or_else(|_| {
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        exit(1);
+    });
+
+    /* let username: String = match line_reader.readline(format!("{}", "Username: ".green()).as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
-            stream.write_all(b"exit").unwrap_or_else(|_| eprintln!("Could not write to stream"));
             sleep(Duration::from_millis(300));
             exit(0);
         }
@@ -23,13 +42,12 @@ pub fn login(mut stream: &TcpStream) -> (String, String) {
     let password: String = match line_reader.readline("Password: ") {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
-            stream.write_all(b"exit").unwrap_or_else(|_| eprintln!("Could not write to stream"));
             sleep(Duration::from_millis(300));
             exit(0);
         }
         Err(ReadlineError::Eof) => exit(0),
         Err(_) => exit(1),
-    };
+    }; */
 
     (username, password)
 }
