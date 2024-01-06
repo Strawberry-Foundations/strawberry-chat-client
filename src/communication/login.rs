@@ -1,12 +1,7 @@
-use std::io::Write;
-use std::net::TcpStream;
 use std::process::exit;
-use std::thread::sleep;
-use std::time::Duration;
-use owo_colors::OwoColorize;
 
-use rustyline::error::ReadlineError;
 use stblib::colors::{BOLD, C_RESET, GREEN, RED};
+
 use crate::global::STRING_LOADER;
 
 pub fn login() -> (String, String) {
