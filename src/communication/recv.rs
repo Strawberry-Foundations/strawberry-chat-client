@@ -1,4 +1,5 @@
 use std::net::TcpStream;
+use std::process::exit;
 use std::sync::mpsc::Sender;
 
 use serde_json::{Deserializer, Value};
@@ -70,7 +71,7 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
             Some("stbchat_event") => {
                 match msg["event_type"].as_str() {
                     Some("event.login") => {
-                        let (username, password) = login(stream);
+                        let (username, password) = login();
 
                         let mut login_packet = ServerLoginCredentialsPacketClient::new(username, password);
                         login_packet.write(stream);
