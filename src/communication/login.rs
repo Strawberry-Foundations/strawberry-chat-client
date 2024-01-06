@@ -1,13 +1,13 @@
 use std::process::exit;
+use std::thread::sleep;
+use std::time::Duration;
+use rustyline::error::ReadlineError;
 
-use stblib::colors::{BOLD, C_RESET, GREEN, RED};
-
-use crate::global::STRING_LOADER;
 
 pub fn login() -> (String, String) {
-    // let mut line_reader = rustyline::DefaultEditor::new().unwrap();
+    let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
-    let stdin = std::io::stdin();
+    /* let stdin = std::io::stdin();
     let stdout = std::io::stdout();
 
     let username: String = rprompt::prompt_reply_from_bufread(
@@ -22,9 +22,10 @@ pub fn login() -> (String, String) {
     ).unwrap().parse().unwrap_or_else(|_| {
         eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
         exit(1);
-    });
+    }); */
+    // format!("{}", "Username: ".green()
 
-    /* let username: String = match line_reader.readline(format!("{}", "Username: ".green()).as_str()) {
+    let username: String = match line_reader.readline("Username: ") {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
@@ -42,7 +43,7 @@ pub fn login() -> (String, String) {
         }
         Err(ReadlineError::Eof) => exit(0),
         Err(_) => exit(1),
-    }; */
+    };
 
     (username, password)
 }
