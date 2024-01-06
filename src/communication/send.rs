@@ -14,7 +14,10 @@ use crate::utilities::delete_last_line;
 
 
 pub fn send(mut stream: TcpStream, rx: Receiver<()>) -> eyre::Result<()> {
-    let _ = rx.recv().unwrap();
+    if !SERVER_CONFIG.compatibility_mode {
+        let _ = rx.recv().unwrap();
+    }
+
 
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
