@@ -2,8 +2,11 @@ use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 use eyre::{bail, Context};
 use owo_colors::OwoColorize;
-use rustyline::error::ReadlineError;
+
+// use rustyline::error::ReadlineError;
+
 use serde_yaml::{from_str, Value};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
 use crate::config::config_open;
 use crate::{constants, STRING_LOADER};
@@ -26,16 +29,23 @@ pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
 
     println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.str("Custom").bold());
 
-    let mut line_reader = rustyline::DefaultEditor::new().unwrap();
+    // let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
-    let prompt = STRING_LOADER.str("SelChatServer");
+    let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("SelChatServer"));
     let aborted = STRING_LOADER.str("Aborted");
 
-    let server_selection: u8 = match line_reader.readline(&prompt) {
+    /* let server_selection: u8 = match line_reader.readline(&prompt) {
         Ok(i) => i.trim().parse().context(STRING_LOADER.str("InvalidInput"))?,
         Err(ReadlineError::Interrupted) | Err(ReadlineError::Eof) => bail!(aborted),
         Err(e) => bail!(e),
-    };
+    }; */
+
+    let stdin = std::io::stdin();
+    let stdout = std::io::stdout();
+    let server_selection: u8 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt).unwrap().parse().unwrap_or_else(|_| {
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        std::process::exit(1);
+    });
 
     let server_data_length = server_data_length as u8;
 
