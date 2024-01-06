@@ -1,5 +1,4 @@
 use std::net::TcpStream;
-use std::process::exit;
 use std::sync::mpsc::Sender;
 
 use serde_json::{Deserializer, Value};
