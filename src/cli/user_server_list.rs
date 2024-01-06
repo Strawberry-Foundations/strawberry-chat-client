@@ -1,6 +1,5 @@
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
-use eyre::{bail, Context};
 use owo_colors::OwoColorize;
 
 // use rustyline::error::ReadlineError;
@@ -32,7 +31,7 @@ pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
     // let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
     let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("SelChatServer"));
-    let aborted = STRING_LOADER.str("Aborted");
+    // let aborted = STRING_LOADER.str("Aborted");
 
     /* let server_selection: u8 = match line_reader.readline(&prompt) {
         Ok(i) => i.trim().parse().context(STRING_LOADER.str("InvalidInput"))?,
