@@ -19,9 +19,12 @@ pub fn send(mut stream: TcpStream, rx: Receiver<()>) -> eyre::Result<()> {
     } else {
         println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.str("AutologinNotActive"));
     }
-    
+
     if !SERVER_CONFIG.compatibility_mode {
-        let _ = rx.recv().unwrap();
+        let _ = rx.recv().unwrap_or_else(|_| {
+            println!("{BOLD}{YELLOW}{}{C_RESET}", STRING_LOADER.str("UnsuccessfulConnection"));
+            exit(1);
+        });
     }
 
     let mut line_reader = rustyline::DefaultEditor::new().unwrap();
