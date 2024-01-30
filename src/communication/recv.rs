@@ -10,6 +10,7 @@ use stblib::colors::*;
 use crate::{CONFIG, STRING_LOADER};
 use crate::cli::formatter::MessageFormatter;
 use crate::communication::login::login;
+use crate::global::SERVER_CONFIG;
 use crate::object::client_meta::ClientMeta;
 use crate::object::login_packet::ServerLoginCredentialsPacketClient;
 
@@ -70,7 +71,11 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
             Some("stbchat_event") => {
                 match msg["event_type"].as_str() {
                     Some("event.login") => {
-                        let (username, password) = login();
+                        let (username, password) = if SERVER_CONFIG.autologin {
+                            (SERVER_CONFIG.credentials.username.clone(), SERVER_CONFIG.credentials.password.clone())
+                        } else {
+                            login()
+                        };
 
                         let mut login_packet = ServerLoginCredentialsPacketClient::new(username, password);
                         login_packet.write(stream);
