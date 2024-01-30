@@ -43,6 +43,7 @@ fn main() -> eyre::Result<()> {
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
     println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
+
     let mut stream = TcpStream::connect(host).unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
