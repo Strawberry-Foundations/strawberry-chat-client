@@ -95,8 +95,8 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
             ),
         }
     }
-    println!("{}", STRING_LOADER.str("CloseApplication").yellow());
-    println!("{}", STRING_LOADER.str("PressCtrlDToExit"));
+    println!("{}", STRING_LOADER.str("CloseApplication").yellow().bold());
+    println!("{}", STRING_LOADER.str("PressCtrlDToExit").bold());
 
     Ok(())
 }
