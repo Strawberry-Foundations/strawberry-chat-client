@@ -80,7 +80,7 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
 
         w_server.write(input.as_bytes())
             .await
-            .expect(&STRING_LOADER.str("StreamWriteError"));
+            .unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
 
         delete_last_line();
     }
