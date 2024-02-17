@@ -9,6 +9,7 @@ use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 
 use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
+use std::time::Duration;
 
 use crate::cli::error_handler;
 use crate::global::{SERVER_CONFIG, STRING_LOADER};
@@ -54,6 +55,14 @@ async fn main() -> eyre::Result<()> {
         eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
+
+    let sock_ref = socket2::SockRef::from(&stream);
+
+    let mut ka = socket2::TcpKeepalive::new();
+    ka = ka.with_time(Duration::from_secs(20));
+    ka = ka.with_interval(Duration::from_secs(20));
+
+    sock_ref.set_tcp_keepalive(&ka)?;
 
     let (r_server, w_server) = split(stream);
 
