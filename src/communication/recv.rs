@@ -1,4 +1,5 @@
 use std::sync::mpsc::Sender;
+use owo_colors::OwoColorize;
 
 use tokio::net::TcpStream;
 use tokio::io::ReadHalf;
@@ -60,6 +61,10 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             )
         }
     }
+
+    println!("{}", STRING_LOADER.str("CloseApplication").yellow().bold());
+    println!("{}", STRING_LOADER.str("PressCtrlDToExit").bold());
+
     /*
     let json_iter = Deserializer::from_reader(iter_stream).into_iter::<Value>();
 
