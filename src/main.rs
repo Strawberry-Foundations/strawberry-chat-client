@@ -11,7 +11,7 @@ use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
 
 use crate::cli::error_handler;
-use crate::global::{CONFIG, SERVER_CONFIG, STRING_LOADER};
+use crate::global::{SERVER_CONFIG, STRING_LOADER};
 
 mod communication {
     pub mod recv;
@@ -23,13 +23,16 @@ mod communication {
 
 mod cli {
     pub mod user_server_list;
-    pub mod formatter;
     pub mod error_handler;
 }
 
 mod object {
     pub mod client_meta;
     pub mod login_packet;
+}
+
+mod fmt {
+    pub mod formatter;
 }
 
 mod config;
