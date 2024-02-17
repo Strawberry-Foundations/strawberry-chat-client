@@ -34,13 +34,13 @@ pub struct Config {
     pub path: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct ServerValuesCredentials {
     pub username: String,
     pub password: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct ServerValues {
     pub name: String,
     pub address: String,
