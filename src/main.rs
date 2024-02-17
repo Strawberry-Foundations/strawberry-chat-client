@@ -11,8 +11,6 @@ use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
 
 use crate::cli::error_handler;
-
-
 use crate::global::{CONFIG, SERVER_CONFIG, STRING_LOADER};
 
 mod communication {
@@ -38,6 +36,7 @@ mod config;
 mod constants;
 mod utilities;
 mod global;
+
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
