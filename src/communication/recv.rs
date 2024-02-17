@@ -10,14 +10,14 @@ use stblib::stbm::stbchat::packet::ClientsidePacket;
 
 use crate::CONFIG;
 use crate::cli::formatter::MessageFormatter;
-use crate::communication::login::login;
-use crate::global::SERVER_CONFIG;
+
+
 use crate::object::client_meta::ClientMeta;
-use crate::object::login_packet::ServerLoginCredentialsPacketClient;
+
 
 
 pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: Sender<String>) {
-    let mut client_meta = ClientMeta::new();
+    let _client_meta = ClientMeta::new();
 
     loop {
         match r_server.read::<ClientsidePacket>().await {
