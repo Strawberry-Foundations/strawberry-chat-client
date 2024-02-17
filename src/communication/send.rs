@@ -10,7 +10,8 @@ use rustyline::error::ReadlineError;
 
 use stblib::colors::*;
 use stblib::stbm::stbchat::net::OutgoingPacketStream;
-use stblib::stbm::stbchat::packet::ServerPacket;
+use stblib::stbm::stbchat::object::Message;
+use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
 use crate::communication::login::login;
@@ -78,7 +79,12 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
 
         line_reader.add_history_entry(&input).unwrap();
 
-        w_server.write(input.as_bytes())
+        w_server.write(
+            ServerPacket::Message {
+                message: Message {
+                    content: input
+                }
+            })
             .await
             .unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
 
