@@ -38,7 +38,6 @@ mod config;
 mod constants;
 mod utilities;
 mod global;
-mod types;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
