@@ -10,7 +10,7 @@ use rustyline::error::ReadlineError;
 
 use stblib::colors::*;
 use stblib::stbm::stbchat::net::OutgoingPacketStream;
-use stblib::stbm::stbchat::packet::{ServersidePacket};
+use stblib::stbm::stbchat::packet::ServerPacket;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
 use crate::communication::login::login;
@@ -38,10 +38,10 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
                 login()
             };
 
-            w_server.write(ServersidePacket::Login {
+            w_server.write(ServerPacket::Login {
                 username,
                 password
-            }).await.expect(&*STRING_LOADER.str("StreamWriteError"));
+            }).await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
         }
     }
 
@@ -51,23 +51,21 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
         w_server.write(
             SERVER_CONFIG.credentials.username.as_bytes())
             .await
-            .expect(&*STRING_LOADER.str("StreamWriteError")
-            );
+            .unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
 
         stblib::utilities::ms_sleep(500);
 
         w_server.write(
             SERVER_CONFIG.credentials.password.as_bytes())
             .await
-            .expect(&*STRING_LOADER.str("StreamWriteError")
-            );
+            .unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
     }
 
     loop {
         let input: String = match line_reader.readline("") {
             Ok(i) => i,
             Err(ReadlineError::Interrupted) => {
-                w_server.write(b"/exit").await.expect(&*STRING_LOADER.str("StreamWriteError"));
+                w_server.write(b"/exit").await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
                 sleep(Duration::from_millis(300)).await;
                 exit(0);
             }
@@ -82,7 +80,7 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
 
         w_server.write(input.as_bytes())
             .await
-            .expect(&*STRING_LOADER.str("StreamWriteError"));
+            .expect(&STRING_LOADER.str("StreamWriteError"));
 
         delete_last_line();
     }
