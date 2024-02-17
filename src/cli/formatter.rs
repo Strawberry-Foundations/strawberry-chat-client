@@ -2,7 +2,7 @@ use stblib::colors::*;
 pub struct MessageFormatter;
 
 impl MessageFormatter {
-    pub fn default_user(username: &str, nickname: &str, role_color: &str, badge: &str, message: &str) -> String {
+    pub fn default_user(username: String, nickname: String, role_color: String, badge: String, message: String) -> String {
 
         match nickname {
             _ if username == nickname => format!(
@@ -17,7 +17,7 @@ impl MessageFormatter {
         }
     }
 
-    pub fn default_system(message: &str) -> String {
+    pub fn default_system(message: String) -> String {
         format!(
             "{C_RESET}[{}] {message}",
             stblib::utilities::current_time("%H:%M"),
@@ -25,7 +25,7 @@ impl MessageFormatter {
     }
 }
 
-pub fn badge_handler(badge: &str) -> String {
+pub fn badge_handler(badge: String) -> String {
     if !badge.is_empty() {
         format!(" [{}]", badge)
     } else {
