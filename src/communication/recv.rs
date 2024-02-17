@@ -8,45 +8,29 @@ use stblib::stbm::stbchat::net::IncomingPacketStream;
 use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::colors::*;
 
-use crate::CONFIG;
-use crate::cli::formatter::MessageFormatter;
+use crate::fmt::formatter::MessageFormatter;
 use crate::global::STRING_LOADER;
 use crate::object::client_meta::ClientMeta;
 
 
 pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: Sender<String>) {
     let _client_meta = ClientMeta::new();
+    let formatter = MessageFormatter::new();
 
     loop {
         match r_server.read::<ClientPacket>().await {
-            Ok(ClientPacket::SystemMessage { message }) => {
-                let fmt = match CONFIG.message_format.as_str() {
-                    "default" => MessageFormatter::default_system(message.content),
-                    _ => MessageFormatter::default_system(message.content),
-                };
-
-                println!("{}", fmt);
+            Ok(ClientPacket::SystemMessage { message}) => {
+                println!("{}", formatter.system(message.content));
             },
 
             Ok(ClientPacket::UserMessage { author, message }) => {
-                let fmt = match CONFIG.message_format.as_str() {
-                    "default" => MessageFormatter::default_user(
-                        author.username,
-                        author.nickname,
-                        author.role_color,
-                        crate::cli::formatter::badge_handler(author.badge),
-                        message.content,
-                    ),
-                    _ => MessageFormatter::default_user(
-                        author.username,
-                        author.nickname,
-                        author.role_color,
-                        crate::cli::formatter::badge_handler(author.badge),
-                        message.content,
-                    ),
-                };
-
-                println!("{}", fmt);
+                println!("{}", formatter.user(
+                    author.username,
+                    author.nickname,
+                    author.role_color,
+                    crate::fmt::formatter::badge_handler(author.badge),
+                    message.content,
+                ));
             },
 
             Ok(ClientPacket::Event { event_type}) => {
