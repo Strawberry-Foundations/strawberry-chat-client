@@ -2,12 +2,11 @@ use std::env;
 use std::path::{Path, PathBuf};
 
 use lazy_static::lazy_static;
-use owo_colors::OwoColorize;
 
 use stblib::strings::Strings;
 
 use crate::config::{Config, get_lang_cfg, ServerValues};
-use crate::cli::user_server_list;
+use crate::cli::user_server_list::user_server_list;
 
 lazy_static! {
     pub static ref CONFIG: Config = {
@@ -29,19 +28,9 @@ lazy_static! {
     pub static ref STRING_LOADER: Strings = Strings::new(CONFIG.language.as_str(), &get_lang_cfg());
 
     pub static ref SERVER_CONFIG: ServerValues = {
-        let server_id = match CONFIG.autoserver.enabled {
-            true => CONFIG.autoserver.server_id,
-            false => user_server_list::user_server_list(&CONFIG.path).unwrap_or_else(|_| {
-                eprintln!("{}", STRING_LOADER.str("Aborted").red().bold());
-                std::process::exit(1);
-            }),
-        };
-
-        if server_id == -1 {
-            std::process::exit(0);
+        match CONFIG.autoserver.enabled {
+            true => return Config::server_id(CONFIG.autoserver.server_id, &CONFIG.path),
+            false => user_server_list(&CONFIG.path)
         }
-
-        Config::server_id(server_id, &CONFIG.path)
     };
-
 }
