@@ -6,15 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = "0.3.3"
+stblib = { version = "0.5.1", features = ["stbchat"] }
 rustyline = "13.0.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9.29"
-rayon = "1.8.0"
+rayon = "1.8.1"
 fastrand = { version = "2.0.1" }
 serde_json = "1.0.108"
 owo-colors = "4.0.0"
-eyre = "0.6.11"
+eyre = "0.6.12"
 lazy_static = "1.4.0"
 rprompt = "2.1.1"
 
