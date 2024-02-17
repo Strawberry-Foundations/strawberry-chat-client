@@ -1,11 +1,15 @@
 #![warn(clippy::all, clippy::nursery)]
 #![allow(clippy::missing_const_for_fn)]
 
-use std::net::TcpStream;
-use std::thread;
+use tokio::net::TcpStream;
+use tokio::io::split;
+use tokio::{select, spawn};
+
+use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 
 use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
+
 use crate::cli::error_handler;
 use crate::communication::keep_alive;
 
@@ -36,40 +40,37 @@ mod utilities;
 mod global;
 mod types;
 
-fn main() -> eyre::Result<()> {
-    let (tx, rx) = channel::<()>();
+#[tokio::main]
+async fn main() -> eyre::Result<()> {
+    let (tx, rx) = channel::<String>();
     error_handler::install().unwrap();
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
     println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
 
-    let mut stream = TcpStream::connect(host).unwrap_or_else(|_| {
+    let mut stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
 
-    let send_stream = stream.try_clone()?;
+    let (r_server, w_server) = split(stream);
 
-    if CONFIG.networking.keep_alive {
+    let r_server = IncomingPacketStream::wrap(r_server);
+    let mut w_server = OutgoingPacketStream::wrap(w_server);
+
+    /* if CONFIG.networking.keep_alive {
         let keep_alive_stream = stream.try_clone().unwrap();
-        thread::spawn(|| keep_alive::keep_alive(keep_alive_stream));
-    }
+        spawn(keep_alive::keep_alive(keep_alive_stream));
+    } */
 
-    let recv_handler = thread::spawn(move || communication::recv::recv(&mut stream, tx).unwrap_or_else(|_| {
-        eprintln!("{}", STRING_LOADER.str("ErrorRecvThread").red().bold());
-        std::process::exit(1);
-    }));
-
-    let send_handler = thread::spawn(|| communication::send::send(send_stream, rx).unwrap_or_else(|_| {
-        eprintln!("{}", STRING_LOADER.str("ErrorSendThread").red().bold());
-        std::process::exit(1);
-    }));
+    let recv_handler = spawn(communication::recv::recv(r_server, tx));
+    let send_handler = spawn(communication::send::send(w_server, rx));
 
     println!("{}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
 
-    recv_handler.join().unwrap();
-    send_handler.join().unwrap();
-
-    Ok(())
+    select! {
+        _ = recv_handler => { std::process::exit(0) },
+        _ = send_handler => { std::process::exit(0) }
+    }
 }
