@@ -1,27 +1,24 @@
-
 use std::sync::mpsc::Sender;
 
 use tokio::net::TcpStream;
 use tokio::io::ReadHalf;
 
 use stblib::stbm::stbchat::net::IncomingPacketStream;
-use stblib::stbm::stbchat::packet::ClientsidePacket;
-
+use stblib::stbm::stbchat::packet::ClientPacket;
+use stblib::colors::*;
 
 use crate::CONFIG;
 use crate::cli::formatter::MessageFormatter;
-
-
+use crate::global::STRING_LOADER;
 use crate::object::client_meta::ClientMeta;
-
 
 
 pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: Sender<String>) {
     let _client_meta = ClientMeta::new();
 
     loop {
-        match r_server.read::<ClientsidePacket>().await {
-            Ok(ClientsidePacket::SystemMessage { message }) => {
+        match r_server.read::<ClientPacket>().await {
+            Ok(ClientPacket::SystemMessage { message }) => {
                 let fmt = match CONFIG.message_format.as_str() {
                     "default" => MessageFormatter::default_system(message.content),
                     _ => MessageFormatter::default_system(message.content),
@@ -30,7 +27,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                 println!("{}", fmt);
             },
 
-            Ok(ClientsidePacket::UserMessage { author, message }) => {
+            Ok(ClientPacket::UserMessage { author, message }) => {
                 let fmt = match CONFIG.message_format.as_str() {
                     "default" => MessageFormatter::default_user(
                         author.username,
@@ -51,13 +48,16 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                 println!("{}", fmt);
             },
 
-            Ok(ClientsidePacket::Event { event_type}) => {
+            Ok(ClientPacket::Event { event_type}) => {
                 if event_type == "event.login" {
                     tx.send("event.login".parse().unwrap()).unwrap();
                 }
             }
             Err(_) => break,
-            _ => {}
+            _ => println!(
+                "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
+                STRING_LOADER.str("UnimplementedPacket"),
+            )
         }
     }
     /*
