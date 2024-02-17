@@ -10,7 +10,6 @@ pub fn keep_alive(mut stream: TcpStream) {
                 "{BOLD}{RED}An error occurred when sending Keep Alive to the server.\n\
                 Could it be that the connection to the server has been lost?{C_RESET}"
             );
-            return
         });
     }
 }
