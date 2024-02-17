@@ -11,7 +11,7 @@ use rustyline::error::ReadlineError;
 use stblib::colors::*;
 use stblib::stbm::stbchat::net::OutgoingPacketStream;
 use stblib::stbm::stbchat::object::Message;
-use stblib::stbm::stbchat::packet::{ClientPacket, ServerPacket};
+use stblib::stbm::stbchat::packet::ServerPacket;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
 use crate::communication::login::login;
@@ -66,7 +66,12 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
         let input: String = match line_reader.readline("") {
             Ok(i) => i,
             Err(ReadlineError::Interrupted) => {
-                w_server.write(b"/exit").await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
+                w_server.write(
+                    ServerPacket::Message {
+                        message: Message { content: "/exit".to_string() }
+                    }
+                ).await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.str("StreamWriteError")) });
+
                 sleep(Duration::from_millis(300)).await;
                 exit(0);
             }
