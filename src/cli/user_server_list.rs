@@ -2,15 +2,18 @@ use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 use owo_colors::OwoColorize;
 
-// use rustyline::error::ReadlineError;
-
 use serde_yaml::{from_str, Value};
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
-use crate::config::config_open;
+use crate::config::{Config, config_open, ServerValues};
 use crate::{constants, STRING_LOADER};
+use crate::global::CONFIG;
 
-pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
+
+pub fn user_server_list(config_path: &str) -> ServerValues {
+    let stdin = std::io::stdin();
+    let stdout = std::io::stdout();
+
     println!("--- {} ({}) ---", "Strawberry Chat".cyan().bold(), constants::VERSION);
     println!("{}\n", STRING_LOADER.str("Welcome").green().bold());
     println!("{}", STRING_LOADER.str("YourChatServers").cyan().bold().underline());
@@ -18,6 +21,7 @@ pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
     let config_yml = config_open(config_path);
     let data: Value = from_str(&config_yml).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
+
     for i in 0..server_data_length {
         println!(
             "[{}] {}",
@@ -28,19 +32,8 @@ pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
 
     println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.str("Custom").bold());
 
-    // let mut line_reader = rustyline::DefaultEditor::new().unwrap();
-
     let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("SelChatServer"));
-    // let aborted = STRING_LOADER.str("Aborted");
 
-    /* let server_selection: u8 = match line_reader.readline(&prompt) {
-        Ok(i) => i.trim().parse().context(STRING_LOADER.str("InvalidInput"))?,
-        Err(ReadlineError::Interrupted) | Err(ReadlineError::Eof) => bail!(aborted),
-        Err(e) => bail!(e),
-    }; */
-
-    let stdin = std::io::stdin();
-    let stdout = std::io::stdout();
     let server_selection: u8 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt).unwrap().parse().unwrap_or_else(|_| {
         eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
         std::process::exit(1);
@@ -48,21 +41,38 @@ pub fn user_server_list(config_path: &str) -> eyre::Result<i8> {
 
     let server_data_length = server_data_length as u8;
 
-    let server = match server_selection.cmp(&server_data_length.add(1)) {
+    match server_selection.cmp(&server_data_length.add(1)) {
         Ordering::Equal => {
-            //let host = line_reader.readline(STRING_LOADER.str("Ipaddr").as_str()).expect(aborted.as_str());
-            //let port: String = line_reader.readline(STRING_LOADER.str("Port").as_str()).expect(aborted.as_str());
+            let prompt_host = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("Ipaddr"));
+            let prompt_port = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("Port"));
 
-            -1
+            let address: String = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_host).unwrap().parse().unwrap_or_else(|_| {
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+                std::process::exit(1);
+            });
+
+
+            let port: u16 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_port).unwrap().parse().unwrap_or_else(|_| {
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+                std::process::exit(1);
+            });
+
+
+            ServerValues {
+                address,
+                port,
+                ..Default::default()
+            }
         }
+
         Ordering::Greater => {
             eprintln!("{}", STRING_LOADER.str("InvalidServerSelection").red().bold());
             std::process::exit(1);
         }
         Ordering::Less => {
-            server_selection.sub(1) as i8
-        }
-    };
+            let server_id = server_selection.sub(1) as i8;
 
-    Ok(server)
+            Config::server_id(server_id, &CONFIG.path)
+        }
+    }
 }
