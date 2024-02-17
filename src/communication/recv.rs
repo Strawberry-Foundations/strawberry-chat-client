@@ -1,13 +1,14 @@
-use std::net::TcpStream;
+
 use std::sync::mpsc::Sender;
 
-use serde_json::{Deserializer, Value};
+use tokio::net::TcpStream;
+use tokio::io::ReadHalf;
 
-use owo_colors::OwoColorize;
+use stblib::stbm::stbchat::net::IncomingPacketStream;
+use stblib::stbm::stbchat::packet::ClientsidePacket;
 
-use stblib::colors::*;
 
-use crate::{CONFIG, STRING_LOADER};
+use crate::CONFIG;
 use crate::cli::formatter::MessageFormatter;
 use crate::communication::login::login;
 use crate::global::SERVER_CONFIG;
@@ -15,10 +16,51 @@ use crate::object::client_meta::ClientMeta;
 use crate::object::login_packet::ServerLoginCredentialsPacketClient;
 
 
-pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
+pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: Sender<String>) {
     let mut client_meta = ClientMeta::new();
-    let iter_stream = stream.try_clone().unwrap();
 
+    loop {
+        match r_server.read::<ClientsidePacket>().await {
+            Ok(ClientsidePacket::SystemMessage { message }) => {
+                let fmt = match CONFIG.message_format.as_str() {
+                    "default" => MessageFormatter::default_system(message.content),
+                    _ => MessageFormatter::default_system(message.content),
+                };
+
+                println!("{}", fmt);
+            },
+
+            Ok(ClientsidePacket::UserMessage { author, message }) => {
+                let fmt = match CONFIG.message_format.as_str() {
+                    "default" => MessageFormatter::default_user(
+                        author.username,
+                        author.nickname,
+                        author.role_color,
+                        crate::cli::formatter::badge_handler(author.badge),
+                        message.content,
+                    ),
+                    _ => MessageFormatter::default_user(
+                        author.username,
+                        author.nickname,
+                        author.role_color,
+                        crate::cli::formatter::badge_handler(author.badge),
+                        message.content,
+                    ),
+                };
+
+                println!("{}", fmt);
+            },
+
+            Ok(ClientsidePacket::Event { event_type}) => {
+                if event_type == "event.login" {
+                    tx.send("event.login".parse().unwrap()).unwrap();
+                }
+            }
+            Err(_) => break,
+            _ => {}
+        }
+    }
+    /*
     let json_iter = Deserializer::from_reader(iter_stream).into_iter::<Value>();
 
     for json in json_iter {
@@ -98,5 +140,5 @@ pub fn recv(stream: &mut TcpStream, tx: Sender<()>) -> eyre::Result<()> {
     println!("{}", STRING_LOADER.str("CloseApplication").yellow().bold());
     println!("{}", STRING_LOADER.str("PressCtrlDToExit").bold());
 
-    Ok(())
+    Ok(()) */
 }
