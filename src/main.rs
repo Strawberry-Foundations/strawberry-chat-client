@@ -11,7 +11,7 @@ use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
 
 use crate::cli::error_handler;
-use crate::communication::keep_alive;
+
 
 use crate::global::{CONFIG, SERVER_CONFIG, STRING_LOADER};
 
@@ -49,7 +49,7 @@ async fn main() -> eyre::Result<()> {
 
     println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
 
-    let mut stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
+    let stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
         eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
@@ -57,7 +57,7 @@ async fn main() -> eyre::Result<()> {
     let (r_server, w_server) = split(stream);
 
     let r_server = IncomingPacketStream::wrap(r_server);
-    let mut w_server = OutgoingPacketStream::wrap(w_server);
+    let w_server = OutgoingPacketStream::wrap(w_server);
 
     /* if CONFIG.networking.keep_alive {
         let keep_alive_stream = stream.try_clone().unwrap();
