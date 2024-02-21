@@ -20,7 +20,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
     loop {
         match r_server.read::<ClientPacket>().await {
             Ok(ClientPacket::SystemMessage { message}) => {
-                println!("{}", formatter.system(message.content));
+                println!("{}", formatter.system(message));
             },
 
             Ok(ClientPacket::UserMessage { author, message }) => {
@@ -29,7 +29,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                     author.nickname,
                     author.role_color,
                     crate::fmt::formatter::badge_handler(author.badge),
-                    message.content,
+                    message,
                 ));
             },
 
@@ -41,13 +41,13 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             Err(_) => break,
             _ => println!(
                 "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
-                STRING_LOADER.str("UnimplementedPacket"),
+                STRING_LOADER.load("UnimplementedPacket"),
             )
         }
     }
 
-    println!("{}", STRING_LOADER.str("CloseApplication").yellow().bold());
-    println!("{}", STRING_LOADER.str("PressCtrlDToExit").bold());
+    println!("{}", STRING_LOADER.load("CloseApplication").yellow().bold());
+    println!("{}", STRING_LOADER.load("PressCtrlDToExit").bold());
 
     /*
     let json_iter = Deserializer::from_reader(iter_stream).into_iter::<Value>();
