@@ -2,6 +2,7 @@ use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
 use rustyline::error::ReadlineError;
+use crate::global::STRING_LOADER;
 
 
 pub fn login() -> (String, String) {
@@ -25,7 +26,7 @@ pub fn login() -> (String, String) {
     }); */
     // format!("{}", "Username: ".green()
 
-    let username: String = match line_reader.readline("Username: ") {
+    let username: String = match line_reader.readline(STRING_LOADER.str("Username").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
@@ -35,7 +36,7 @@ pub fn login() -> (String, String) {
         Err(_) => exit(1),
     };
 
-    let password: String = match line_reader.readline("Password: ") {
+    let password: String = match line_reader.readline(STRING_LOADER.str("Password").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
