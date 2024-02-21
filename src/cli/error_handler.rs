@@ -23,7 +23,7 @@ impl EyreHandler for Handler {
 
         writeln!(f, "{}", errors.next().unwrap().bright_red().bold())?;
 
-        writeln!(f, "{}:", STRING_LOADER.str("Cause"))?;
+        writeln!(f, "{}:", STRING_LOADER.load("Cause"))?;
 
         for e in errors {
             writeln!(f, "- {e}")?;
