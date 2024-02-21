@@ -26,7 +26,7 @@ pub fn login() -> (String, String) {
     }); */
     // format!("{}", "Username: ".green()
 
-    let username: String = match line_reader.readline(STRING_LOADER.str("Username").as_str()) {
+    let username: String = match line_reader.readline(STRING_LOADER.load("Username").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
@@ -36,7 +36,7 @@ pub fn login() -> (String, String) {
         Err(_) => exit(1),
     };
 
-    let password: String = match line_reader.readline(STRING_LOADER.str("Password").as_str()) {
+    let password: String = match line_reader.readline(STRING_LOADER.load("Password").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
