@@ -49,10 +49,10 @@ async fn main() -> eyre::Result<()> {
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
-    println!("{}", STRING_LOADER.str("TryConnection").yellow().bold());
+    println!("{}", STRING_LOADER.load("TryConnection").yellow().bold());
 
     let stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
-        eprintln!("{}", STRING_LOADER.str("ErrNotReachable").red().bold());
+        eprintln!("{}", STRING_LOADER.load("ErrNotReachable").red().bold());
         std::process::exit(1);
     });
 
@@ -77,7 +77,7 @@ async fn main() -> eyre::Result<()> {
     let recv_handler = spawn(communication::recv::recv(r_server, tx));
     let send_handler = spawn(communication::send::send(w_server, rx));
 
-    println!("{}", &STRING_LOADER.str("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
+    println!("{}", &STRING_LOADER.load("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
 
     select! {
         _ = recv_handler => { std::process::exit(0) },
