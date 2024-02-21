@@ -15,8 +15,8 @@ pub fn user_server_list(config_path: &str) -> ServerValues {
     let stdout = std::io::stdout();
 
     println!("--- {} ({}) ---", "Strawberry Chat".cyan().bold(), constants::VERSION);
-    println!("{}\n", STRING_LOADER.str("Welcome").green().bold());
-    println!("{}", STRING_LOADER.str("YourChatServers").cyan().bold().underline());
+    println!("{}\n", STRING_LOADER.load("Welcome").green().bold());
+    println!("{}", STRING_LOADER.load("YourChatServers").cyan().bold().underline());
 
     let config_yml = config_open(config_path);
     let data: Value = from_str(&config_yml).unwrap();
@@ -30,12 +30,12 @@ pub fn user_server_list(config_path: &str) -> ServerValues {
         );
     }
 
-    println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.str("Custom").bold());
+    println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.load("Custom").bold());
 
-    let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("SelChatServer"));
+    let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.load("SelChatServer"));
 
     let server_selection: u8 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt).unwrap().parse().unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("InvalidInput"));
         std::process::exit(1);
     });
 
@@ -43,17 +43,17 @@ pub fn user_server_list(config_path: &str) -> ServerValues {
 
     match server_selection.cmp(&server_data_length.add(1)) {
         Ordering::Equal => {
-            let prompt_host = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("Ipaddr"));
-            let prompt_port = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.str("Port"));
+            let prompt_host = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.load("Ipaddr"));
+            let prompt_port = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.load("Port"));
 
             let address: String = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_host).unwrap().parse().unwrap_or_else(|_| {
-                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("InvalidInput"));
                 std::process::exit(1);
             });
 
 
             let port: u16 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_port).unwrap().parse().unwrap_or_else(|_| {
-                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("InvalidInput"));
                 std::process::exit(1);
             });
 
@@ -66,7 +66,7 @@ pub fn user_server_list(config_path: &str) -> ServerValues {
         }
 
         Ordering::Greater => {
-            eprintln!("{}", STRING_LOADER.str("InvalidServerSelection").red().bold());
+            eprintln!("{}", STRING_LOADER.load("InvalidServerSelection").red().bold());
             std::process::exit(1);
         }
         Ordering::Less => {
