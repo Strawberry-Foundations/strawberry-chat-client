@@ -42,6 +42,7 @@ mod config;
 mod constants;
 mod utilities;
 mod global;
+mod auth;
 
 
 #[tokio::main]
@@ -53,7 +54,7 @@ async fn main() -> eyre::Result<()> {
 
     match cmd.as_str() {
         "login" => { return cli::sid_auth::login().await },
-        "sync" => { cli::sync::sync().await; return Ok(()) },
+        "sync" => { return cli::sync::sync().await },
         _ => {}
     }
 
@@ -96,5 +97,5 @@ async fn main() -> eyre::Result<()> {
         _ = recv_handler => { std::process::exit(0) },
         _ = send_handler => { std::process::exit(0) }
     }
-    
+
 }
