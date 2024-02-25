@@ -41,6 +41,12 @@ de_DE:
   ErrorSendThread: "Ein Fehler beim starten des Send-Thread ist aufgetreten."
   PressCtrlDToExit: "Drücke Strg-D um zu verlassen..."
   UnsuccessfulConnection: "Die Verbindung mit dem Server schlug fehl"
+  Auth: "Authentifizierung"
+  ErrorRequestingLoginCode: "Fehler bei der Anforderung des Anmeldecodes:"
+  ApiServerNotReachable: "Server ist nicht erreichbar"
+  ContinueSidLogin: "Um mit der Anmeldung fortzufahren, öffne folgende Seite und erlaube den Zugriff auf deiner Strawberry ID:"
+  AuthSuccess: "Die Authentifizierung über Strawberry ID war erfolgreich"
+  LoggedInAs: "Eingeloggt als"
 
 # Language Strings for en_US (English)
 en_US:
@@ -85,3 +91,9 @@ en_US:
   ErrorSendThread: "An error occurred when starting the send thread."
   PressCtrlDToExit: "Press Ctrl-D to exit..."
   UnsuccessfulConnection: "The connection to the server failed"
+  Auth: "Authentication"
+  ErrorRequestingLoginCode: "Error while requesting login code:"
+  ApiServerNotReachable: "Server is not reachable"
+  ContinueSidLogin: "To continue with the login, open the following page and allow access to your Strawberry ID:"
+  AuthSuccess: "Authentication via Strawberry ID was successful"
+  LoggedInAs: "Logged in as"
