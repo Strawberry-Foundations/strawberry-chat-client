@@ -9,7 +9,7 @@ pub async fn sync() -> eyre::Result<()> {
     let (username, auth_token) = (credentials.username, credentials.token);
 
     let client = reqwest::Client::new();
-
+    
     let exe_path = std::env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
 
     let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
