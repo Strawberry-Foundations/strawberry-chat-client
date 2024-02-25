@@ -25,6 +25,8 @@ mod communication {
 mod cli {
     pub mod user_server_list;
     pub mod error_handler;
+    pub mod sid_auth;
+    pub mod sync;
 }
 
 mod object {
@@ -44,6 +46,17 @@ mod global;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
+    let def = &String::new();
+
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    let cmd = args.first().unwrap_or(def);
+
+    match cmd.as_str() {
+        "login" => { return cli::sid_auth::login().await },
+        "sync" => { cli::sync::sync().await; return Ok(()) },
+        _ => {}
+    }
+
     let (tx, rx) = channel::<String>();
     error_handler::install().unwrap();
 
@@ -83,4 +96,5 @@ async fn main() -> eyre::Result<()> {
         _ = recv_handler => { std::process::exit(0) },
         _ = send_handler => { std::process::exit(0) }
     }
+    
 }
