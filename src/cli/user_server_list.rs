@@ -5,12 +5,12 @@ use owo_colors::OwoColorize;
 use serde_yaml::{from_str, Value};
 use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
-use crate::config::{Config, config_open, ServerValues};
+use crate::config::{Config, ServerValues};
 use crate::{constants, STRING_LOADER};
 use crate::global::CONFIG;
 
 
-pub fn user_server_list(config_path: &str) -> ServerValues {
+pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
 
@@ -18,8 +18,7 @@ pub fn user_server_list(config_path: &str) -> ServerValues {
     println!("{}\n", STRING_LOADER.load("Welcome").green().bold());
     println!("{}", STRING_LOADER.load("YourChatServers").cyan().bold().underline());
 
-    let config_yml = config_open(config_path);
-    let data: Value = from_str(&config_yml).unwrap();
+    let data: Value = from_str(config_content).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
 
     for i in 0..server_data_length {
