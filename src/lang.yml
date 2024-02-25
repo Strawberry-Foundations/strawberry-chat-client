@@ -47,6 +47,9 @@ de_DE:
   ContinueSidLogin: "Um mit der Anmeldung fortzufahren, öffne folgende Seite und erlaube den Zugriff auf deiner Strawberry ID:"
   AuthSuccess: "Die Authentifizierung über Strawberry ID war erfolgreich"
   LoggedInAs: "Eingeloggt als"
+  ErrorReadingCredentials: "Fehler beim lesen der Strawberry-ID Anmeldedaten:"
+  CredentialsFileNotExist: "Deine credentials.yml existiert nicht. Bitte authentifiziere dich vorher um deine Strawberry-ID zu verwenden."
+  HomeDirectoryNotFound: "Home-Verzeichnis nicht gefunden."
 
 # Language Strings for en_US (English)
 en_US:
@@ -97,3 +100,6 @@ en_US:
   ContinueSidLogin: "To continue with the login, open the following page and allow access to your Strawberry ID:"
   AuthSuccess: "Authentication via Strawberry ID was successful"
   LoggedInAs: "Logged in as"
+  ErrorReadingCredentials: "Error while reading credentials:"
+  CredentialsFileNotExist: "Your credentials.yml does not exist. Please authenticate yourself first to use your Strawberry ID."
+  HomeDirectoryNotFound: "Home directory not found."
