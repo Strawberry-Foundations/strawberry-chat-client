@@ -32,6 +32,8 @@ pub struct Config {
     pub autoserver: Autoserver,
     #[serde(skip)]
     pub path: String,
+    #[serde(skip)]
+    pub content: String,
 }
 
 #[derive(Clone, Default)]
@@ -51,8 +53,8 @@ pub struct ServerValues {
     pub credentials: ServerValuesCredentials,
 }
 
-pub fn config_open(config_path: &str) -> String {
-    fs::read_to_string(config_path).expect("Could not read config")
+pub fn config_open(config_path: &str) -> eyre::Result<String> {
+    Ok(fs::read_to_string(config_path)?)
 }
 
 pub fn get_lang_cfg() -> String {
@@ -60,16 +62,24 @@ pub fn get_lang_cfg() -> String {
 }
 
 impl Config {
-    pub fn new(config_path: String) -> Self {
-        let config_yml = config_open(&config_path);
-        let mut cfg: Self = from_str(&config_yml).unwrap();
+    pub fn new(config_path: String) -> eyre::Result<Self> {
+        let config_yml = config_open(&config_path)?;
+        let mut cfg: Self = from_str(&config_yml)?;
         cfg.path = config_path;
+        cfg.content = config_yml;
+        Ok(cfg)
+    }
+
+    pub fn new_from_content(content: String) -> Self {
+        let mut cfg: Self = from_str(&content).unwrap();
+        cfg.content = content;
+
         cfg
     }
 
     pub fn server_id(server_id: i8, config_path: &str) -> ServerValues {
         let server_id = server_id as usize;
-        let config_yml = config_open(config_path);
+        let config_yml = config_open(config_path).unwrap();
         let config: Value = from_str(&config_yml).unwrap();
 
         let s_name = config["server"][server_id]["name"]
