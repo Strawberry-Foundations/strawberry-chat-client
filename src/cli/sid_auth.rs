@@ -1,21 +1,12 @@
-use serde::{Deserialize, Serialize};
 use tokio::time::{self, Duration};
-use serde_json::Value;
 use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, RESET, YELLOW};
+use crate::auth::IdCredentials;
 use crate::constants::STRAWBERRY_ID_API;
 use crate::global::STRING_LOADER;
+use crate::utilities::serializer;
 
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Credentials {
-    username: String,
-    token: String,
-}
 
-fn serializer(text: &str) -> Result<Value, serde_json::Error> {
-    let serializer = serde_json::from_str(text)?;
-    Ok(serializer)
-}
 
 pub async fn login() -> eyre::Result<()> {
     println!("--- {CYAN}{BOLD}Strawberry ID {}{C_RESET} ---", STRING_LOADER.load("Auth"));
@@ -65,7 +56,7 @@ pub async fn login() -> eyre::Result<()> {
                     }
 
                     if !credentials_path.exists() {
-                        let credentials = Credentials {
+                        let credentials = IdCredentials {
                             username,
                             token,
                         };
