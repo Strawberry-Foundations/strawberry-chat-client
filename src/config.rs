@@ -1,6 +1,8 @@
 use serde::Deserialize;
 use serde_yaml::{from_str, Value};
 use std::fs;
+use stblib::colors::{BOLD, C_RESET, RED};
+use crate::global::STRING_LOADER;
 
 #[derive(Debug, Deserialize)]
 pub struct Networking {
@@ -71,6 +73,11 @@ impl Config {
     }
 
     pub fn new_from_content(content: String) -> Self {
+        if content == "Invalid filename" {
+            println!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigNotAvailable"));
+            std::process::exit(1);
+        } 
+        
         let mut cfg: Self = from_str(&content).unwrap();
         cfg.content = content;
 
