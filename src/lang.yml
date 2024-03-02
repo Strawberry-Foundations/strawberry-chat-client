@@ -50,6 +50,7 @@ de_DE:
   ErrorReadingCredentials: "Fehler beim lesen der Strawberry-ID Anmeldedaten:"
   CredentialsFileNotExist: "Deine credentials.yml existiert nicht. Bitte authentifiziere dich vorher um deine Strawberry-ID zu verwenden."
   HomeDirectoryNotFound: "Home-Verzeichnis nicht gefunden."
+  ConfigNotAvailable: "Deine Konfiguration konnte weder Lokal noch von deiner Strawberry ID geladen werden.\nErstelle entweder eine Lokale Konfiguration oder synchronisiere deine Konfiguration auf einem anderen Gerät, falls vorhanden."
 
 # Language Strings for en_US (English)
 en_US:
@@ -103,3 +104,4 @@ en_US:
   ErrorReadingCredentials: "Error while reading credentials:"
   CredentialsFileNotExist: "Your credentials.yml does not exist. Please authenticate yourself first to use your Strawberry ID."
   HomeDirectoryNotFound: "Home directory not found."
+  ConfigNotAvailable: "Your configuration could not be loaded locally or from your Strawberry ID.\nEither create a local configuration or synchronize your configuration on another device, if available."
