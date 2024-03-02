@@ -25,7 +25,7 @@ lazy_static! {
         }
 
         Config::new(config_path).unwrap_or_else(|_| {
-            let credentials = IdCredentials::new().unwrap();
+            let credentials = IdCredentials::new();
             let (username, auth_token) = (credentials.username, credentials.token);
 
             let url = format!("{SCLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
