@@ -13,6 +13,7 @@ de_DE:
   Port: "Port: "
   Username: "Benutzername: "
   Password: "Passwort: "
+  RepeatPassword: "Passwort wiederholen: "
   Warning: "Warnung"
   InvalidServerSelection: "Dieser Server existiert nicht!"
   InvalidArgument: "Dieser Befehl existiert nicht!"
@@ -51,6 +52,9 @@ de_DE:
   CredentialsFileNotExist: "Deine credentials.yml existiert nicht. Bitte authentifiziere dich vorher um deine Strawberry-ID zu verwenden."
   HomeDirectoryNotFound: "Home-Verzeichnis nicht gefunden."
   ConfigNotAvailable: "Deine Konfiguration konnte weder Lokal noch von deiner Strawberry ID geladen werden.\nErstelle entweder eine Lokale Konfiguration oder synchronisiere deine Konfiguration auf einem anderen Gerät, falls vorhanden."
+  RegisterNewUser: "Hallo! Wir helfen dir beim Registrieren eines neuen Benutzers!"
+  PasswordNotMatch: "Passwörter stimmen nicht überein"
+  RoleColor: "Farbe deiner Rolle: "
 
 # Language Strings for en_US (English)
 en_US:
@@ -67,6 +71,7 @@ en_US:
   Port: "Port: "
   Username: "Username: "
   Password: "Password: "
+  RepeatPassword: "Repeat Password: "
   Warning: "Warning"
   InvalidServerSelection: "This server does not exist!"
   InvalidArgument: "This command does not exist!"
@@ -105,3 +110,6 @@ en_US:
   CredentialsFileNotExist: "Your credentials.yml does not exist. Please authenticate yourself first to use your Strawberry ID."
   HomeDirectoryNotFound: "Home directory not found."
   ConfigNotAvailable: "Your configuration could not be loaded locally or from your Strawberry ID.\nEither create a local configuration or synchronize your configuration on another device, if available."
+  RegisterNewUser: "Hello! We'll help you register a new user!"
+  PasswordNotMatch: "Passwords do not match"
+  RoleColor: "Color of your role: "
