@@ -39,19 +39,21 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                     tx.send("event.login".parse().unwrap()).unwrap();
                 }
             },
-            
+
             Ok(ClientPacket::Notification { title, username, avatar_url: _avatar_url, content, bell: _bell }) => {
+                let content = strip_ansi_escapes::strip_str(content);
+
                 Notifier::new(
-                    username, 
-                    content, 
-                    title, 
-                    "normal", 
+                    username,
+                    content,
+                    title,
+                    "normal",
                     "/home/julian/Projekte/stbchat-rust/sf_logo_small.ico",
                     Some(String::from("SMS")),
                     false
                 ).build().send();
             }
-            
+
             Err(_) => break,
             _ => println!(
                 "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
