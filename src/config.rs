@@ -4,7 +4,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
 use crate::auth::IdCredentials;
-use crate::constants::SCLOUD_API_URL;
+use crate::constants::{HEADLESS_CONFIG, SCLOUD_API_URL};
 use crate::global::STRING_LOADER;
 
 #[derive(Debug, Deserialize)]
@@ -82,10 +82,10 @@ impl Config {
         Ok(cfg)
     }
 
-    pub fn new_from_content(content: String) -> Self {
+    pub fn new_from_content(mut content: String) -> Self {
         if content == "Invalid filename" {
             println!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigNotAvailable"));
-            std::process::exit(1);
+            content = String::from(HEADLESS_CONFIG);
         } 
         
         let mut cfg: Self = from_str(&content).unwrap();
