@@ -13,7 +13,7 @@ use stblib::stbm::stbchat::net::OutgoingPacketStream;
 use stblib::stbm::stbchat::packet::ServerPacket;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
-use crate::communication::login::login;
+use crate::communication::login::{login, PreAuthEvent};
 
 use crate::utilities::delete_last_line;
 
@@ -26,22 +26,39 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
     }
 
     if !SERVER_CONFIG.compatibility_mode {
-        let tx_data = rx.recv().unwrap_or_else(|_| {
-            println!("{BOLD}{YELLOW}{}{C_RESET}", STRING_LOADER.load("UnsuccessfulConnection"));
-            exit(1);
-        });
+        loop {
+            let tx_data = rx.recv().unwrap_or_else(|_| {
+                println!("{BOLD}{YELLOW}{}{C_RESET}", STRING_LOADER.load("UnsuccessfulConnection"));
+                exit(1);
+            });
 
-        if tx_data == "event.login" {
-            let (username, password) = if SERVER_CONFIG.autologin {
-                (SERVER_CONFIG.credentials.username.clone(), SERVER_CONFIG.credentials.password.clone())
-            } else {
-                login()
-            };
-
-            w_server.write(ServerPacket::Login {
-                username,
-                password
-            }).await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.load("StreamWriteError")) });
+            if tx_data == "event.login" {
+                let auth = if SERVER_CONFIG.autologin {
+                    PreAuthEvent::Login(SERVER_CONFIG.credentials.username.clone(), SERVER_CONFIG.credentials.password.clone())
+                } else {
+                    login()
+                };
+                
+                match auth {
+                    PreAuthEvent::Login(username, password) => {
+                        if username != "register" && password != "register" {
+                            w_server.write(ServerPacket::Login {
+                                username,
+                                password
+                            }).await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.load("StreamWriteError")) });
+                            break;
+                        }
+                    }
+                    PreAuthEvent::Register(username, password, role_color) => {
+                        w_server.write(ServerPacket::Register {
+                            username,
+                            password,
+                            role_color
+                        }).await.unwrap_or_else(|_| { panic!("{}", STRING_LOADER.load("StreamWriteError")) });
+                        break;
+                    }
+                }
+            }
         }
     }
 
