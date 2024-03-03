@@ -16,7 +16,7 @@ impl IdCredentials {
 
             if credentials_path.exists() {
                 let credentials_str = std::fs::read_to_string(&credentials_path).unwrap();
-                let credentials: Self = serde_yaml::from_str(&credentials_str).unwrap();;
+                let credentials: Self = serde_yaml::from_str(&credentials_str).unwrap();
 
                 credentials
             } else {
