@@ -7,7 +7,11 @@ enable_terminal_bell: true
 experimental_debug_mode: false
 extreme_debug_mode: false
 recv_allowed_bytes: 8192
-config_ver: 5
+config_ver: 6
+
+notification:
+  use_legacy_notifier: false
+  icon_path: "C:\Users\Julian\Desktop\stbchat-rust\sf_logo_small.ico"
 
 
 networking:
