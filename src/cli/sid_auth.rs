@@ -41,7 +41,7 @@ pub async fn login() -> eyre::Result<()> {
                 let username = data["data"]["user"]["username"].as_str().unwrap().to_string();
                 let token = data["data"]["user"]["token"].as_str().unwrap().to_string();
 
-                println!("{GREEN}{BOLD}{} {} (@{})", STRING_LOADER.load("LoggedInAs"), full_name, username);
+                println!("{GREEN}{BOLD}{} {} (@{}){C_RESET}", STRING_LOADER.load("LoggedInAs"), full_name, username);
 
                 if let Some(home_dir) = dirs::home_dir() {
                     let config_dir = home_dir.join(".config").join("strawberry-id");
