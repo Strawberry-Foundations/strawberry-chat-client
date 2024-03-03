@@ -1,7 +1,10 @@
 use serde::Deserialize;
 use serde_yaml::{from_str, Value};
 use std::fs;
+use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
+use crate::auth::IdCredentials;
+use crate::constants::SCLOUD_API_URL;
 use crate::global::STRING_LOADER;
 
 #[derive(Debug, Deserialize)]
@@ -89,6 +92,50 @@ impl Config {
         cfg.content = content;
 
         cfg
+    }
+
+    pub fn load_language() -> String {
+        let exe_path = std::env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
+        let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+        let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
+        let mut config_path = format!("{exe_dir_str}/config.yml");
+
+        if !Path::new(&config_path).exists() {
+            config_path = String::from("./config.yml")
+        }
+
+        let config_yml = match config_open(&config_path) {
+            Ok(s) => s,
+            Err(_) => {
+                let credentials = match IdCredentials::new() {
+                    Ok(cred) => cred,
+                    Err(_) => return String::from("en_US")
+                };
+
+                let (username, auth_token) = (credentials.username, credentials.token);
+
+                let url = format!("{SCLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
+                let content = futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() });
+                content
+            }
+        };
+
+        let config: Self = match from_str(&config_yml) {
+            Ok(value) => value,
+            Err(_) => return String::from("en_US")
+        };
+
+        config.language
+    }
+
+    #[allow(dead_code)]
+    pub fn get_language(&self) -> &str {
+        if ["de_DE", "en_US"].contains(&self.language.as_str()) {
+           self.language.as_str()
+        }
+        else {
+            "en_US"
+        }
     }
 
     pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
