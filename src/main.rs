@@ -20,6 +20,7 @@ mod communication {
     pub mod send;
     pub mod keep_alive;
     pub mod login;
+    pub mod register;
 }
 
 mod cli {
