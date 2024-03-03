@@ -8,9 +8,10 @@ use stblib::stbm::stbchat::net::IncomingPacketStream;
 use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::colors::*;
 use stblib::notifications::Notifier;
+use stblib::notifications::os::OS;
 
 use crate::fmt::formatter::MessageFormatter;
-use crate::global::STRING_LOADER;
+use crate::global::{CONFIG, STRING_LOADER};
 use crate::object::client_meta::ClientMeta;
 
 
@@ -41,17 +42,25 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             },
 
             Ok(ClientPacket::Notification { title, username, avatar_url: _avatar_url, content, bell: _bell }) => {
-                let content = strip_ansi_escapes::strip_str(content);
-
-                Notifier::new(
+                let mut notifier = Notifier::new(
                     username,
                     content,
                     title,
                     "normal",
-                    "/home/julian/Projekte/stbchat-rust/sf_logo_small.ico",
+                    CONFIG.notification.icon_path.clone(),
                     Some(String::from("SMS")),
                     false
-                ).build().send();
+                ).build();
+                
+                if CONFIG.notification.use_legacy_notifier {
+                    match notifier.internal_notifier.system {
+                        OS::Windows => notifier.internal_notifier.system = &OS::WindowsLegacy,
+                        OS::Linux => notifier.internal_notifier.system = &OS::LinuxLibNotify,
+                        _ => { }
+                    }
+                }
+                
+                notifier.send();
             }
 
             Err(_) => break,
