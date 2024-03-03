@@ -58,7 +58,7 @@ async fn main() -> eyre::Result<()> {
         "sync" => { return cli::sync::sync().await },
         _ => {}
     }
-
+    
     let (tx, rx) = channel::<String>();
     error_handler::install().unwrap();
 
