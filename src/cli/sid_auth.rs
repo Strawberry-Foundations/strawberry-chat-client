@@ -25,7 +25,7 @@ pub async fn login() -> eyre::Result<()> {
         std::process::exit(1);
     };
 
-    println!("{} \n{BOLD}{BLUE}{STRAWBERRY_ID_API}de/login/oauth_dialog/tunneled?code={code}{C_RESET}", STRING_LOADER.load("ContinueSidLogin"));
+    println!("{} \n{BOLD}{BLUE}{STRAWBERRY_ID_API}de/login/oauth_dialog/stbchat?code={code}{C_RESET}", STRING_LOADER.load("ContinueSidLogin"));
 
     let mut interval = time::interval(Duration::from_secs(5));
 
