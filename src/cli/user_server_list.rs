@@ -7,7 +7,6 @@ use stblib::colors::{BOLD, C_RESET, CYAN, RED};
 
 use crate::config::{Config, ServerValues};
 use crate::{constants, STRING_LOADER};
-use crate::global::CONFIG;
 
 
 pub fn user_server_list(config_content: &str) -> ServerValues {
@@ -71,7 +70,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         Ordering::Less => {
             let server_id = server_selection.sub(1) as i8;
 
-            Config::server_id(server_id, &CONFIG.path)
+            Config::server_id(server_id, &config_content)
         }
     }
 }
