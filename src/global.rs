@@ -8,44 +8,10 @@ use crate::auth::IdCredentials;
 
 use crate::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
-use crate::constants::SCLOUD_API_URL;
+use crate::constants::{HEADLESS_CONFIG, SCLOUD_API_URL};
 
 lazy_static! {
     pub static ref CONFIG: Config = {
-        let headless_config = r#"language: en_US
-update_channel: "stable"
-detect_same_system_messages: true
-message_format: default
-enable_notifications: true
-enable_terminal_bell: true
-experimental_debug_mode: false
-extreme_debug_mode: false
-recv_allowed_bytes: 8192
-config_ver: 6
-
-notification:
-  use_legacy_notifier: false
-  icon_path: ""
-
-
-networking:
-  online_mode: true
-  keep_alive: true
-  latency_mode: true
-  latency_mode_time: 1
-
-autoserver:
-  enabled: false
-  server_id: 0
-
-server:
-  0:
-    name: strawberryfoundations.xyz
-    address: 45.131.109.170
-    port: 49200
-    type: Main"#;
-
-
         let exe_path = env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
 
         let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
@@ -61,7 +27,7 @@ server:
         Config::new(config_path).unwrap_or_else(|_| {
             let credentials = match IdCredentials::new() {
                 Ok(credentials) => credentials,
-                Err(_) => return Config::new_from_content(String::from(headless_config))
+                Err(_) => return Config::new_from_content(String::from(HEADLESS_CONFIG))
             };
 
             let (username, auth_token) = (credentials.username, credentials.token);
