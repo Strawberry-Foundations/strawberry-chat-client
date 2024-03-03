@@ -4,7 +4,7 @@ use crate::constants::SCLOUD_API_URL;
 use crate::utilities::make_absolute_path;
 
 pub async fn sync() -> eyre::Result<()> {
-    let credentials = IdCredentials::new();
+    let credentials = IdCredentials::new().unwrap();
 
     let (username, auth_token) = (credentials.username, credentials.token);
 
