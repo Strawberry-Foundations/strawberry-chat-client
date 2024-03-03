@@ -1,10 +1,15 @@
 use std::path::{Path, PathBuf};
+use stblib::colors::{BOLD, C_RESET, RED};
 use crate::auth::IdCredentials;
 use crate::constants::SCLOUD_API_URL;
+use crate::global::STRING_LOADER;
 use crate::utilities::make_absolute_path;
 
 pub async fn sync() -> eyre::Result<()> {
-    let credentials = IdCredentials::new().unwrap();
+    let credentials = IdCredentials::new().unwrap_or_else(|_| {
+        println!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("CredentialsFileNotExist"));
+        std::process::exit(1);
+    });
 
     let (username, auth_token) = (credentials.username, credentials.token);
 
