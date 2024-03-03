@@ -6,8 +6,6 @@ use crate::global::STRING_LOADER;
 use crate::utilities::serializer;
 
 
-
-
 pub async fn login() -> eyre::Result<()> {
     println!("--- {CYAN}{BOLD}Strawberry ID {}{C_RESET} ---", STRING_LOADER.load("Auth"));
 
