@@ -7,6 +7,7 @@ use tokio::io::ReadHalf;
 use stblib::stbm::stbchat::net::IncomingPacketStream;
 use stblib::stbm::stbchat::packet::ClientPacket;
 use stblib::colors::*;
+use stblib::notifications::Notifier;
 
 use crate::fmt::formatter::MessageFormatter;
 use crate::global::STRING_LOADER;
@@ -37,7 +38,20 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                 if event_type == "event.login" {
                     tx.send("event.login".parse().unwrap()).unwrap();
                 }
+            },
+            
+            Ok(ClientPacket::Notification { title, username, avatar_url: _avatar_url, content, bell: _bell }) => {
+                Notifier::new(
+                    username, 
+                    content, 
+                    title, 
+                    "normal", 
+                    "/home/julian/Projekte/stbchat-rust/sf_logo_small.ico",
+                    Some(String::from("SMS")),
+                    false
+                ).build().send();
             }
+            
             Err(_) => break,
             _ => println!(
                 "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
