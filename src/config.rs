@@ -84,10 +84,9 @@ impl Config {
         cfg
     }
 
-    pub fn server_id(server_id: i8, config_path: &str) -> ServerValues {
+    pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
         let server_id = server_id as usize;
-        let config_yml = config_open(config_path).unwrap();
-        let config: Value = from_str(&config_yml).unwrap();
+        let config: Value = from_str(&config_content).unwrap();
 
         let s_name = config["server"][server_id]["name"]
             .as_str()
