@@ -19,6 +19,12 @@ pub struct Autoserver {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct Notification {
+    pub use_legacy_notifier: bool,
+    pub icon_path: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Config {
     pub language: String,
     pub update_channel: String,
@@ -30,6 +36,7 @@ pub struct Config {
     pub extreme_debug_mode: bool,
     pub recv_allowed_bytes: u32,
     pub config_ver: u8,
+    pub notification: Notification,
     pub networking: Networking,
     pub autoserver: Autoserver,
     #[serde(skip)]
