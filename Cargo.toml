@@ -22,6 +22,7 @@ rprompt = "2.1.1"
 socket2 = "0.5.5"
 dirs = "5.0.1"
 futures = "0.3.30"
+strip-ansi-escapes = "0.2.0"
 
 [profile.release]
 opt-level = 'z'
