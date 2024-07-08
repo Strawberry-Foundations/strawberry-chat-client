@@ -1,6 +1,6 @@
 pub const VERSION: &str = "1.3.5";
-pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.xyz/v2/";
-pub const SCLOUD_API_URL: &str = "https://cloud.strawberryfoundations.xyz/";
+pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
+pub const SCLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
 // pub const SCLOUD_API_URL: &str = "http://localhost:8000/";
 
 
