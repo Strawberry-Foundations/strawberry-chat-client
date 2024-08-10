@@ -4,8 +4,8 @@ use owo_colors::OwoColorize;
 use tokio::net::TcpStream;
 use tokio::io::ReadHalf;
 
-use stblib::stbm::stbchat::net::IncomingPacketStream;
-use stblib::stbm::stbchat::packet::ClientPacket;
+use stblib::stbchat::net::IncomingPacketStream;
+use stblib::stbchat::packet::ClientPacket;
 use stblib::colors::*;
 use stblib::notifications::Notifier;
 use stblib::notifications::os::OS;
