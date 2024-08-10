@@ -70,7 +70,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         Ordering::Less => {
             let server_id = server_selection.sub(1) as i8;
 
-            Config::server_id(server_id, &config_content)
+            Config::server_id(server_id, config_content)
         }
     }
 }
