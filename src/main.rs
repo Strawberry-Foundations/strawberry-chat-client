@@ -1,5 +1,5 @@
 #![warn(clippy::all, clippy::nursery)]
-#![allow(clippy::missing_const_for_fn)]
+#![allow(clippy::missing_const_for_fn, dead_code)]
 
 use tokio::net::TcpStream;
 use tokio::io::split;
@@ -14,7 +14,7 @@ use std::time::Duration;
 use crate::cli::error_handler;
 use crate::global::{SERVER_CONFIG, STRING_LOADER};
 
-mod communication {
+pub mod communication {
     pub mod recv;
     pub mod legacy_recv;
     pub mod send;
@@ -23,27 +23,27 @@ mod communication {
     pub mod register;
 }
 
-mod cli {
+pub mod cli {
     pub mod user_server_list;
     pub mod error_handler;
     pub mod sid_auth;
     pub mod sync;
 }
 
-mod object {
+pub mod object {
     pub mod client_meta;
     pub mod login_packet;
 }
 
-mod fmt {
+pub mod fmt {
     pub mod formatter;
 }
 
-mod config;
-mod constants;
-mod utilities;
-mod global;
-mod auth;
+pub mod config;
+pub mod constants;
+pub mod utilities;
+pub mod global;
+pub mod auth;
 
 
 #[tokio::main]
