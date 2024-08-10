@@ -1,8 +1,12 @@
-pub const VERSION: &str = "1.3.5";
+use lazy_static::lazy_static;
+
 pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
 // pub const STRAWBERRY_CLOUD_API_URL: &str = "http://localhost:8000/";
 
+lazy_static! {
+    pub static ref VERSION: String = env!("CARGO_PKG_VERSION").to_string();
+}
 
 pub const HEADLESS_CONFIG: &str = r#"language: en_US
 update_channel: "stable"
