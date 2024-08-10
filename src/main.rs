@@ -1,5 +1,5 @@
 #![warn(clippy::all, clippy::nursery)]
-#![allow(clippy::missing_const_for_fn, dead_code)]
+#![allow(clippy::missing_const_for_fn, dead_code, clippy::redundant_pub_crate)]
 
 use tokio::net::TcpStream;
 use tokio::io::split;
@@ -84,16 +84,11 @@ async fn main() -> eyre::Result<()> {
     let r_server = IncomingPacketStream::wrap(r_server);
     let w_server = OutgoingPacketStream::wrap(w_server);
 
-    /* if CONFIG.networking.keep_alive {
-        let keep_alive_stream = stream.try_clone().unwrap();
-        spawn(keep_alive::keep_alive(keep_alive_stream));
-    } */
-
     let recv_handler = spawn(communication::recv::recv(r_server, tx));
     let send_handler = spawn(communication::send::send(w_server, rx));
 
     println!("{}", &STRING_LOADER.load("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
-
+    
     select! {
         _ = recv_handler => { std::process::exit(0) },
         _ = send_handler => { std::process::exit(0) }
