@@ -9,8 +9,8 @@ use tokio::io::WriteHalf;
 use rustyline::error::ReadlineError;
 
 use stblib::colors::*;
-use stblib::stbm::stbchat::net::OutgoingPacketStream;
-use stblib::stbm::stbchat::packet::ServerPacket;
+use stblib::stbchat::net::OutgoingPacketStream;
+use stblib::stbchat::packet::ServerPacket;
 
 use crate::{SERVER_CONFIG, STRING_LOADER};
 use crate::communication::login::{login, PreAuthEvent};
