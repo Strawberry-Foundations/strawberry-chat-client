@@ -18,6 +18,12 @@ pub struct MessageFormatter {
     pub current_format: (String, String, String),
 }
 
+impl Default for MessageFormatter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MessageFormatter {
     pub fn load_formats() -> MessageFormat {
         let mut formats = HashMap::new();
