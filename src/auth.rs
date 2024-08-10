@@ -7,7 +7,7 @@ pub struct IdCredentials {
 }
 
 impl IdCredentials {
-    pub fn new() -> Result<IdCredentials, ()> {
+    pub fn new() -> Result<Self, ()> {
         dirs::home_dir().map_or_else(|| { std::process::exit(1); }, |home_dir| {
             let config_dir = home_dir.join(".config").join("strawberry-id");
             let credentials_path = config_dir.join("credentials.yml");
