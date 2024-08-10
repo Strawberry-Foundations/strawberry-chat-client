@@ -32,7 +32,7 @@ lazy_static! {
 
             let (username, auth_token) = (credentials.username, credentials.token);
 
-            let url = format!("{SCLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
+            let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
             let content = futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() });
 
             Config::new_from_content(content)
