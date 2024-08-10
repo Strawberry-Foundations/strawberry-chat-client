@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
 use crate::auth::IdCredentials;
-use crate::constants::SCLOUD_API_URL;
+use crate::constants::STRAWBERRY_CLOUD_API_URL;
 use crate::global::STRING_LOADER;
 use crate::utilities::make_absolute_path;
 
@@ -40,7 +40,7 @@ pub async fn sync() -> eyre::Result<()> {
 
     println!("{}", path.to_str().unwrap());
 
-    let url = format!("{SCLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
+    let url = format!("{STRAWBERRY_CLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
 
     // Lese den Inhalt der Datei
     let file_content = std::fs::read(file_path).unwrap();
