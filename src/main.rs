@@ -5,7 +5,7 @@ use tokio::net::TcpStream;
 use tokio::io::split;
 use tokio::{select, spawn};
 
-use stblib::stbm::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 
 use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
