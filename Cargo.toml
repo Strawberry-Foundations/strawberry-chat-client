@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version = "0.6.2", features = ["stbchat"] }
+stblib = { version = "0.6.2", features = ["stbchat", "notifications"] }
 tokio = { version = "1.39.2", features = ["full"] }
 reqwest = "0.12.5"
 rustyline = "14.0.0"
