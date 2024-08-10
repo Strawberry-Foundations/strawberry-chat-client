@@ -1,7 +1,7 @@
 pub const VERSION: &str = "1.3.5";
 pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
-pub const SCLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
-// pub const SCLOUD_API_URL: &str = "http://localhost:8000/";
+pub const STRAWBERRY_CLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
+// pub const STRAWBERRY_CLOUD_API_URL: &str = "http://localhost:8000/";
 
 
 pub const HEADLESS_CONFIG: &str = r#"language: en_US
@@ -32,7 +32,7 @@ autoserver:
 
 server:
   0:
-    name: strawberryfoundations.xyz
+    name: strawberryfoundations.org
     address: 45.131.109.170
     port: 49200
     type: Main"#;
