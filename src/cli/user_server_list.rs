@@ -13,7 +13,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
 
-    println!("--- {} ({}) ---", "Strawberry Chat".cyan().bold(), constants::VERSION);
+    println!("--- {} ({}) ---", "Strawberry Chat".cyan().bold(), *constants::VERSION);
     println!("{}\n", STRING_LOADER.load("Welcome").green().bold());
     println!("{}", STRING_LOADER.load("YourChatServers").cyan().bold().underline());
 
