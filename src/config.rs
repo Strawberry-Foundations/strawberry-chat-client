@@ -115,8 +115,8 @@ impl Config {
                 let (username, auth_token) = (credentials.username, credentials.token);
 
                 let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
-                let content = futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() });
-                content
+                
+                futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() })
             }
         };
 
@@ -140,7 +140,7 @@ impl Config {
 
     pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
         let server_id = server_id as usize;
-        let config: Value = from_str(&config_content).unwrap();
+        let config: Value = from_str(config_content).unwrap();
 
         let s_name = config["server"][server_id]["name"]
             .as_str()
