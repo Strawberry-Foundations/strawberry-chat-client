@@ -8,7 +8,7 @@ use crate::auth::IdCredentials;
 
 use crate::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
-use crate::constants::{HEADLESS_CONFIG, SCLOUD_API_URL};
+use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 
 lazy_static! {
     pub static ref CONFIG: Config = {
