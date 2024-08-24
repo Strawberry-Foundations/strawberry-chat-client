@@ -38,5 +38,5 @@ server:
   0:
     name: strawberryfoundations.org
     address: 45.131.109.170
-    port: 49200
+    port: 52800
     type: Main"#;
