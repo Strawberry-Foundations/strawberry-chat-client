@@ -43,7 +43,7 @@ lazy_static! {
 
     pub static ref SERVER_CONFIG: ServerValues = {
         match CONFIG.autoserver.enabled {
-            true => return Config::server_id(CONFIG.autoserver.server_id, &CONFIG.content),
+            true => Config::server_id(CONFIG.autoserver.server_id, &CONFIG.content),
             false => user_server_list(&CONFIG.content)
         }
     };
