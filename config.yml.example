@@ -11,7 +11,7 @@ config_ver: 6
 
 notification:
   use_legacy_notifier: false
-  icon_path: "C:\Users\Julian\Desktop\stbchat-rust\sf_logo_small.ico"
+  icon_path: "/path/to/your/icon/sf_logo_small.ico"
 
 
 networking:
@@ -26,9 +26,9 @@ autoserver:
 
 server:
   0: 
-    name: strawberryfoundations.xyz
+    name: strawberryfoundations.org
     address: 45.131.109.170
-    port: 49200
+    port: 52800
     type: Main
     autologin: false
     compatibility_mode: false # Change to true if you want to connect to servers with v1.8.1 or below
