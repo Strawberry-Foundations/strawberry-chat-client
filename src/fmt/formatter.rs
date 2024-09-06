@@ -6,7 +6,8 @@ use crate::global::CONFIG;
 #[derive(Clone, Copy, Default)]
 pub enum MessageFormats {
     #[default]
-    Default
+    Default,
+    Gray
 }
 
 pub type MessageFormat = HashMap<&'static str, (String, String, String)>;
@@ -34,17 +35,25 @@ impl MessageFormatter {
             format!("{C_RESET}[[%<time>%]] [%<role_color>%][%<nickname>%] (@[%<username>%])[%<badge>%]:{C_RESET} [%<message>%]{C_RESET}")
         ));
 
+        formats.insert("gray", (
+            format!("{C_RESET}[{GRAY}[%<time>%]{RESET}] [%<message>%]"),
+            format!("{C_RESET}[{GRAY}[%<time>%]{RESET}] [%<role_color>%][%<username>%][%<badge>%]:{C_RESET} [%<message>%]{C_RESET}"),
+            format!("{C_RESET}[{GRAY}[%<time>%]{RESET}] [%<role_color>%][%<nickname>%] (@[%<username>%])[%<badge>%]:{C_RESET} [%<message>%]{C_RESET}")
+        ));
+
         formats
     }
 
     pub fn new() -> Self {
         let format = match CONFIG.message_format.as_str() {
             "default" => MessageFormats::Default,
+            "gray" => MessageFormats::Gray,
             &_ => MessageFormats::Default
         };
 
         let format_str = match format {
-            MessageFormats::Default => String::from("default")
+            MessageFormats::Default => String::from("default"),
+            MessageFormats::Gray => String::from("gray")
         };
 
         let formats = Self::load_formats();
