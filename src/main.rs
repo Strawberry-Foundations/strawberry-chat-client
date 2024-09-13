@@ -54,13 +54,13 @@ async fn main() -> eyre::Result<()> {
     let cmd = args.first().unwrap_or(def);
 
     match cmd.as_str() {
-        "login" => { return cli::sid_auth::login().await },
+        "login" | "auth" => { return cli::sid_auth::login().await },
         "sync" => { return cli::sync::sync().await },
         _ => {}
     }
-    
+
     let (tx, rx) = channel::<String>();
-    error_handler::install().unwrap();
+    error_handler::install()?;
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
@@ -88,7 +88,7 @@ async fn main() -> eyre::Result<()> {
     let send_handler = spawn(communication::send::send(w_server, rx));
 
     println!("{}", &STRING_LOADER.load("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
-    
+
     select! {
         _ = recv_handler => { std::process::exit(0) },
         _ = send_handler => { std::process::exit(0) }
