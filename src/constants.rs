@@ -11,10 +11,10 @@ config_ver: 7
 
 ui:
   message_format: gray
-  enable_notifications: true
   enable_terminal_bell: true
 
 notification:
+  enabled: true
   use_legacy_notifier: false
   icon_path: ""
 
