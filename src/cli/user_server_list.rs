@@ -3,7 +3,7 @@ use std::ops::{Add, Sub};
 use owo_colors::OwoColorize;
 
 use serde_yaml::{from_str, Value};
-use stblib::colors::{BOLD, C_RESET, CYAN, RED};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED, GREEN, UNDERLINE, LIGHT_BLUE, RESET};
 
 use crate::config::{Config, ServerValues};
 use crate::{constants, STRING_LOADER};
@@ -13,9 +13,9 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
 
-    println!("--- {} ({}) ---", "Strawberry Chat".cyan().bold(), *constants::VERSION);
-    println!("{}\n", STRING_LOADER.load("Welcome").green().bold());
-    println!("{}", STRING_LOADER.load("YourChatServers").cyan().bold().underline());
+    println!("--- {CYAN}{BOLD}Strawberry Chat{C_RESET} ({LIGHT_BLUE}v{}{RESET}) ---", *constants::VERSION);
+    println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.load("Welcome"));
+    println!("{CYAN}{BOLD}{UNDERLINE}{}{C_RESET}", STRING_LOADER.load("YourChatServers"));
 
     let data: Value = from_str(config_content).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
