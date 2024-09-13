@@ -4,9 +4,9 @@ use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
 
 use stblib::strings::Strings;
-use crate::auth::IdCredentials;
+use crate::core::auth::IdCredentials;
 
-use crate::config::{Config, get_lang_cfg, ServerValues};
+use crate::core::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
 use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 
@@ -47,4 +47,6 @@ lazy_static! {
             false => user_server_list(&CONFIG.content)
         }
     };
+
+    pub static ref VERSION: String = env!("CARGO_PKG_VERSION").to_string();
 }
