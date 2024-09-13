@@ -11,6 +11,8 @@ use crate::global::STRING_LOADER;
 pub struct UserInterface {
     pub message_format: String,
     pub enable_terminal_bell: bool,
+    pub serverlist_show_type: bool,
+    pub serverlist_show_address: bool,
 }
 
 #[derive(Debug, Deserialize)]
