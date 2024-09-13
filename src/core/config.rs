@@ -3,7 +3,7 @@ use serde_yaml::{from_str, Value};
 use std::fs;
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
-use crate::auth::IdCredentials;
+use crate::core::auth::IdCredentials;
 use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 use crate::global::STRING_LOADER;
 
@@ -70,7 +70,7 @@ pub fn config_open(config_path: &str) -> eyre::Result<String> {
 }
 
 pub fn get_lang_cfg() -> String {
-    include_str!("./lang.yml").to_string()
+    include_str!("../lang.yml").to_string()
 }
 
 impl Config {
