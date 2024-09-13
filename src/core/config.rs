@@ -4,7 +4,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
 use crate::core::auth::IdCredentials;
-use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
+use crate::constants::{CONFIG_VERSION, HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 use crate::global::STRING_LOADER;
 
 #[derive(Debug, Deserialize)]
@@ -82,6 +82,12 @@ impl Config {
     pub fn new(config_path: String) -> eyre::Result<Self> {
         let config_yml = config_open(&config_path)?;
         let mut cfg: Self = from_str(&config_yml)?;
+        
+        if cfg.config_ver != CONFIG_VERSION {
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigInvalid"));
+            std::process::exit(1);
+        }
+        
         cfg.path = config_path;
         cfg.content = config_yml;
         Ok(cfg)
@@ -89,7 +95,7 @@ impl Config {
 
     pub fn new_from_content(mut content: String) -> Self {
         if content == "Invalid filename" {
-            println!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigNotAvailable"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigNotAvailable"));
             content = String::from(HEADLESS_CONFIG);
         } 
         
