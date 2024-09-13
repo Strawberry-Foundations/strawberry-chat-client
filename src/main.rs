@@ -39,12 +39,10 @@ pub mod fmt {
     pub mod formatter;
 }
 
-pub mod config;
 pub mod constants;
 pub mod utilities;
 pub mod global;
-pub mod auth;
-
+pub mod core;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
