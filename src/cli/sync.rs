@@ -15,9 +15,15 @@ pub async fn sync() -> eyre::Result<()> {
 
     let client = reqwest::Client::new();
 
-    let exe_path = std::env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
+    let exe_path = std::env::current_exe().unwrap_or_else(|_| {
+        println!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("ExecutablePathNotGet"));
+        std::process::exit(1);
+    });
 
-    let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
+    let exe_dir = exe_path.parent().unwrap_or_else(|| {
+        println!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("ExecutableDirectoryNotFound"));
+        std::process::exit(1);
+    });
 
     let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
 
@@ -34,7 +40,7 @@ pub async fn sync() -> eyre::Result<()> {
 
     let url = format!("{STRAWBERRY_CLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
 
-    let file_content = std::fs::read(file_path).unwrap();
+    let file_content = std::fs::read(file_path)?;
 
     let response = client.post(url)
         .header("Content-Type", "multipart/form-data")
