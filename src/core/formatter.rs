@@ -45,7 +45,7 @@ impl MessageFormatter {
     }
 
     pub fn new() -> Self {
-        let format = match CONFIG.message_format.as_str() {
+        let format = match CONFIG.ui.message_format.as_str() {
             "default" => MessageFormats::Default,
             "gray" => MessageFormats::Gray,
             &_ => MessageFormats::Default
