@@ -42,7 +42,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             },
 
             Ok(ClientPacket::Notification { title, username, avatar_url: _avatar_url, content, bell: _bell }) => {
-                if CONFIG.ui.enable_notifications {
+                if CONFIG.notification.enabled {
                     let mut notifier = Notifier::new(
                         username,
                         content,
