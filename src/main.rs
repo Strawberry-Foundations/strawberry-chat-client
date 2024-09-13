@@ -30,15 +30,6 @@ pub mod cli {
     pub mod sync;
 }
 
-pub mod object {
-    pub mod client_meta;
-    pub mod login_packet;
-}
-
-pub mod fmt {
-    pub mod formatter;
-}
-
 pub mod constants;
 pub mod utilities;
 pub mod global;
