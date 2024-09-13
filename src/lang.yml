@@ -57,7 +57,7 @@ de_DE:
   RoleColor: "Farbe deiner Rolle: "
   ExecutablePathNotGet: "Die Executable des Strawberry Chat Client konnte nicht gefunden werden"
   ExecutableDirectoryNotFound: "Fehler bei der Bestimmung des Verzeichnisses der Executable"
-  SyncPostError: "Ein Fehler ist bei der Synchronisierung aufgetreten. Möglicherweise liegt ein Fehler an den Remoteserver vor. Bitte versuche es später noch einmal"
+  SyncPostError: "Ein Fehler bei der Synchronisierung ist aufgetreten. Möglicherweise liegt ein Fehler an den Remoteserver vor. Bitte versuche es später noch einmal"
 
 
 # Language Strings for en_US (English)
