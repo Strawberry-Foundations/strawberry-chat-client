@@ -10,9 +10,9 @@ use stblib::colors::*;
 use stblib::notifications::Notifier;
 use stblib::notifications::os::OS;
 
-use crate::fmt::formatter::MessageFormatter;
+use crate::core::formatter::MessageFormatter;
 use crate::global::{CONFIG, STRING_LOADER};
-use crate::object::client_meta::ClientMeta;
+use crate::core::meta::ClientMeta;
 
 
 pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: Sender<String>) {
@@ -30,7 +30,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                     author.username,
                     author.nickname,
                     author.role_color,
-                    crate::fmt::formatter::badge_handler(author.badge),
+                    crate::core::formatter::badge_handler(author.badge),
                     message,
                 ));
             },
