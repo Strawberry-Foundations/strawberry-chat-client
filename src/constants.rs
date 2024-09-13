@@ -5,24 +5,25 @@ pub const STRAWBERRY_CLOUD_API_URL: &str = "https://cloud.strawberryfoundations.
 pub const HEADLESS_CONFIG: &str = r#"language: en_US
 update_channel: "stable"
 detect_same_system_messages: true
-message_format: default
-enable_notifications: true
-enable_terminal_bell: true
 experimental_debug_mode: false
 extreme_debug_mode: false
-recv_allowed_bytes: 8192
-config_ver: 6
+config_ver: 7
+
+ui:
+  message_format: gray
+  enable_notifications: true
+  enable_terminal_bell: true
 
 notification:
   use_legacy_notifier: false
   icon_path: ""
 
-
 networking:
   online_mode: true
   keep_alive: true
-  latency_mode: true
+  latency_mode: false
   latency_mode_time: 1
+  recv_allowed_bytes: 8192
 
 autoserver:
   enabled: false
