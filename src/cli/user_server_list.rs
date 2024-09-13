@@ -27,7 +27,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         );
 
         if CONFIG.ui.serverlist_show_type {
-            format = format!("{format} ({YELLOW}{}{RESET})", data["server"][i]["type"].as_str().unwrap())
+            format = format!("{format} - {YELLOW}{}{RESET}", data["server"][i]["type"].as_str().unwrap())
         }
         if CONFIG.ui.serverlist_show_address {
             format = format!("{format} - {MAGENTA}{}", data["server"][i]["address"].as_str().unwrap())
