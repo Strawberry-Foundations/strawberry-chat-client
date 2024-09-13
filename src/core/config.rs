@@ -8,11 +8,19 @@ use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 use crate::global::STRING_LOADER;
 
 #[derive(Debug, Deserialize)]
+pub struct UserInterface {
+    pub message_format: String,
+    pub enable_notifications: bool,
+    pub enable_terminal_bell: bool,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Networking {
     pub online_mode: bool,
     pub keep_alive: bool,
     pub latency_mode: bool,
     pub latency_mode_time: u8,
+    pub recv_allowed_bytes: u32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -32,13 +40,10 @@ pub struct Config {
     pub language: String,
     pub update_channel: String,
     pub detect_same_system_messages: bool,
-    pub message_format: String,
-    pub enable_notifications: bool,
-    pub enable_terminal_bell: bool,
     pub experimental_debug_mode: bool,
     pub extreme_debug_mode: bool,
-    pub recv_allowed_bytes: u32,
     pub config_ver: u8,
+    pub ui: UserInterface,
     pub notification: Notification,
     pub networking: Networking,
     pub autoserver: Autoserver,
