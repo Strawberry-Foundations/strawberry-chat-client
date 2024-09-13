@@ -42,25 +42,27 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             },
 
             Ok(ClientPacket::Notification { title, username, avatar_url: _avatar_url, content, bell: _bell }) => {
-                let mut notifier = Notifier::new(
-                    username,
-                    content,
-                    title,
-                    "normal",
-                    CONFIG.notification.icon_path.clone(),
-                    Some(String::from("SMS")),
-                    false
-                ).build();
-                
-                if CONFIG.notification.use_legacy_notifier {
-                    match notifier.internal_notifier.system {
-                        OS::Windows => notifier.internal_notifier.system = &OS::WindowsLegacy,
-                        OS::Linux => notifier.internal_notifier.system = &OS::LinuxLibNotify,
-                        _ => { }
+                if CONFIG.ui.enable_notifications {
+                    let mut notifier = Notifier::new(
+                        username,
+                        content,
+                        title,
+                        "normal",
+                        CONFIG.notification.icon_path.clone(),
+                        Some(String::from("SMS")),
+                        false
+                    ).build();
+                    
+                    if CONFIG.notification.use_legacy_notifier {
+                        match notifier.internal_notifier.system {
+                            OS::Windows => notifier.internal_notifier.system = &OS::WindowsLegacy,
+                            OS::Linux => notifier.internal_notifier.system = &OS::LinuxLibNotify,
+                            _ => { }
+                        }
                     }
+                    
+                    notifier.send();
                 }
-                
-                notifier.send();
             }
 
             Err(_) => break,
