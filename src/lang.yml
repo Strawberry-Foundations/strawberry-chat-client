@@ -55,6 +55,8 @@ de_DE:
   RegisterNewUser: "Hallo! Wir helfen dir beim Registrieren eines neuen Benutzers!"
   PasswordNotMatch: "Passwörter stimmen nicht überein"
   RoleColor: "Farbe deiner Rolle: "
+  ExecutablePathNotGet: "Die Executable des Strawberry Chat Client konnte nicht gefunden werden"
+  ExecutableDirectoryNotFound: "Fehler bei der Bestimmung des Verzeichnisses der Executable"
 
 # Language Strings for en_US (English)
 en_US:
@@ -113,3 +115,5 @@ en_US:
   RegisterNewUser: "Hello! We'll help you register a new user!"
   PasswordNotMatch: "Passwords do not match"
   RoleColor: "Color of your role: "
+  ExecutablePathNotGet: "Could not get your Strawberry Chat Client Executable"
+  ExecutableDirectoryNotFound: "Error determining the directory of the executable file."
