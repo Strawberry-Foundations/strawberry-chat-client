@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
-use crate::auth::IdCredentials;
+use crate::core::auth::IdCredentials;
 use crate::constants::STRAWBERRY_CLOUD_API_URL;
 use crate::global::STRING_LOADER;
 use crate::utilities::make_absolute_path;
