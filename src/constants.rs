@@ -1,6 +1,6 @@
 pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
-// pub const STRAWBERRY_CLOUD_API_URL: &str = "http://localhost:8000/";
+pub const CONFIG_VERSION: u8 = 7;
 
 pub const HEADLESS_CONFIG: &str = r#"language: en_US
 update_channel: "stable"
@@ -35,3 +35,5 @@ server:
     address: 45.131.109.170
     port: 52800
     type: Main"#;
+
+// pub const STRAWBERRY_CLOUD_API_URL: &str = "http://localhost:8000/";
