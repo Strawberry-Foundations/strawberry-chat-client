@@ -1,6 +1,7 @@
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use serde_json::Value;
+use stblib::colors::{BOLD, C_RESET, RED};
 
 pub fn delete_last_line() {
     print!("\x1b[1A");
@@ -14,8 +15,10 @@ pub fn make_absolute_path(input_path: &str) -> PathBuf {
     if path.is_absolute() {
         PathBuf::from(path)
     } else {
-        // Wenn der Pfad relativ ist, füge das aktuelle Arbeitsverzeichnis hinzu
-        let mut absolute_path = std::env::current_dir().expect("Konnte das aktuelle Verzeichnis nicht abrufen.");
+        let mut absolute_path = std::env::current_dir().unwrap_or_else(|_| {
+            eprintln!("{RED}{BOLD}Couldn't get current directory{C_RESET}");
+            std::process::exit(1);
+        });
         absolute_path.push(path);
         absolute_path
     }
