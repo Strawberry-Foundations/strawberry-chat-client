@@ -5,15 +5,15 @@ use owo_colors::OwoColorize;
 use serde_yaml::{from_str, Value};
 use stblib::colors::{BOLD, C_RESET, CYAN, RED, GREEN, UNDERLINE, LIGHT_BLUE, RESET};
 
-use crate::config::{Config, ServerValues};
-use crate::{constants, STRING_LOADER};
+use crate::core::config::{Config, ServerValues};
+use crate::{global, STRING_LOADER};
 
 
 pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
 
-    println!("--- {CYAN}{BOLD}Strawberry Chat{C_RESET} ({LIGHT_BLUE}v{}{RESET}) ---", *constants::VERSION);
+    println!("--- {CYAN}{BOLD}Strawberry Chat{C_RESET} ({LIGHT_BLUE}v{}{RESET}) ---", *global::VERSION);
     println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.load("Welcome"));
     println!("{CYAN}{BOLD}{UNDERLINE}{}{C_RESET}", STRING_LOADER.load("YourChatServers"));
 
