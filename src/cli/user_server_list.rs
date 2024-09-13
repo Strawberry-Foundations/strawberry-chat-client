@@ -3,11 +3,11 @@ use std::ops::{Add, Sub};
 use owo_colors::OwoColorize;
 
 use serde_yaml::{from_str, Value};
-use stblib::colors::{BOLD, C_RESET, CYAN, RED, GREEN, UNDERLINE, LIGHT_BLUE, RESET};
+use stblib::colors::{BOLD, C_RESET, CYAN, RED, GREEN, UNDERLINE, LIGHT_BLUE, RESET, YELLOW, MAGENTA};
 
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRING_LOADER};
-
+use crate::global::CONFIG;
 
 pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdin = std::io::stdin();
@@ -21,11 +21,19 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
     let server_data_length = data["server"].as_mapping().unwrap().len();
 
     for i in 0..server_data_length {
-        println!(
-            "[{}] {}",
-            i.add(1).blue().bold(),
-            data["server"][i]["name"].as_str().unwrap().bold()
+        let mut format = format!(
+            "{BOLD}[{}] {}", i.add(1).blue(),
+            data["server"][i]["name"].as_str().unwrap()
         );
+
+        if CONFIG.ui.serverlist_show_type {
+            format = format!("{format} ({YELLOW}{}{RESET})", data["server"][i]["type"].as_str().unwrap())
+        }
+        if CONFIG.ui.serverlist_show_address {
+            format = format!("{format} - {MAGENTA}{}", data["server"][i]["address"].as_str().unwrap())
+        }
+
+        println!("{format}{C_RESET}");
     }
 
     println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.load("Custom").bold());
