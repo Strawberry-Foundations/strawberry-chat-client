@@ -8,6 +8,8 @@ config_ver: 7
 ui:
   message_format: gray
   enable_terminal_bell: true
+  serverlist_show_type: false
+  serverlist_show_address: false
 
 notification:
   enabled: true
