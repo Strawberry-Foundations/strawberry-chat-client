@@ -10,7 +10,6 @@ use crate::global::STRING_LOADER;
 #[derive(Debug, Deserialize)]
 pub struct UserInterface {
     pub message_format: String,
-    pub enable_notifications: bool,
     pub enable_terminal_bell: bool,
 }
 
@@ -31,6 +30,7 @@ pub struct Autoserver {
 
 #[derive(Debug, Deserialize)]
 pub struct Notification {
+    pub enabled: bool,
     pub use_legacy_notifier: bool,
     pub icon_path: String,
 }
