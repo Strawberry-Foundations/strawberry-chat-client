@@ -58,7 +58,7 @@ de_DE:
   ExecutablePathNotGet: "Die Executable des Strawberry Chat Client konnte nicht gefunden werden"
   ExecutableDirectoryNotFound: "Fehler bei der Bestimmung des Verzeichnisses der Executable"
   SyncPostError: "Ein Fehler bei der Synchronisierung ist aufgetreten. Möglicherweise liegt ein Fehler an den Remoteserver vor. Bitte versuche es später noch einmal"
-  ConfigInvalid: "Deine Konfiguration ist veraltet! Überprüfe die Konfiguration mit der zuletzt verfügbaren Config-Datei auf GitHub"
+  ConfigOutdated: "Deine Konfiguration ist veraltet! Überprüfe die Konfiguration mit der zuletzt verfügbaren Config-Datei auf GitHub"
 
 
 # Language Strings for en_US (English)
@@ -121,4 +121,4 @@ en_US:
   ExecutablePathNotGet: "Could not get your Strawberry Chat Client Executable"
   ExecutableDirectoryNotFound: "Error determining the directory of the executable file"
   SyncPostError: "An error has occurred during synchronisation. There may be an error on the remote server. Please try again later"
-  ConfigInvalid: "Your configuration is outdated! Check the configuration with the latest available config file on GitHub"
+  ConfigOutdated: "Your configuration is outdated! Check the configuration with the latest available config file on GitHub"
