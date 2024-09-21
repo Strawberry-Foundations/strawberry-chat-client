@@ -40,7 +40,10 @@ pub async fn sync() -> eyre::Result<()> {
 
     let url = format!("{STRAWBERRY_CLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
 
-    let file_content = std::fs::read(file_path)?;
+    let file_content = std::fs::read(file_path).unwrap_or_else(|_| {
+        println!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("ConfigNotAvailableSync"));
+        std::process::exit(1);
+    });
 
     let response = client.post(url)
         .header("Content-Type", "multipart/form-data")
