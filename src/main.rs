@@ -7,9 +7,9 @@ use tokio::{select, spawn};
 
 use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
 
-use owo_colors::OwoColorize;
 use std::sync::mpsc::channel;
 use std::time::Duration;
+use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
 
 use crate::cli::error_handler;
 use crate::global::{SERVER_CONFIG, STRING_LOADER};
@@ -53,10 +53,10 @@ async fn main() -> eyre::Result<()> {
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
-    println!("{}", STRING_LOADER.load("TryConnection").yellow().bold());
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.load("TryConnection"));
 
     let stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
-        eprintln!("{}", STRING_LOADER.load("ErrNotReachable").red().bold());
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("ErrNotReachable"));
         std::process::exit(1);
     });
 
@@ -76,7 +76,11 @@ async fn main() -> eyre::Result<()> {
     let recv_handler = spawn(communication::recv::recv(r_server, tx));
     let send_handler = spawn(communication::send::send(w_server, rx));
 
-    println!("{}", &STRING_LOADER.load("ConnectedToServer").replace("%s", SERVER_CONFIG.name.as_str()).green().bold());
+    println!(
+        "{GREEN}{BOLD}{}{C_RESET}",
+        &STRING_LOADER.load("ConnectedToServer")
+            .replace("%s", &format!("{LIGHT_BLUE}{ITALIC}{}{C_RESET}{GREEN}{BOLD}", SERVER_CONFIG.name))
+    );
 
     select! {
         _ = recv_handler => { std::process::exit(0) },
