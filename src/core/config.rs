@@ -131,8 +131,13 @@ impl Config {
                 let (username, auth_token) = (credentials.username, credentials.token);
 
                 let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
-                
-                futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() })
+
+                futures::executor::block_on(async {
+                    match reqwest::get(url).await {
+                        Ok(response) => response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)),
+                        Err(_) => String::from(HEADLESS_CONFIG)
+                    }
+                })
             }
         };
 
