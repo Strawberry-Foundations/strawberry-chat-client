@@ -35,7 +35,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         println!("{format}{C_RESET}");
     }
 
-    println!("[{}] {BLUE}{BOLD}{}{C_RESET}\n", server_data_length.add(1), STRING_LOADER.load("Custom"));
+    println!("[{BLUE}{BOLD}{}{RESET}] {}{C_RESET}\n", server_data_length.add(1), STRING_LOADER.load("Custom"));
 
     let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.load("SelChatServer"));
 
