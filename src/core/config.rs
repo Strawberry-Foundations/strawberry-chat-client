@@ -86,7 +86,7 @@ impl Config {
         let mut cfg: Self = from_str(&config_yml)?;
         
         if cfg.config_ver != CONFIG_VERSION {
-            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigInvalid"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigOutdated"));
             std::process::exit(1);
         }
         
