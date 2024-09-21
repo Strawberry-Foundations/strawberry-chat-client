@@ -60,6 +60,7 @@ de_DE:
   SyncPostError: "Ein Fehler bei der Synchronisierung ist aufgetreten. Möglicherweise liegt ein Fehler an den Remoteserver vor. Bitte versuche es später noch einmal"
   ConfigOutdated: "Deine Konfiguration ist veraltet! Überprüfe die Konfiguration mit der zuletzt verfügbaren Config-Datei auf GitHub"
   ConfigInvalid: "Deine Konfiguration ist ungültig. Entweder ist deine Konfiguration veraltet, oder du hast einen Tippfehler"
+  ConfigNotAvailableSync: "Du besitzt keine Lokale Konfiguration für die Synchronisierung mit deiner Strawberry ID"
 
 
 # Language Strings for en_US (English)
@@ -124,3 +125,4 @@ en_US:
   SyncPostError: "An error has occurred during synchronisation. There may be an error on the remote server. Please try again later"
   ConfigOutdated: "Your configuration is outdated! Check the configuration with the latest available config file on GitHub"
   ConfigInvalid: "Your configuration is invalid. Either your configuration is out of date or you have made a typing error"
+  ConfigNotAvailableSync: "You do not have a local configuration for synchronisation with your Strawberry ID"
