@@ -1,9 +1,8 @@
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
-use owo_colors::OwoColorize;
 
 use serde_yaml::{from_str, Value};
-use stblib::colors::{BOLD, C_RESET, CYAN, RED, GREEN, UNDERLINE, LIGHT_BLUE, RESET, YELLOW, MAGENTA};
+use stblib::colors::*;
 
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRING_LOADER};
@@ -22,7 +21,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
 
     for i in 0..server_data_length {
         let mut format = format!(
-            "{BOLD}[{}] {}", i.add(1).blue(),
+            "{BOLD}[{BLUE}{}{RESET}] {}", i.add(1),
             data["server"][i]["name"].as_str().unwrap()
         );
 
@@ -36,7 +35,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         println!("{format}{C_RESET}");
     }
 
-    println!("[{}] {}\n", server_data_length.add(1).blue().bold(), STRING_LOADER.load("Custom").bold());
+    println!("[{}] {BLUE}{BOLD}{}{C_RESET}\n", server_data_length.add(1), STRING_LOADER.load("Custom"));
 
     let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRING_LOADER.load("SelChatServer"));
 
@@ -72,7 +71,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         }
 
         Ordering::Greater => {
-            eprintln!("{}", STRING_LOADER.load("InvalidServerSelection").red().bold());
+            eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("InvalidServerSelection"));
             std::process::exit(1);
         }
         Ordering::Less => {
