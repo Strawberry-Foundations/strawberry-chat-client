@@ -3,7 +3,7 @@ use std::error::Error;
 use std::fmt::Formatter;
 
 use eyre::EyreHandler;
-use owo_colors::OwoColorize;
+use stblib::colors::{BOLD, C_RESET, LIGHT_RED};
 
 use crate::STRING_LOADER;
 
@@ -21,7 +21,7 @@ impl EyreHandler for Handler {
 
         let mut errors = iter::successors(Some(error), |error| (*error).source());
 
-        writeln!(f, "{}", errors.next().unwrap().bright_red().bold())?;
+        writeln!(f, "{LIGHT_RED}{BOLD}{}{C_RESET}", errors.next().unwrap())?;
 
         writeln!(f, "{}:", STRING_LOADER.load("Cause"))?;
 
