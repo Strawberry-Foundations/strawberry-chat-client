@@ -83,7 +83,10 @@ pub fn get_lang_cfg() -> String {
 impl Config {
     pub fn new(config_path: String) -> eyre::Result<Self> {
         let config_yml = config_open(&config_path)?;
-        let mut cfg: Self = from_str(&config_yml)?;
+        let mut cfg: Self = from_str(&config_yml).unwrap_or_else(|_| {
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigInvalid"));
+            std::process::exit(1);
+        });
         
         if cfg.config_ver != CONFIG_VERSION {
             eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigOutdated"));
