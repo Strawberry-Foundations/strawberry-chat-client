@@ -1,5 +1,4 @@
 use std::sync::mpsc::Sender;
-use owo_colors::OwoColorize;
 
 use tokio::net::TcpStream;
 use tokio::io::ReadHalf;
@@ -73,6 +72,6 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
         }
     }
 
-    println!("{}", STRING_LOADER.load("CloseApplication").yellow().bold());
-    println!("{}", STRING_LOADER.load("PressCtrlDToExit").bold());
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.load("CloseApplication"));
+    println!("{BOLD}{}{C_RESET}", STRING_LOADER.load("PressCtrlDToExit"));
 }
