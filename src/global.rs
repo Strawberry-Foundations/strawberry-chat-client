@@ -2,7 +2,7 @@ use std::env;
 use std::path::{Path, PathBuf};
 
 use lazy_static::lazy_static;
-
+use stblib::colors::{BOLD, C_RESET, RED};
 use stblib::strings::Strings;
 use crate::core::auth::IdCredentials;
 
@@ -33,7 +33,19 @@ lazy_static! {
             let (username, auth_token) = (credentials.username, credentials.token);
 
             let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
-            let content = futures::executor::block_on( async { reqwest::get(url).await.unwrap().text().await.unwrap() });
+            let content = futures::executor::block_on(async {
+                match reqwest::get(url).await {
+                    Ok(response) => response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)),
+                    Err(_) => {
+                        eprintln!(
+                            "{BOLD}{RED}Your configuration could not be loaded locally or from your \
+                            Strawberry ID.\nEither create a local configuration or synchronize your \
+                            configuration on another device, if available.{C_RESET}"
+                        );
+                        String::from(HEADLESS_CONFIG)
+                    }
+                }
+            });
 
             Config::new_from_content(content)
         })
