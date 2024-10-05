@@ -14,26 +14,12 @@ use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
 use crate::cli::error_handler;
 use crate::global::{SERVER_CONFIG, STRING_LOADER};
 
-pub mod communication {
-    pub mod recv;
-    pub mod legacy_recv;
-    pub mod send;
-    pub mod keep_alive;
-    pub mod login;
-    pub mod register;
-}
-
-pub mod cli {
-    pub mod user_server_list;
-    pub mod error_handler;
-    pub mod sid_auth;
-    pub mod sync;
-}
-
+pub mod communication;
+pub mod core;
+pub mod cli;
 pub mod constants;
 pub mod utilities;
 pub mod global;
-pub mod core;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
