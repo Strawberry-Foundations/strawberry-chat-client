@@ -7,6 +7,7 @@ use stblib::colors::*;
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRING_LOADER};
 use crate::core::update::check_for_updates;
+use crate::core::verify::{is_in_verified_servers, verify_server};
 use crate::global::CONFIG;
 
 pub fn user_server_list(config_content: &str) -> ServerValues {
@@ -25,10 +26,13 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
     let data: Value = from_str(config_content).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
 
+    let verified_servers = futures::executor::block_on(async { verify_server(&data).await });
+
     for i in 0..server_data_length {
         let mut format = format!(
-            "{BOLD}[{BLUE}{}{RESET}] {}", i.add(1),
-            data["server"][i]["name"].as_str().unwrap()
+            "{BOLD}[{BLUE}{}{RESET}] {}{}", i.add(1),
+            data["server"][i]["name"].as_str().unwrap(),
+            is_in_verified_servers(data["server"][i]["address"].as_str().unwrap(), &verified_servers),
         );
 
         if CONFIG.ui.serverlist_show_type {
