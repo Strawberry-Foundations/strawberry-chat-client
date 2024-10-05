@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
 use stblib::colors::{BOLD, C_RESET, RED};
 use stblib::strings::Strings;
-use crate::core::auth::IdCredentials;
 
+use crate::core::auth::IdCredentials;
 use crate::core::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
 use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};

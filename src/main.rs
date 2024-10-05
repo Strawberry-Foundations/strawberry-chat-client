@@ -6,10 +6,10 @@ use tokio::io::split;
 use tokio::{select, spawn};
 
 use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
 
 use std::sync::mpsc::channel;
 use std::time::Duration;
-use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
 
 use crate::cli::error_handler;
 use crate::global::{SERVER_CONFIG, STRING_LOADER};
