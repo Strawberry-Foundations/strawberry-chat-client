@@ -1,7 +1,7 @@
 pub const STRAWBERRY_API: &str = "https://api.strawberryfoundations.org/v1/";
 pub const STRAWBERRY_ID_API: &str = "https://id.strawberryfoundations.org/v2/";
 pub const STRAWBERRY_CLOUD_API_URL: &str = "https://cloud.strawberryfoundations.org/";
-pub const CONFIG_VERSION: u8 = 7;
+pub const CONFIG_VERSION: u8 = 8;
 
 pub const HEADLESS_CONFIG: &str = r#"language: en_US
 update_channel: "stable"
