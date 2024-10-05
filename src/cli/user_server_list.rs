@@ -6,6 +6,7 @@ use stblib::colors::*;
 
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRING_LOADER};
+use crate::core::update::check_for_updates;
 use crate::global::CONFIG;
 
 pub fn user_server_list(config_content: &str) -> ServerValues {
@@ -14,6 +15,11 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
 
     println!("--- {CYAN}{BOLD}Strawberry Chat{C_RESET} ({LIGHT_BLUE}v{}{RESET}) ---", *global::VERSION);
     println!("{GREEN}{BOLD}{}{C_RESET}\n", STRING_LOADER.load("Welcome"));
+
+    futures::executor::block_on(async {
+        check_for_updates().await.unwrap();
+    });
+
     println!("{CYAN}{BOLD}{UNDERLINE}{}{C_RESET}", STRING_LOADER.load("YourChatServers"));
 
     let data: Value = from_str(config_content).unwrap();
