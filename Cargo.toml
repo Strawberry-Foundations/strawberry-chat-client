@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 stblib = { version = "0.6.3-pre1", features = ["stbchat", "notifications"] }
 tokio = { version = "1.40.0", features = ["full"] }
-reqwest = "0.12.7"
+reqwest = "0.12.8"
 rustyline = "14.0.0"
 serde = { version = "1.0.210", features = ["derive"] }
 serde_yaml = "0.9.34"
@@ -20,7 +20,7 @@ lazy_static = "1.5.0"
 rprompt = "2.1.1"
 socket2 = "0.5.7"
 dirs = "5.0.1"
-futures = "0.3.30"
+futures = "0.3.31"
 strip-ansi-escapes = "0.2.0"
 
 [profile.release]
