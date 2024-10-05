@@ -1,9 +1,6 @@
 language: en_US
 update_channel: "stable"
-detect_same_system_messages: true
-experimental_debug_mode: false
-extreme_debug_mode: false
-config_ver: 7
+config_ver: 8
 
 ui:
   message_format: gray
@@ -18,10 +15,6 @@ notification:
 
 networking:
   online_mode: true
-  keep_alive: true
-  latency_mode: false
-  latency_mode_time: 1
-  recv_allowed_bytes: 8192
 
 autoserver:
   enabled: false
