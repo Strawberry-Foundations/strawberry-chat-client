@@ -18,10 +18,6 @@ pub struct UserInterface {
 #[derive(Debug, Deserialize)]
 pub struct Networking {
     pub online_mode: bool,
-    pub keep_alive: bool,
-    pub latency_mode: bool,
-    pub latency_mode_time: u8,
-    pub recv_allowed_bytes: u32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -80,8 +76,9 @@ pub fn get_lang_cfg() -> String {
 impl Config {
     pub fn new(config_path: String) -> eyre::Result<Self> {
         let config_yml = config_open(&config_path)?;
-        let mut cfg: Self = from_str(&config_yml).unwrap_or_else(|_| {
+        let mut cfg: Self = from_str(&config_yml).unwrap_or_else(|err| {
             eprintln!("{BOLD}{RED}{}{C_RESET}", STRING_LOADER.load("ConfigInvalid"));
+            eprintln!("{BOLD}{RED}{err}{C_RESET}");
             std::process::exit(1);
         });
         
