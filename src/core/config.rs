@@ -41,9 +41,6 @@ pub struct Notification {
 pub struct Config {
     pub language: String,
     pub update_channel: String,
-    pub detect_same_system_messages: bool,
-    pub experimental_debug_mode: bool,
-    pub extreme_debug_mode: bool,
     pub config_ver: u8,
     pub ui: UserInterface,
     pub notification: Notification,
