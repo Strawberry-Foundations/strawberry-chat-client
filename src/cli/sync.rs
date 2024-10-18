@@ -1,13 +1,13 @@
 use std::path::{Path, PathBuf};
 use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::id::credentials::StrawberryIdCredentials;
 
-use crate::core::auth::IdCredentials;
 use crate::constants::STRAWBERRY_CLOUD_API_URL;
 use crate::global::STRINGS;
 use crate::utilities::make_absolute_path;
 
 pub async fn sync() -> eyre::Result<()> {
-    let credentials = IdCredentials::new().unwrap_or_else(|_| {
+    let credentials = StrawberryIdCredentials::fetch().unwrap_or_else(|_| {
         println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("CredentialsFileNotExist"));
         std::process::exit(1);
     });
@@ -35,9 +35,6 @@ pub async fn sync() -> eyre::Result<()> {
     }
 
     let file_path = make_absolute_path(config_path.as_str());
-    
-    /* let path = Path::new(&file_path);
-    println!("{}", path.to_str().unwrap()); */
 
     let url = format!("{STRAWBERRY_CLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
 
