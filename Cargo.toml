@@ -1,12 +1,13 @@
 [package]
 name = "stbchat-rust"
-version = "1.4.2"
+version = "1.4.3"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version = "0.6.3", features = ["stbchat", "notifications"] }
+stblib = { version = "0.6.4", features = ["stbchat", "notifications"] }
+# stblib = { version = "0.6.4", features = ["stbchat", "notifications"], path = "../../stblib-rust"}
 tokio = { version = "1.40.0", features = ["full"] }
 reqwest = "0.12.8"
 rustyline = "14.0.0"
