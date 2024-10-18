@@ -44,7 +44,7 @@ pub async fn login() -> eyre::Result<()> {
                                 CredentialsError::HomeNotFound => {
                                     eprintln!("{RED}{BOLD}Error while creating config directory:{RESET} Home directory not found.{C_RESET}");
                                 }
-                                _ => todo!(),
+                                _ => unreachable!(),
                             }
                         }
                     }
