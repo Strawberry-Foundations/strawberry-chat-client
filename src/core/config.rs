@@ -1,9 +1,12 @@
-use serde::Deserialize;
-use serde_yaml::{from_str, Value};
 use std::fs;
 use std::path::{Path, PathBuf};
+
+use serde::Deserialize;
+use serde_yaml::{from_str, Value};
+
 use stblib::colors::{BOLD, C_RESET, RED};
-use crate::core::auth::IdCredentials;
+use stblib::id::credentials::StrawberryIdCredentials;
+
 use crate::constants::{CONFIG_VERSION, HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 use crate::global::STRINGS;
 
@@ -117,7 +120,7 @@ impl Config {
         let config_yml = match config_open(&config_path) {
             Ok(s) => s,
             Err(_) => {
-                let credentials = match IdCredentials::new() {
+                let credentials = match StrawberryIdCredentials::fetch() {
                     Ok(cred) => cred,
                     Err(_) => return String::from("en_US")
                 };
