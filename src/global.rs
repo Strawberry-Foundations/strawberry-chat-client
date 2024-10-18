@@ -1,11 +1,11 @@
 use std::env;
 use std::path::{Path, PathBuf};
-
 use lazy_static::lazy_static;
+
 use stblib::colors::{BOLD, C_RESET, RED};
+use stblib::id::credentials::StrawberryIdCredentials;
 use stblib::strings::Strings;
 
-use crate::core::auth::IdCredentials;
 use crate::core::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
 use crate::constants::{HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
@@ -25,7 +25,7 @@ lazy_static! {
         }
 
         Config::new(config_path).unwrap_or_else(|_| {
-            let credentials = match IdCredentials::new() {
+            let credentials = match StrawberryIdCredentials::fetch() {
                 Ok(credentials) => credentials,
                 Err(_) => return Config::new_from_content(String::from(HEADLESS_CONFIG))
             };
