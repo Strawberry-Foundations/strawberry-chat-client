@@ -3,7 +3,7 @@ use std::thread::sleep;
 use std::time::Duration;
 use rustyline::error::ReadlineError;
 use crate::communication::register::register;
-use crate::global::STRING_LOADER;
+use crate::global::STRINGS;
 
 pub enum PreAuthEvent {
     Login(String, String),
@@ -19,19 +19,19 @@ pub fn login() -> PreAuthEvent {
     let username: String = rprompt::prompt_reply_from_bufread(
         &mut stdin.lock(), &mut stdout.lock(), format!("{GREEN}{BOLD}Username: {C_RESET}")
     ).unwrap().parse().unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.str("InvalidInput"));
         exit(1);
     });
 
     let password: String = rprompt::prompt_reply_from_bufread(
         &mut stdin.lock(), &mut stdout.lock(), format!("{GREEN}{BOLD}Password: {C_RESET}")
     ).unwrap().parse().unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.str("InvalidInput"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.str("InvalidInput"));
         exit(1);
     }); */
     // format!("{}", "Username: ".green()
 
-    let username: String = match line_reader.readline(STRING_LOADER.load("Username").as_str()) {
+    let username: String = match line_reader.readline(STRINGS.load("Username").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
@@ -46,7 +46,7 @@ pub fn login() -> PreAuthEvent {
         return PreAuthEvent::Register(username, password, role_color)
     }
 
-    let password: String = match line_reader.readline(STRING_LOADER.load("Password").as_str()) {
+    let password: String = match line_reader.readline(STRINGS.load("Password").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));

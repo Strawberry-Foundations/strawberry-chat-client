@@ -5,7 +5,7 @@ use std::fmt::Formatter;
 use eyre::EyreHandler;
 use stblib::colors::{BOLD, C_RESET, LIGHT_RED};
 
-use crate::STRING_LOADER;
+use crate::STRINGS;
 
 pub fn install() -> Result<(), impl Error> {
     eyre::set_hook(Box::new(move |_| Box::new(Handler)))
@@ -23,7 +23,7 @@ impl EyreHandler for Handler {
 
         writeln!(f, "{LIGHT_RED}{BOLD}{}{C_RESET}", errors.next().unwrap())?;
 
-        writeln!(f, "{}:", STRING_LOADER.load("Cause"))?;
+        writeln!(f, "{}:", STRINGS.load("Cause"))?;
 
         for e in errors {
             writeln!(f, "- {e}")?;

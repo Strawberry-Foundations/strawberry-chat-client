@@ -12,7 +12,7 @@ use std::sync::mpsc::channel;
 use std::time::Duration;
 
 use crate::cli::error_handler;
-use crate::global::{SERVER_CONFIG, STRING_LOADER};
+use crate::global::{SERVER_CONFIG, STRINGS};
 
 pub mod communication;
 pub mod core;
@@ -39,10 +39,10 @@ async fn main() -> eyre::Result<()> {
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
-    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.load("TryConnection"));
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.load("TryConnection"));
 
     let stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRING_LOADER.load("ErrNotReachable"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("ErrNotReachable"));
         std::process::exit(1);
     });
 
@@ -64,7 +64,7 @@ async fn main() -> eyre::Result<()> {
 
     println!(
         "{GREEN}{BOLD}{}{C_RESET}",
-        &STRING_LOADER.load("ConnectedToServer")
+        &STRINGS.load("ConnectedToServer")
             .replace("%s", &format!("{LIGHT_BLUE}{ITALIC}{}{C_RESET}{GREEN}{BOLD}", SERVER_CONFIG.name))
     );
 

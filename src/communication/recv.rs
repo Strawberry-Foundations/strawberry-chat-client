@@ -10,7 +10,7 @@ use stblib::notifications::Notifier;
 use stblib::notifications::os::OS;
 
 use crate::core::formatter::MessageFormatter;
-use crate::global::{CONFIG, STRING_LOADER};
+use crate::global::{CONFIG, STRINGS};
 use crate::core::meta::ClientMeta;
 
 
@@ -67,11 +67,11 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             Err(_) => break,
             _ => println!(
                 "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
-                STRING_LOADER.load("UnimplementedPacket"),
+                STRINGS.load("UnimplementedPacket"),
             )
         }
     }
 
-    println!("{YELLOW}{BOLD}{}{C_RESET}", STRING_LOADER.load("CloseApplication"));
-    println!("{BOLD}{}{C_RESET}", STRING_LOADER.load("PressCtrlDToExit"));
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.load("CloseApplication"));
+    println!("{BOLD}{}{C_RESET}", STRINGS.load("PressCtrlDToExit"));
 }

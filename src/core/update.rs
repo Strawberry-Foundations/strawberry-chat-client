@@ -1,6 +1,6 @@
 use stblib::colors::{BLUE, BOLD, CYAN, C_RESET, GREEN, MAGENTA, RESET, YELLOW};
 use crate::constants::STRAWBERRY_API;
-use crate::global::{CONFIG, STRING_LOADER, VERSION};
+use crate::global::{CONFIG, STRINGS, VERSION};
 use crate::utilities::serializer;
 
 pub async fn check_for_updates() -> eyre::Result<()> {
@@ -18,9 +18,9 @@ pub async fn check_for_updates() -> eyre::Result<()> {
         );
 
         if format!("v{}", *VERSION) != version {
-            println!("{BOLD}{GREEN}{}{C_RESET}", STRING_LOADER.load("UpdateAvailable"));
+            println!("{BOLD}{GREEN}{}{C_RESET}", STRINGS.load("UpdateAvailable"));
             println!("{BOLD}{CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {BLUE}{version}{C_RESET}");
-            println!("↳ {} {CYAN}{BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {YELLOW}{} {RESET}-> {BLUE}{version}{C_RESET}\n", STRING_LOADER.load("UpgradingFrom"), *VERSION)
+            println!("↳ {} {CYAN}{BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {YELLOW}{} {RESET}-> {BLUE}{version}{C_RESET}\n", STRINGS.load("UpgradingFrom"), *VERSION)
         }
     }
 

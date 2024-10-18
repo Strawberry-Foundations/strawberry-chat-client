@@ -51,7 +51,7 @@ lazy_static! {
         })
     };
 
-    pub static ref STRING_LOADER: Strings = Strings::new(Config::load_language().as_str(), &get_lang_cfg());
+    pub static ref STRINGS: Strings = Strings::new(Config::load_language().as_str(), &get_lang_cfg());
 
     pub static ref SERVER_CONFIG: ServerValues = {
         match CONFIG.autoserver.enabled {
