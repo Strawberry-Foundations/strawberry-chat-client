@@ -30,4 +30,4 @@ jobs:
           toolchain: stable
           components: clippy
 
-      - run: sudo apt install pkg-config libdbus-1-dev && cargo clippy -- -D warnings
+      - run: sudo apt install pkg-config libdbus-1-dev -y && cargo clippy -- -D warnings
