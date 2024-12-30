@@ -8,12 +8,12 @@ edition = "2021"
 [dependencies]
 stblib = { version = "0.6.4", features = ["stbchat", "notifications"] }
 # stblib = { version = "0.6.4", features = ["stbchat", "notifications"], path = "../../stblib-rust"}
-tokio = { version = "1.40.0", features = ["full"] }
+tokio = { version = "1.41.0", features = ["full"] }
 reqwest = "0.12.8"
 rustyline = "14.0.0"
-serde = { version = "1.0.210", features = ["derive"] }
+serde = { version = "1.0.213", features = ["derive"] }
 serde_yaml = "0.9.34"
-serde_json = "1.0.129"
+serde_json = "1.0.132"
 rayon = "1.10.0"
 fastrand = { version = "2.1.1" }
 eyre = "0.6.12"
