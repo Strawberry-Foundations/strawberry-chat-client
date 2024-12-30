@@ -5,7 +5,7 @@ use crate::utilities::serializer;
 
 pub async fn check_for_updates() -> eyre::Result<()> {
     if CONFIG.networking.online_mode {
-        let request = reqwest::get(format!("{STRAWBERRY_API}versions")).await?;
+        let request = reqwest::get(format!("{STRAWBERRY_API}versions/")).await?;
         let body = request.text().await?;
 
         let version = serializer(body.as_str()).map_or_else(
