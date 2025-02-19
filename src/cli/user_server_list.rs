@@ -30,7 +30,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
 
     for i in 0..server_data_length {
         let mut format = format!(
-            "{BOLD}[{BLUE}{}{RESET}] {}{}", i.add(1),
+            "{C_RESET}[{BLUE}{}{RESET}] {}{}", i.add(1),
             data["server"][i]["name"].as_str().unwrap(),
             is_in_verified_servers(data["server"][i]["address"].as_str().unwrap(), &verified_servers),
         );
@@ -45,7 +45,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         println!("{format}{C_RESET}");
     }
 
-    println!("[{BLUE}{BOLD}{}{RESET}] {}{C_RESET}\n", server_data_length.add(1), STRINGS.load("Custom"));
+    println!("[{BLUE}{}{RESET}] {}{C_RESET}\n", server_data_length.add(1), STRINGS.load("Custom"));
 
     let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.load("SelChatServer"));
 
