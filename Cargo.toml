@@ -1,28 +1,25 @@
 [package]
 name = "stbchat-rust"
-version = "1.4.3"
+version = "1.4.4"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-stblib = { version = "0.6.4", features = ["stbchat", "notifications"] }
-# stblib = { version = "0.6.4", features = ["stbchat", "notifications"], path = "../../stblib-rust"}
+stblib = { version = "0.7.0", features = ["stbchat", "notifications"] }
 tokio = { version = "1.41.0", features = ["full"] }
 reqwest = "0.12.8"
-rustyline = "14.0.0"
+rustyline = "15.0.0"
 serde = { version = "1.0.213", features = ["derive"] }
 serde_yaml = "0.9.34"
 serde_json = "1.0.132"
-rayon = "1.10.0"
-fastrand = { version = "2.1.1" }
 eyre = "0.6.12"
 lazy_static = "1.5.0"
 rprompt = "2.1.1"
 socket2 = "0.5.7"
-dirs = "5.0.1"
 futures = "0.3.31"
-strip-ansi-escapes = "0.2.0"
+
+# stblib = { version = "0.7.0", features = ["stbchat", "notifications"], path = "../../stblib-rust"}
 
 [profile.release]
 opt-level = 'z'
