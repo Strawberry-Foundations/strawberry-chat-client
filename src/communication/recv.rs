@@ -60,7 +60,12 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                         }
                     }
                     
-                    notifier.send();
+                    notifier.send().unwrap_or_else(|_| {
+                        println!("{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
+                            STRINGS.load("NotificationFailed")
+                        );
+                        false
+                    });
                 }
             }
 
