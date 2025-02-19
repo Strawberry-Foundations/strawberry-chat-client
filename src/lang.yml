@@ -62,6 +62,7 @@ de_DE:
   ConfigOutdated: "Deine Konfiguration ist veraltet! Überprüfe die Konfiguration mit der zuletzt verfügbaren Config-Datei auf GitHub"
   ConfigInvalid: "Deine Konfiguration ist ungültig. Entweder ist deine Konfiguration veraltet, oder du hast einen Tippfehler"
   ConfigNotAvailableSync: "Du besitzt keine Lokale Konfiguration für die Synchronisierung mit deiner Strawberry ID"
+  NotificationFailed: "Benachrichtigung konnte nicht gesendet werden. Bitte versuche Benachrichtigungen in der Konfigurationsdatei zu deaktivieren."
 
 
 # Language Strings for en_US (English)
@@ -128,3 +129,4 @@ en_US:
   ConfigOutdated: "Your configuration is outdated! Check the configuration with the latest available config file on GitHub"
   ConfigInvalid: "Your configuration is invalid. Either your configuration is out of date or you have made a typing error"
   ConfigNotAvailableSync: "You do not have a local configuration for synchronisation with your Strawberry ID"
+  NotificationFailed: "Notification could not be sent. Please try deactivating notifications in the configuration file."
