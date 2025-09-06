@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 use serde::Deserialize;
 use serde_yaml::{from_str, Value};
 
-use stblib::colors::{BOLD, C_RESET, RED};
-use stblib::id::credentials::StrawberryIdCredentials;
+use libstrawberry::colors::{BOLD, C_RESET, RED};
+use libstrawberry::id::credentials::StrawberryIdCredentials;
 
 use crate::constants::{CONFIG_VERSION, HEADLESS_CONFIG, STRAWBERRY_CLOUD_API_URL};
 use crate::global::STRINGS;
@@ -80,13 +80,13 @@ impl Config {
     pub fn new(config_path: String) -> eyre::Result<Self> {
         let config_yml = config_open(&config_path)?;
         let mut cfg: Self = from_str(&config_yml).unwrap_or_else(|err| {
-            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.load("ConfigInvalid"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.get("ConfigInvalid"));
             eprintln!("{BOLD}{RED}{err}{C_RESET}");
             std::process::exit(1);
         });
         
         if cfg.config_ver != CONFIG_VERSION {
-            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.load("ConfigOutdated"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.get("ConfigOutdated"));
             std::process::exit(1);
         }
         
@@ -97,7 +97,7 @@ impl Config {
 
     pub fn new_from_content(mut content: String) -> Self {
         if content == "Invalid filename" {
-            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.load("ConfigNotAvailable"));
+            eprintln!("{BOLD}{RED}{}{C_RESET}", STRINGS.get("ConfigNotAvailable"));
             content = String::from(HEADLESS_CONFIG);
         } 
         

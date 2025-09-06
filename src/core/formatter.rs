@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use stblib::colors::*;
+use libstrawberry::colors::*;
 
 use crate::global::CONFIG;
 
@@ -71,7 +71,7 @@ impl MessageFormatter {
     pub fn user(&self, username: String, nickname: String, role_color: String, badge: String, message: String) -> String {
         match nickname {
             _ if username == nickname => self.current_format.1
-                .replace("[%<time>%]", &stblib::utilities::current_time("%H:%M"))
+                .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
                 .replace("[%<role_color>%]", &role_color)
                 .replace("[%<username>%]", &username)
                 .replace("[%<role_color>%]", &nickname)
@@ -79,7 +79,7 @@ impl MessageFormatter {
                 .replace("[%<message>%]", &message)
             ,
             _ => self.current_format.2
-                .replace("[%<time>%]", &stblib::utilities::current_time("%H:%M"))
+                .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
                 .replace("[%<role_color>%]", &role_color)
                 .replace("[%<username>%]", &username)
                 .replace("[%<nickname>%]", &nickname)
@@ -91,7 +91,7 @@ impl MessageFormatter {
 
     pub fn system(&self, message: String) -> String {
         self.current_format.0
-            .replace("[%<time>%]", &stblib::utilities::current_time("%H:%M"))
+            .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
             .replace("[%<message>%]", &message)
     }
 }

@@ -1,19 +1,19 @@
 use tokio::time::{self, Duration};
 
-use stblib::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, RESET, YELLOW};
-use stblib::id::error::CredentialsError;
-use stblib::id::StrawberryId;
+use libstrawberry::colors::{BLUE, BOLD, C_RESET, CYAN, GREEN, RED, RESET, YELLOW};
+use libstrawberry::id::error::CredentialsError;
+use libstrawberry::id::StrawberryId;
 
 use crate::constants::STRAWBERRY_ID_API;
 use crate::global::STRINGS;
 
 
 pub async fn login() -> eyre::Result<()> {
-    println!("--- {CYAN}{BOLD}Strawberry ID {}{C_RESET} ---", STRINGS.load("Auth"));
+    println!("--- {CYAN}{BOLD}Strawberry ID {}{C_RESET} ---", STRINGS.get("Auth"));
 
     let code = StrawberryId::request_code().await?;
 
-    println!("{} \n{BOLD}{BLUE}{STRAWBERRY_ID_API}de/login/oauth_dialog/stbchat?code={code}{C_RESET}", STRINGS.load("ContinueSidLogin"));
+    println!("{} \n{BOLD}{BLUE}{STRAWBERRY_ID_API}de/login/oauth_dialog/stbchat?code={code}{C_RESET}", STRINGS.get("ContinueSidLogin"));
 
     let mut interval = time::interval(Duration::from_secs(5));
 
@@ -21,8 +21,8 @@ pub async fn login() -> eyre::Result<()> {
         match StrawberryId::callback(code.clone()).await {
             Ok(id) => {
                 if let Some(id) = id {
-                    println!("{GREEN}{BOLD}{}{C_RESET}", STRINGS.load("AuthSuccess"));
-                    println!("{GREEN}{BOLD}{} {} (@{}){C_RESET}", STRINGS.load("LoggedInAs"), id.full_name, id.username);
+                    println!("{GREEN}{BOLD}{}{C_RESET}", STRINGS.get("AuthSuccess"));
+                    println!("{GREEN}{BOLD}{} {} (@{}){C_RESET}", STRINGS.get("LoggedInAs"), id.full_name, id.username);
 
                     let credentials = id.to_credentials();
                     match credentials.save() {
@@ -30,7 +30,7 @@ pub async fn login() -> eyre::Result<()> {
                         Err(err) => {
                             match err.downcast::<CredentialsError>()? {
                                 CredentialsError::AlreadyExists(path) => {
-                                    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.load_with_params("AlreadyLoggedIn", &[&path.parent().unwrap().display()]));
+                                    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.get_with_params("AlreadyLoggedIn", &[&path.parent().unwrap().display()]));
                                 }
                                 CredentialsError::DirectoryCreationError(err) => {
                                     eprintln!("{RED}{BOLD}Error while creating config directory:{RESET} {}{C_RESET}", err);

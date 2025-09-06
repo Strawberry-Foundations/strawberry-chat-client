@@ -2,9 +2,9 @@ use std::env;
 use std::path::{Path, PathBuf};
 use lazy_static::lazy_static;
 
-use stblib::colors::{BOLD, C_RESET, RED};
-use stblib::id::credentials::StrawberryIdCredentials;
-use stblib::strings::Strings;
+use libstrawberry::colors::{BOLD, C_RESET, RED};
+use libstrawberry::id::credentials::StrawberryIdCredentials;
+use libstrawberry::localization::Localization;
 
 use crate::core::config::{Config, get_lang_cfg, ServerValues};
 use crate::cli::user_server_list::user_server_list;
@@ -51,7 +51,7 @@ lazy_static! {
         })
     };
 
-    pub static ref STRINGS: Strings = Strings::new(Config::load_language().as_str(), &get_lang_cfg());
+    pub static ref STRINGS: Localization = Localization::new(Config::load_language().as_str(), &get_lang_cfg(), true);
 
     pub static ref SERVER_CONFIG: ServerValues = {
         match CONFIG.autoserver.enabled {

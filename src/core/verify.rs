@@ -1,7 +1,7 @@
 use crate::constants::STRAWBERRY_API;
 use crate::global::CONFIG;
 use serde_yaml::Value;
-use stblib::colors::{GREEN, RESET};
+use libstrawberry::colors::{GREEN, RESET};
 use reqwest::Client;
 
 pub async fn verify_server(data: &Value) -> Vec<String> {

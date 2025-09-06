@@ -31,7 +31,7 @@ pub fn login() -> PreAuthEvent {
     }); */
     // format!("{}", "Username: ".green()
 
-    let username: String = match line_reader.readline(STRINGS.load("Username").as_str()) {
+    let username: String = match line_reader.readline(STRINGS.get("Username").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));
@@ -46,7 +46,7 @@ pub fn login() -> PreAuthEvent {
         return PreAuthEvent::Register(username, password, role_color)
     }
 
-    let password: String = match line_reader.readline(STRINGS.load("Password").as_str()) {
+    let password: String = match line_reader.readline(STRINGS.get("Password").as_str()) {
         Ok(i) => i,
         Err(ReadlineError::Interrupted) => {
             sleep(Duration::from_millis(300));

@@ -8,9 +8,9 @@ use tokio::io::WriteHalf;
 
 use rustyline::error::ReadlineError;
 
-use stblib::colors::*;
-use stblib::stbchat::net::OutgoingPacketStream;
-use stblib::stbchat::packet::ServerPacket;
+use libstrawberry::colors::*;
+use libstrawberry::stbchat::net::OutgoingPacketStream;
+use libstrawberry::stbchat::packet::ServerPacket;
 
 use crate::{SERVER_CONFIG, STRINGS};
 use crate::communication::login::{login, PreAuthEvent};
@@ -20,15 +20,15 @@ use crate::utilities::delete_last_line;
 
 pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: Receiver<String>) {
     if SERVER_CONFIG.autologin {
-        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.load("AutologinActive"));
+        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.get("AutologinActive"));
     } else {
-        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.load("AutologinNotActive"));
+        println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.get("AutologinNotActive"));
     }
 
     if !SERVER_CONFIG.compatibility_mode {
         loop {
             let tx_data = rx.recv().unwrap_or_else(|_| {
-                println!("{BOLD}{YELLOW}{}{C_RESET}", STRINGS.load("UnsuccessfulConnection"));
+                println!("{BOLD}{YELLOW}{}{C_RESET}", STRINGS.get("UnsuccessfulConnection"));
                 exit(1);
             });
 
@@ -45,7 +45,7 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
                             w_server.write(ServerPacket::Login {
                                 username,
                                 password
-                            }).await.unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+                            }).await.unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
                             break;
                         }
                     }
@@ -54,7 +54,7 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
                             username,
                             password,
                             role_color
-                        }).await.unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+                        }).await.unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
                         break;
                     }
                 }
@@ -68,14 +68,14 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
         w_server.write(
             SERVER_CONFIG.credentials.username.as_bytes())
             .await
-            .unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+            .unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
 
-        stblib::utilities::ms_sleep(500);
+        libstrawberry::time::ms_sleep(500);
 
         w_server.write(
             SERVER_CONFIG.credentials.password.as_bytes())
             .await
-            .unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+            .unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
     }
 
     loop {
@@ -86,14 +86,14 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
                     ServerPacket::Message {
                         message: "/exit".to_string()
                     }
-                ).await.unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+                ).await.unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
 
                 sleep(Duration::from_millis(300)).await;
                 exit(0);
             }
             Err(ReadlineError::Eof) => exit(0),
             Err(_e) => {
-                eprintln!("{}", STRINGS.load("StreamWriteError"));
+                eprintln!("{}", STRINGS.get("StreamWriteError"));
                 exit(1);
             },
         };
@@ -105,7 +105,7 @@ pub async fn send(mut w_server: OutgoingPacketStream<WriteHalf<TcpStream>>, rx: 
                 message: input
             })
             .await
-            .unwrap_or_else(|_| { panic!("{}", STRINGS.load("StreamWriteError")) });
+            .unwrap_or_else(|_| { panic!("{}", STRINGS.get("StreamWriteError")) });
 
         delete_last_line();
     }

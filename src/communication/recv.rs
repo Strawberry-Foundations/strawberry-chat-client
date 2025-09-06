@@ -3,11 +3,11 @@ use std::sync::mpsc::Sender;
 use tokio::net::TcpStream;
 use tokio::io::ReadHalf;
 
-use stblib::stbchat::net::IncomingPacketStream;
-use stblib::stbchat::packet::ClientPacket;
-use stblib::colors::*;
-use stblib::notifications::Notifier;
-use stblib::notifications::os::OS;
+use libstrawberry::stbchat::net::IncomingPacketStream;
+use libstrawberry::stbchat::packet::ClientPacket;
+use libstrawberry::colors::*;
+use libstrawberry::notifications::Notifier;
+use libstrawberry::notifications::os::OS;
 
 use crate::core::formatter::MessageFormatter;
 use crate::global::{CONFIG, STRINGS};
@@ -49,20 +49,21 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                         "normal",
                         CONFIG.notification.icon_path.clone(),
                         Some(String::from("SMS")),
-                        false
+                        5,
+                        false,
                     ).build();
                     
                     if CONFIG.notification.use_legacy_notifier {
-                        match notifier.internal_notifier.system {
-                            OS::Windows => notifier.internal_notifier.system = &OS::WindowsLegacy,
-                            OS::Linux => notifier.internal_notifier.system = &OS::LinuxLibNotify,
+                        match *notifier.platform_notifier.os {
+                            OS::Windows => notifier.platform_notifier.os = &OS::WindowsLegacy,
+                            OS::Linux => notifier.platform_notifier.os = &OS::LinuxLibNotify,
                             _ => { }
                         }
                     }
                     
                     notifier.send().unwrap_or_else(|_| {
                         println!("{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
-                            STRINGS.load("NotificationFailed")
+                            STRINGS.get("NotificationFailed")
                         );
                         false
                     });
@@ -72,11 +73,11 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
             Err(_) => break,
             _ => println!(
                 "{RED}{BOLD}[UImp] {YELLOW}{BOLD}{}",
-                STRINGS.load("UnimplementedPacket"),
+                STRINGS.get("UnimplementedPacket"),
             )
         }
     }
 
-    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.load("CloseApplication"));
-    println!("{BOLD}{}{C_RESET}", STRINGS.load("PressCtrlDToExit"));
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.get("CloseApplication"));
+    println!("{BOLD}{}{C_RESET}", STRINGS.get("PressCtrlDToExit"));
 }

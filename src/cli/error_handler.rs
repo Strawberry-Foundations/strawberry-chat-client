@@ -3,7 +3,7 @@ use std::error::Error;
 use std::fmt::Formatter;
 
 use eyre::EyreHandler;
-use stblib::colors::{BOLD, C_RESET, LIGHT_RED};
+use libstrawberry::colors::{BOLD, C_RESET, LIGHT_RED};
 
 use crate::STRINGS;
 
@@ -23,7 +23,7 @@ impl EyreHandler for Handler {
 
         writeln!(f, "{LIGHT_RED}{BOLD}{}{C_RESET}", errors.next().unwrap())?;
 
-        writeln!(f, "{}:", STRINGS.load("Cause"))?;
+        writeln!(f, "{}:", STRINGS.get("Cause"))?;
 
         for e in errors {
             writeln!(f, "- {e}")?;

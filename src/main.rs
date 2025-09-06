@@ -5,8 +5,8 @@ use tokio::net::TcpStream;
 use tokio::io::split;
 use tokio::{select, spawn};
 
-use stblib::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
-use stblib::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
+use libstrawberry::stbchat::net::{IncomingPacketStream, OutgoingPacketStream};
+use libstrawberry::colors::{BOLD, C_RESET, GREEN, LIGHT_BLUE, ITALIC, YELLOW, RED};
 
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -39,10 +39,10 @@ async fn main() -> eyre::Result<()> {
 
     let host = (SERVER_CONFIG.address.clone(), SERVER_CONFIG.port);
 
-    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.load("TryConnection"));
+    println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.get("TryConnection"));
 
     let stream = TcpStream::connect(host).await.unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("ErrNotReachable"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("ErrNotReachable"));
         std::process::exit(1);
     });
 
@@ -64,7 +64,7 @@ async fn main() -> eyre::Result<()> {
 
     println!(
         "{GREEN}{BOLD}{}{C_RESET}",
-        &STRINGS.load("ConnectedToServer")
+        &STRINGS.get("ConnectedToServer")
             .replace("%s", &format!("{LIGHT_BLUE}{ITALIC}{}{C_RESET}{GREEN}{BOLD}", SERVER_CONFIG.name))
     );
 

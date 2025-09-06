@@ -1,7 +1,7 @@
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use serde_json::Value;
-use stblib::colors::{BOLD, C_RESET, RED};
+use libstrawberry::colors::{BOLD, C_RESET, RED};
 
 pub fn delete_last_line() {
     print!("\x1b[1A");

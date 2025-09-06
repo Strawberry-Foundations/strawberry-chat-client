@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
-use stblib::colors::{BOLD, C_RESET, RED};
-use stblib::id::credentials::StrawberryIdCredentials;
+use libstrawberry::colors::{BOLD, C_RESET, RED};
+use libstrawberry::id::credentials::StrawberryIdCredentials;
 
 use crate::constants::STRAWBERRY_CLOUD_API_URL;
 use crate::global::STRINGS;
@@ -8,7 +8,7 @@ use crate::utilities::make_absolute_path;
 
 pub async fn sync() -> eyre::Result<()> {
     let credentials = StrawberryIdCredentials::fetch().unwrap_or_else(|_| {
-        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("CredentialsFileNotExist"));
+        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("CredentialsFileNotExist"));
         std::process::exit(1);
     });
 
@@ -17,12 +17,12 @@ pub async fn sync() -> eyre::Result<()> {
     let client = reqwest::Client::new();
 
     let exe_path = std::env::current_exe().unwrap_or_else(|_| {
-        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("ExecutablePathNotGet"));
+        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("ExecutablePathNotGet"));
         std::process::exit(1);
     });
 
     let exe_dir = exe_path.parent().unwrap_or_else(|| {
-        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("ExecutableDirectoryNotFound"));
+        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("ExecutableDirectoryNotFound"));
         std::process::exit(1);
     });
 
@@ -39,7 +39,7 @@ pub async fn sync() -> eyre::Result<()> {
     let url = format!("{STRAWBERRY_CLOUD_API_URL}upload/{username}@{auth_token}?filename=config_stbchat.yml");
 
     let file_content = std::fs::read(file_path).unwrap_or_else(|_| {
-        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("ConfigNotAvailableSync"));
+        println!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("ConfigNotAvailableSync"));
         std::process::exit(1);
     });
 
@@ -49,7 +49,7 @@ pub async fn sync() -> eyre::Result<()> {
         .send()
         .await
         .unwrap_or_else(|_| {
-            println!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("SyncPostError"));
+            println!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("SyncPostError"));
             std::process::exit(1);
         });
 

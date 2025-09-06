@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 
 use serde_yaml::{from_str, Value};
-use stblib::colors::*;
+use libstrawberry::colors::*;
 
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRINGS};
@@ -15,13 +15,13 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
     let stdout = std::io::stdout();
 
     println!("--- {CYAN}{BOLD}Strawberry Chat{C_RESET} ({LIGHT_BLUE}v{}{RESET}) ---", *global::VERSION);
-    println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.load("Welcome"));
+    println!("{GREEN}{BOLD}{}{C_RESET}\n", STRINGS.get("Welcome"));
 
     futures::executor::block_on(async {
         check_for_updates().await.unwrap();
     });
 
-    println!("{CYAN}{BOLD}{UNDERLINE}{}{C_RESET}", STRINGS.load("YourChatServers"));
+    println!("{CYAN}{BOLD}{UNDERLINE}{}{C_RESET}", STRINGS.get("YourChatServers"));
 
     let data: Value = from_str(config_content).unwrap();
     let server_data_length = data["server"].as_mapping().unwrap().len();
@@ -45,12 +45,12 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         println!("{format}{C_RESET}");
     }
 
-    println!("[{BLUE}{}{RESET}] {}{C_RESET}\n", server_data_length.add(1), STRINGS.load("Custom"));
+    println!("[{BLUE}{}{RESET}] {}{C_RESET}\n", server_data_length.add(1), STRINGS.get("Custom"));
 
-    let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.load("SelChatServer"));
+    let prompt = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.get("SelChatServer"));
 
     let server_selection: u8 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt).unwrap().parse().unwrap_or_else(|_| {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("InvalidInput"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("InvalidInput"));
         std::process::exit(1);
     });
 
@@ -58,17 +58,17 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
 
     match server_selection.cmp(&server_data_length.add(1)) {
         Ordering::Equal => {
-            let prompt_host = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.load("Ipaddr"));
-            let prompt_port = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.load("Port"));
+            let prompt_host = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.get("Ipaddr"));
+            let prompt_port = format!("{CYAN}{BOLD}{}{C_RESET}", STRINGS.get("Port"));
 
             let address: String = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_host).unwrap().parse().unwrap_or_else(|_| {
-                eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("InvalidInput"));
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("InvalidInput"));
                 std::process::exit(1);
             });
 
 
             let port: u16 = rprompt::prompt_reply_from_bufread(&mut stdin.lock(), &mut stdout.lock(), &prompt_port).unwrap().parse().unwrap_or_else(|_| {
-                eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("InvalidInput"));
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("InvalidInput"));
                 std::process::exit(1);
             });
 
@@ -81,7 +81,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         }
 
         Ordering::Greater => {
-            eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("InvalidServerSelection"));
+            eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("InvalidServerSelection"));
             std::process::exit(1);
         }
         Ordering::Less => {
