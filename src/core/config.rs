@@ -153,9 +153,7 @@ impl Config {
     }
 
     #[must_use] pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
-        if server_id < 0 {
-            panic!("server_id must be non-negative, got {}", server_id);
-        }
+        assert!((server_id >= 0), "server_id must be non-negative, got {server_id}");
         let server_id = server_id as usize;
         let config: Value = from_str(config_content).unwrap();
 
