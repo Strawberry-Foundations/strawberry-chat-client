@@ -8,7 +8,7 @@ use tokio::io::WriteHalf;
 
 use rustyline::error::ReadlineError;
 
-use libstrawberry::colors::*;
+use libstrawberry::colors::{GREEN, BOLD, C_RESET, YELLOW};
 use libstrawberry::stbchat::net::OutgoingPacketStream;
 use libstrawberry::stbchat::packet::ServerPacket;
 
