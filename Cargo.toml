@@ -1,6 +1,6 @@
 [package]
 name = "stbchat-rust"
-version = "1.5.0"
+version = "1.5.1"
 edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -14,7 +14,6 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34-deprecated"
 serde_json = "1.0.143"
 eyre = "0.6.12"
-lazy_static = "1.5.0"
 rprompt = "2.2.0"
 socket2 = "0.6.0"
 futures = "0.3.31"
