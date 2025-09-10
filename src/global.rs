@@ -22,7 +22,7 @@ pub static CONFIG: LazyLock<Config> = LazyLock::new(|| {
     let mut config_path = format!("{exe_dir_str}/config.yml");
 
     if !Path::new(&config_path).exists() {
-        config_path = String::from("./config.yml")
+        config_path = String::from("./config.yml");
     }
 
     Config::new(config_path).unwrap_or_else(|_| {
@@ -35,16 +35,13 @@ pub static CONFIG: LazyLock<Config> = LazyLock::new(|| {
 
             let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
             let content = futures::executor::block_on(async {
-                match reqwest::get(url).await {
-                    Ok(response) => response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)),
-                    Err(_) => {
-                        eprintln!(
-                            "{BOLD}{RED}Your configuration could not be loaded locally or from your \
-                            Strawberry ID.\nEither create a local configuration or synchronize your \
-                            configuration on another device, if available.{C_RESET}"
-                        );
-                        String::from(HEADLESS_CONFIG)
-                    }
+                if let Ok(response) = reqwest::get(url).await { response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)) } else {
+                    eprintln!(
+                        "{BOLD}{RED}Your configuration could not be loaded locally or from your \
+                        Strawberry ID.\nEither create a local configuration or synchronize your \
+                        configuration on another device, if available.{C_RESET}"
+                    );
+                    String::from(HEADLESS_CONFIG)
                 }
             });
 
@@ -61,10 +58,7 @@ pub static STRINGS: LazyLock<Localization> = LazyLock::new(|| {
 });
 
 pub static SERVER_CONFIG: LazyLock<ServerValues> = LazyLock::new(|| {
-    match CONFIG.autoserver.enabled {
-        true => Config::server_id(CONFIG.autoserver.server_id, &CONFIG.content),
-        false => user_server_list(&CONFIG.content),
-    }
+    if CONFIG.autoserver.enabled { Config::server_id(CONFIG.autoserver.server_id, &CONFIG.content) } else { user_server_list(&CONFIG.content) }
 });
 
 pub static VERSION: LazyLock<String> = LazyLock::new(|| {
