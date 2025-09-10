@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 
 use serde_yaml::{from_str, Value};
-use libstrawberry::colors::*;
+use libstrawberry::colors::{CYAN, BOLD, C_RESET, LIGHT_BLUE, RESET, GREEN, UNDERLINE, BLUE, YELLOW, MAGENTA, RED};
 
 use crate::core::config::{Config, ServerValues};
 use crate::{global, STRINGS};
@@ -36,10 +36,10 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         );
 
         if CONFIG.ui.serverlist_show_type {
-            format = format!("{format} - {YELLOW}{}{RESET}", data["server"][i]["type"].as_str().unwrap())
+            format = format!("{format} - {YELLOW}{}{RESET}", data["server"][i]["type"].as_str().unwrap());
         }
         if CONFIG.ui.serverlist_show_address {
-            format = format!("{format} - {MAGENTA}{}", data["server"][i]["address"].as_str().unwrap())
+            format = format!("{format} - {MAGENTA}{}", data["server"][i]["address"].as_str().unwrap());
         }
 
         println!("{format}{C_RESET}");
