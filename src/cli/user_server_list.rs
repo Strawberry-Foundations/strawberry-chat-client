@@ -54,7 +54,7 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
         std::process::exit(1);
     });
 
-    let server_data_length = server_data_length as u8;
+    let server_data_length = u8::try_from(server_data_length).unwrap();
 
     match server_selection.cmp(&server_data_length.add(1)) {
         Ordering::Equal => {
