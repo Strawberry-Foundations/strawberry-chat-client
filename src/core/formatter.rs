@@ -46,9 +46,8 @@ impl MessageFormatter {
 
     #[must_use] pub fn new() -> Self {
         let format = match CONFIG.ui.message_format.as_str() {
-            "default" => MessageFormats::Default,
             "gray" => MessageFormats::Gray,
-            &_ => MessageFormats::Default
+            _ => MessageFormats::Default
         };
 
         let format_str = match format {
@@ -68,7 +67,7 @@ impl MessageFormatter {
         }
     }
 
-    #[must_use] pub fn user(&self, username: String, nickname: String, role_color: String, badge: String, message: String) -> String {
+    #[must_use] pub fn user(&self, username: &str, nickname: &str, role_color: &str, badge: &str, message: &str) -> String {
         match nickname {
             _ if username == nickname => self.current_format.1
                 .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))

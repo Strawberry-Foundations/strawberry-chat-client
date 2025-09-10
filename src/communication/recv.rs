@@ -26,11 +26,11 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
 
             Ok(ClientPacket::UserMessage { author, message }) => {
                 println!("{}", formatter.user(
-                    author.username,
-                    author.nickname,
-                    author.role_color,
-                    crate::core::formatter::badge_handler(author.badge),
-                    message,
+                    &author.username,
+                    &author.nickname,
+                    &author.role_color,
+                    &crate::core::formatter::badge_handler(author.badge),
+                    &message,
                 ));
             },
 
