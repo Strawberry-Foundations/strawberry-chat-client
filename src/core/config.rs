@@ -72,7 +72,7 @@ pub fn config_open(config_path: &str) -> eyre::Result<String> {
     Ok(fs::read_to_string(config_path)?)
 }
 
-pub fn get_lang_cfg() -> String {
+#[must_use] pub fn get_lang_cfg() -> String {
     include_str!("../lang.yml").to_string()
 }
 
@@ -107,35 +107,32 @@ impl Config {
         cfg
     }
 
-    pub fn load_language() -> String {
+    #[must_use] pub fn load_language() -> String {
         let exe_path = std::env::current_exe().expect("Could not get your Strawberry Chat Client Executable");
         let exe_dir = exe_path.parent().expect("Error determining the directory of the executable file.");
         let exe_dir_str = PathBuf::from(exe_dir).display().to_string();
         let mut config_path = format!("{exe_dir_str}/config.yml");
 
         if !Path::new(&config_path).exists() {
-            config_path = String::from("./config.yml")
+            config_path = String::from("./config.yml");
         }
 
-        let config_yml = match config_open(&config_path) {
-            Ok(s) => s,
-            Err(_) => {
-                let credentials = match StrawberryIdCredentials::fetch() {
-                    Ok(cred) => cred,
-                    Err(_) => return String::from("en_US")
-                };
+        let config_yml = if let Ok(s) = config_open(&config_path) { s } else {
+            let credentials = match StrawberryIdCredentials::fetch() {
+                Ok(cred) => cred,
+                Err(_) => return String::from("en_US")
+            };
 
-                let (username, auth_token) = (credentials.username, credentials.token);
+            let (username, auth_token) = (credentials.username, credentials.token);
 
-                let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
+            let url = format!("{STRAWBERRY_CLOUD_API_URL}fetch/{username}@{auth_token}/config_stbchat.yml");
 
-                futures::executor::block_on(async {
-                    match reqwest::get(url).await {
-                        Ok(response) => response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)),
-                        Err(_) => String::from(HEADLESS_CONFIG)
-                    }
-                })
-            }
+            futures::executor::block_on(async {
+                match reqwest::get(url).await {
+                    Ok(response) => response.text().await.unwrap_or_else(|_| String::from(HEADLESS_CONFIG)),
+                    Err(_) => String::from(HEADLESS_CONFIG)
+                }
+            })
         };
 
         let config: Self = match from_str(&config_yml) {
@@ -147,7 +144,7 @@ impl Config {
     }
 
     #[allow(dead_code)]
-    pub fn get_language(&self) -> &str {
+    #[must_use] pub fn get_language(&self) -> &str {
         if ["de_DE", "en_US"].contains(&self.language.as_str()) {
            self.language.as_str()
         }
@@ -156,7 +153,7 @@ impl Config {
         }
     }
 
-    pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
+    #[must_use] pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
         let server_id = server_id as usize;
         let config: Value = from_str(config_content).unwrap();
 
