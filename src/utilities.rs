@@ -9,7 +9,7 @@ pub fn delete_last_line() {
     io::stdout().flush().unwrap();
 }
 
-pub fn make_absolute_path(input_path: &str) -> PathBuf {
+#[must_use] pub fn make_absolute_path(input_path: &str) -> PathBuf {
     let path = Path::new(input_path);
 
     if path.is_absolute() {
