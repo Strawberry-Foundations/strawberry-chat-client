@@ -1,4 +1,4 @@
-#![warn(clippy::all, clippy::nursery)]
+#![warn(clippy::all, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::missing_const_for_fn, dead_code, clippy::redundant_pub_crate)]
 
 use tokio::net::TcpStream;
