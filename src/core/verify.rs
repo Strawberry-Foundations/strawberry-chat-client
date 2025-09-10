@@ -11,11 +11,11 @@ pub async fn verify_server(data: &Value) -> Vec<String> {
     if CONFIG.networking.online_mode {
         let server_data = data.get("server").and_then(|s| s.as_mapping());
         if let Some(server_map) = server_data {
-            for (_, server_data) in server_map.iter() {
+            for (_, server_data) in server_map {
                 if let Some(address) = server_data.get("address").and_then(|a| a.as_str()) {
 
                     let request = match client
-                        .get(format!("{STRAWBERRY_API}server/verified?addr={}", address))
+                        .get(format!("{STRAWBERRY_API}server/verified?addr={address}"))
                         .send()
                         .await
                     {
@@ -43,7 +43,7 @@ pub async fn verify_server(data: &Value) -> Vec<String> {
     verified_servers
 }
 
-pub fn is_in_verified_servers(address: &str, verified_servers: &[String]) -> String {
+#[must_use] pub fn is_in_verified_servers(address: &str, verified_servers: &[String]) -> String {
     if verified_servers.contains(&address.to_string()) {
         format!(" {GREEN}✓{RESET}")
     } else {
