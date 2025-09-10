@@ -14,13 +14,13 @@ pub async fn check_for_updates() -> eyre::Result<()> {
                 .and_then(|c| c.get("client"))
                 .and_then(|c| c.get("stable"))
                 .and_then(|s| s.as_str())
-                .map_or_else(String::default, |stable| stable.to_string())
+                .map_or_else(String::default, std::string::ToString::to_string)
         );
 
         if format!("v{}", *VERSION) != version {
             println!("{BOLD}{GREEN}{}{C_RESET}", STRINGS.get("UpdateAvailable"));
             println!("{BOLD}{CYAN}strawberry-chat{GREEN}@{MAGENTA}stable {BLUE}{version}{C_RESET}");
-            println!("↳ {} {CYAN}{BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {YELLOW}{} {RESET}-> {BLUE}{version}{C_RESET}\n", STRINGS.get("UpgradingFrom"), *VERSION)
+            println!("↳ {} {CYAN}{BOLD}strawberry-chat{GREEN}@{MAGENTA}stable {YELLOW}{} {RESET}-> {BLUE}{version}{C_RESET}\n", STRINGS.get("UpgradingFrom"), *VERSION);
         }
     }
 
