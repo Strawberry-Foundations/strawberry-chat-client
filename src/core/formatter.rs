@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use libstrawberry::colors::*;
+use libstrawberry::colors::{C_RESET, GRAY, RESET};
 
 use crate::global::CONFIG;
 
@@ -26,7 +26,7 @@ impl Default for MessageFormatter {
 }
 
 impl MessageFormatter {
-    pub fn load_formats() -> MessageFormat {
+    #[must_use] pub fn load_formats() -> MessageFormat {
         let mut formats = HashMap::new();
 
         formats.insert("default", (
@@ -44,7 +44,7 @@ impl MessageFormatter {
         formats
     }
 
-    pub fn new() -> Self {
+    #[must_use] pub fn new() -> Self {
         let format = match CONFIG.ui.message_format.as_str() {
             "default" => MessageFormats::Default,
             "gray" => MessageFormats::Gray,
@@ -68,7 +68,7 @@ impl MessageFormatter {
         }
     }
 
-    pub fn user(&self, username: String, nickname: String, role_color: String, badge: String, message: String) -> String {
+    #[must_use] pub fn user(&self, username: String, nickname: String, role_color: String, badge: String, message: String) -> String {
         match nickname {
             _ if username == nickname => self.current_format.1
                 .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
@@ -89,17 +89,17 @@ impl MessageFormatter {
         }
     }
 
-    pub fn system(&self, message: String) -> String {
+    #[must_use] pub fn system(&self, message: String) -> String {
         self.current_format.0
             .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
             .replace("[%<message>%]", &message)
     }
 }
 
-pub fn badge_handler(badge: String) -> String {
-    if !badge.is_empty() {
-        format!(" [{}]", badge)
-    } else {
+#[must_use] pub fn badge_handler(badge: String) -> String {
+    if badge.is_empty() {
         String::new()
+    } else {
+        format!(" [{badge}]")
     }
 }
