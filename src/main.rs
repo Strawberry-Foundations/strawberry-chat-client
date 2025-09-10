@@ -1,5 +1,5 @@
 #![warn(clippy::all, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::missing_const_for_fn, dead_code, clippy::redundant_pub_crate)]
+#![allow(clippy::missing_const_for_fn, dead_code, clippy::redundant_pub_crate, clippy::missing_panics_doc, clippy::missing_errors_doc)]
 
 use tokio::net::TcpStream;
 use tokio::io::split;
