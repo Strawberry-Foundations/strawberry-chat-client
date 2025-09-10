@@ -9,7 +9,7 @@ impl Default for ClientMeta {
 }
 
 impl ClientMeta {
-    pub fn new() -> Self {
+    #[must_use] pub fn new() -> Self {
         Self {
             username: String::new(),
         }
