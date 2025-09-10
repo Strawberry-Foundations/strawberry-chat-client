@@ -5,7 +5,7 @@ use tokio::io::ReadHalf;
 
 use libstrawberry::stbchat::net::IncomingPacketStream;
 use libstrawberry::stbchat::packet::ClientPacket;
-use libstrawberry::colors::*;
+use libstrawberry::colors::{RED, BOLD, YELLOW, C_RESET};
 use libstrawberry::notifications::Notifier;
 use libstrawberry::notifications::os::OS;
 
