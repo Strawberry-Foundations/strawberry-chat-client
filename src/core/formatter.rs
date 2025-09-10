@@ -95,7 +95,7 @@ impl MessageFormatter {
     }
 }
 
-#[must_use] pub fn badge_handler(badge: String) -> String {
+#[must_use] pub fn badge_handler(badge: &str) -> String {
     if badge.is_empty() {
         String::new()
     } else {

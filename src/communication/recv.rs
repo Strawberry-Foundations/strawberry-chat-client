@@ -29,7 +29,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
                     &author.username,
                     &author.nickname,
                     &author.role_color,
-                    &crate::core::formatter::badge_handler(author.badge),
+                    &crate::core::formatter::badge_handler(&author.badge),
                     &message,
                 ));
             },
