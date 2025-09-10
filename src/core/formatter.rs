@@ -88,10 +88,10 @@ impl MessageFormatter {
         }
     }
 
-    #[must_use] pub fn system(&self, message: String) -> String {
+    #[must_use] pub fn system(&self, message: &str) -> String {
         self.current_format.0
             .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
-            .replace("[%<message>%]", &message)
+            .replace("[%<message>%]", message)
     }
 }
 
