@@ -71,20 +71,20 @@ impl MessageFormatter {
         match nickname {
             _ if username == nickname => self.current_format.1
                 .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
-                .replace("[%<role_color>%]", &role_color)
-                .replace("[%<username>%]", &username)
-                .replace("[%<role_color>%]", &nickname)
-                .replace("[%<badge>%]", &badge)
-                .replace("[%<message>%]", &message)
+                .replace("[%<role_color>%]", role_color)
+                .replace("[%<username>%]", username)
+                .replace("[%<role_color>%]", nickname)
+                .replace("[%<badge>%]", badge)
+                .replace("[%<message>%]", message)
             ,
             _ => self.current_format.2
                 .replace("[%<time>%]", &libstrawberry::time::current_time("%H:%M"))
-                .replace("[%<role_color>%]", &role_color)
-                .replace("[%<username>%]", &username)
-                .replace("[%<nickname>%]", &nickname)
-                .replace("[%<role_color>%]", &nickname)
-                .replace("[%<badge>%]", &badge)
-                .replace("[%<message>%]", &message)
+                .replace("[%<role_color>%]", role_color)
+                .replace("[%<username>%]", username)
+                .replace("[%<nickname>%]", nickname)
+                .replace("[%<role_color>%]", nickname)
+                .replace("[%<badge>%]", badge)
+                .replace("[%<message>%]", message)
         }
     }
 
