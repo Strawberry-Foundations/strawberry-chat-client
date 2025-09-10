@@ -11,11 +11,11 @@ pub fn legacy_recv(mut stream: TcpStream) -> eyre::Result<()> {
                 break;
             }
             Ok(_) => {
-                println!("{}", buffer);
+                println!("{buffer}");
                 buffer.clear();
             }
             Err(e) => {
-                eprintln!("err while reading: {}", e);
+                eprintln!("err while reading: {e}");
                 break;
             }
         }
