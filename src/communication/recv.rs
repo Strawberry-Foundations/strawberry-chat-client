@@ -21,7 +21,7 @@ pub async fn recv(mut r_server: IncomingPacketStream<ReadHalf<TcpStream>>, tx: S
     loop {
         match r_server.read::<ClientPacket>().await {
             Ok(ClientPacket::SystemMessage { message}) => {
-                println!("{}", formatter.system(message));
+                println!("{}", formatter.system(&message));
             },
 
             Ok(ClientPacket::UserMessage { author, message }) => {
