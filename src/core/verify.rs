@@ -1,8 +1,8 @@
 use crate::constants::STRAWBERRY_API;
 use crate::global::CONFIG;
-use serde_yaml::Value;
 use libstrawberry::colors::{GREEN, RESET};
-use reqwest::Client;
+use reqwest::{Body, Client};
+use serde_yaml::Value;
 
 pub async fn verify_server(data: &Value) -> Vec<String> {
     let mut verified_servers: Vec<String> = Vec::new();
@@ -13,23 +13,16 @@ pub async fn verify_server(data: &Value) -> Vec<String> {
         if let Some(server_map) = server_data {
             for (_, server_data) in server_map {
                 if let Some(address) = server_data.get("address").and_then(|a| a.as_str()) {
-
-                    let request = match client
+                    let Ok(request) = client
                         .get(format!("{STRAWBERRY_API}server/verified?addr={address}"))
                         .send()
                         .await
-                    {
-                        Ok(response) => response,
-                        Err(_) => {
-                            continue
-                        },
+                    else {
+                        continue;
                     };
 
-                    let body = match request.text().await {
-                        Ok(text) => text,
-                        Err(_) => {
-                            continue
-                        }
+                    let Ok(body) = request.text().await else {
+                        continue;
                     };
 
                     if body == "True" {
@@ -43,7 +36,8 @@ pub async fn verify_server(data: &Value) -> Vec<String> {
     verified_servers
 }
 
-#[must_use] pub fn is_in_verified_servers(address: &str, verified_servers: &[String]) -> String {
+#[must_use]
+pub fn is_in_verified_servers(address: &str, verified_servers: &[String]) -> String {
     if verified_servers.contains(&address.to_string()) {
         format!(" {GREEN}✓{RESET}")
     } else {
