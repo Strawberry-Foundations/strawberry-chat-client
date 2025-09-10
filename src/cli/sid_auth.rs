@@ -33,13 +33,13 @@ pub async fn login() -> eyre::Result<()> {
                                     println!("{YELLOW}{BOLD}{}{C_RESET}", STRINGS.get_with_params("AlreadyLoggedIn", &[&path.parent().unwrap().display()]));
                                 }
                                 CredentialsError::DirectoryCreationError(err) => {
-                                    eprintln!("{RED}{BOLD}Error while creating config directory:{RESET} {}{C_RESET}", err);
+                                    eprintln!("{RED}{BOLD}Error while creating config directory:{RESET} {err}{C_RESET}");
                                 }
                                 CredentialsError::WriteError(err) => {
-                                    eprintln!("{RED}{BOLD}Error while writing file:{RESET} {}{C_RESET}", err);
+                                    eprintln!("{RED}{BOLD}Error while writing file:{RESET} {err}{C_RESET}");
                                 }
                                 CredentialsError::SerializeError(err) => {
-                                    eprintln!("{RED}{BOLD}Error while serializing data:{RESET} {}{C_RESET}", err)
+                                    eprintln!("{RED}{BOLD}Error while serializing data:{RESET} {err}{C_RESET}");
                                 }
                                 CredentialsError::HomeNotFound => {
                                     eprintln!("{RED}{BOLD}Error while creating config directory:{RESET} Home directory not found.{C_RESET}");
@@ -54,7 +54,7 @@ pub async fn login() -> eyre::Result<()> {
             Err(..) => {
                 std::process::exit(1);
             }
-        };
+        }
 
         interval.tick().await;
     }
