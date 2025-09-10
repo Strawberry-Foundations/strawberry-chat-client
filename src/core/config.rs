@@ -118,9 +118,8 @@ impl Config {
         }
 
         let config_yml = if let Ok(s) = config_open(&config_path) { s } else {
-            let credentials = match StrawberryIdCredentials::fetch() {
-                Ok(cred) => cred,
-                Err(_) => return String::from("en_US")
+            let Ok(credentials) = StrawberryIdCredentials::fetch() else {
+                return String::from("en_US")
             };
 
             let (username, auth_token) = (credentials.username, credentials.token);
@@ -154,6 +153,9 @@ impl Config {
     }
 
     #[must_use] pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
+        if server_id < 0 {
+            panic!("server_id must be non-negative, got {}", server_id);
+        }
         let server_id = server_id as usize;
         let config: Value = from_str(config_content).unwrap();
 
@@ -167,7 +169,7 @@ impl Config {
             .unwrap()
             .to_string();
 
-        let s_port = config["server"][server_id]["port"].as_u64().unwrap() as u16;
+        let s_port = u16::try_from(config["server"][server_id]["port"].as_u64().unwrap()).unwrap();
 
         let s_type = config["server"][server_id]["type"]
             .as_str()
