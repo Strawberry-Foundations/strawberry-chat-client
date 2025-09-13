@@ -1,9 +1,8 @@
 [package]
-name = "stbchat-rust"
+name = "strawberry-chat-client"
 version = "1.5.1"
 edition = "2024"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Official Strawberry Chat Client based on Rust"
 
 [dependencies]
 libstrawberry = { version = "1.4.0", features = ["stbchat", "notifications", "strawberryid"] }
