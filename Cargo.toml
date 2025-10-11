@@ -8,10 +8,10 @@ description = "Official Strawberry Chat Client based on Rust"
 libstrawberry = { version = "1.4.0", features = ["stbchat", "notifications", "strawberryid"] }
 tokio = { version = "1.47.1", features = ["full"] }
 reqwest = "0.12.23"
-rustyline = "17.0.1"
-serde = { version = "1.0.219", features = ["derive"] }
-serde_yaml = "0.9.34-deprecated"
-serde_json = "1.0.143"
+rustyline = "17.0.2"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_yaml = { git = "https://github.com/Strawberry-Foundations/serde-yaml" }
+serde_json = "1.0.145"
 eyre = "0.6.12"
 rprompt = "2.2.0"
 socket2 = "0.6.0"
