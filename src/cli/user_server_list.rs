@@ -85,7 +85,10 @@ pub fn user_server_list(config_content: &str) -> ServerValues {
             std::process::exit(1);
         }
         Ordering::Less => {
-            let server_id = server_selection.sub(1) as i8;
+            let server_id = i8::try_from(server_selection.sub(1)).unwrap_or_else(|_| {
+                eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.get("InvalidServerSelection"));
+                std::process::exit(1);
+            });
 
             Config::server_id(server_id, config_content)
         }

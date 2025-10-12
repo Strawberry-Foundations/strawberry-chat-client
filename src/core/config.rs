@@ -154,7 +154,7 @@ impl Config {
 
     #[must_use] pub fn server_id(server_id: i8, config_content: &str) -> ServerValues {
         assert!((server_id >= 0), "server_id must be non-negative, got {server_id}");
-        let server_id = server_id as usize;
+        let server_id = usize::try_from(server_id).expect("server_id must be non-negative");
         let config: Value = from_str(config_content).unwrap();
 
         let s_name = config["server"][server_id]["name"]
