@@ -5,17 +5,17 @@ edition = "2024"
 description = "Official Strawberry Chat Client based on Rust"
 
 [dependencies]
-libstrawberry = { version = "1.4.3", features = ["stbchat", "notifications", "strawberryid"] }
-tokio = { version = "1.47.1", features = ["full"] }
-reqwest = "0.12.23"
-rustyline = "17.0.2"
+libstrawberry = { version = "1.4.4", features = ["stbchat", "notifications", "strawberryid"] }
+tokio = { version = "1.52.1", features = ["full"] }
+reqwest = "0.13.3"
+rustyline = "18.0.0"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_yaml = { git = "https://github.com/Strawberry-Foundations/serde-yaml" }
-serde_json = "1.0.145"
+serde_json = "1.0.149"
 eyre = "0.6.12"
 rprompt = "2.2.0"
-socket2 = "0.6.0"
-futures = "0.3.31"
+socket2 = "0.6.3"
+futures = "0.3.32"
 
 [profile.release]
 opt-level = 'z'
